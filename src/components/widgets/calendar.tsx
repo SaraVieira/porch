@@ -22,14 +22,14 @@ type Event = {
 
 export function Calendar() {
   const [date, setDate] = useState<Date | undefined>(new Date())
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['calendar'],
     queryFn: () => get('https://deskbuddy.deploy.iamsaravieira.com/events/all'),
   })
 
   return (
-    <Card className="w-fit py-4">
-      <CardContent className="px-4">
+    <Card className="w-full py-4">
+      <CardContent className="px-4 mx-auto">
         <BaseCalendar
           mode="single"
           selected={date}

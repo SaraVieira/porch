@@ -1,67 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/widgets/calendar'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { get } from '@/lib/utils'
-import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card'
+import type { APIMatch, Stream } from '@/lib/types'
+import { get, getCountryCode } from '@/lib/utils'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { FAKE_MATCH_POSTER } from '@/lib/consts'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 export const Route = createFileRoute('/matches')({ component: Matches })
-
-interface Stream {
-  id: string // Unique identifier for the stream
-  streamNo: number // Stream number/index
-  language: string // Stream language (e.g., "English", "Spanish")
-  hd: boolean // Whether the stream is in HD quality
-  embedUrl: string // URL that can be used to embed the stream
-  source: string // Source identifier (e.g., "alpha", "bravo")
-}
-
-interface APIMatch {
-  id: string // Unique identifier for the match
-  title: string // Match title (e.g. "Team A vs Team B")
-  category: string // Sport category (e.g. "football", "basketball")
-  date: number // Unix timestamp in milliseconds
-  poster?: string // URL path to match poster image
-  popular: boolean // Whether the match is marked as popular
-  teams?: {
-    home?: {
-      name: string // Home team name
-      badge: string // URL path to home team badge
-    }
-    away?: {
-      name: string // Away team name
-      badge: string // URL path to away team badge
-    }
-  }
-  sources: Array<{
-    source: string // Stream source identifier (e.g. "alpha", "bravo")
-    id: string // Source-specific match ID
-  }>
-}
-
-function getCountryCode(language: string): string {
-  switch (language.toLowerCase()) {
-    case 'english':
-      return 'gb'
-    case 'español':
-      return 'es'
-    case 'french':
-      return 'fr'
-    case 'german':
-      return 'de'
-    case 'polski':
-      return 'pl'
-    case 'português':
-      return 'pt'
-    case 'dutch':
-      return 'nl'
-    // Add more as needed
-    default:
-      return 'us'
-  }
-}
 
 function Matches() {
   const { data } = useQuery({

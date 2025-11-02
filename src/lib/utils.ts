@@ -7,3 +7,25 @@ export function cn(...inputs: Array<ClassValue>) {
 }
 
 export const get = (url: string) => fetch(url).then((rsp) => rsp.json())
+
+export function getCountryCode(language: string): string {
+  switch (language.toLowerCase()) {
+    case 'english':
+      return 'gb'
+    case 'español':
+      return 'es'
+    case 'french':
+      return 'fr'
+    case 'german':
+      return 'de'
+    case 'polski':
+      return 'pl'
+    case 'português':
+      return 'pt'
+    case 'dutch':
+      return 'nl'
+    // Add more as needed
+    default:
+      return 'us'
+  }
+}
