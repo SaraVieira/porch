@@ -5,9 +5,19 @@ import { Pool } from 'pg'
 
 import * as schema from './schema.ts'
 
-config()
+// Only initialize database connection on server-side
+if (typeof window === 'undefined') {
+  config()
+}
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL!,
-})
-export const db = drizzle(pool, { schema })
+let pool: Pool | undefined
+let db: ReturnType<typeof drizzle> | undefined
+
+if (typeof window === 'undefined') {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL!,
+  })
+  db = drizzle(pool, { schema })
+}
+
+export { db }
