@@ -2,17 +2,17 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { AlertCircle, Check, Copy, Image, Upload, X } from 'lucide-react'
+import type { UploadedFile } from '@/lib/upload'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import {
-  uploadFileToZipline,
-  validateImageFile,
   formatFileSize,
   getSupportedFileTypes,
-  type UploadedFile,
+  uploadFileToZipline,
+  validateImageFile,
 } from '@/lib/upload'
 
 export const Route = createFileRoute('/upload')({
@@ -155,7 +155,7 @@ function UploadPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
+    <div className="container mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Image Upload</h1>
         <p className="text-muted-foreground">

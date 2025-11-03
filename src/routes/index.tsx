@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { desc, eq } from 'drizzle-orm'
+import { BsBookFill, BsPencilFill, BsReddit, BsServer } from 'react-icons/bs'
 import { RiBlueskyFill, RiNetflixFill } from 'react-icons/ri'
-import { TbBrandDisney, TbBrandYoutubeFilled } from 'react-icons/tb'
 import {
   SiAliexpress,
   SiAmazon,
@@ -14,17 +16,48 @@ import {
   SiPrintables,
   SiSteam,
 } from 'react-icons/si'
-import {
-  BsBookFill,
-  BsPencil,
-  BsPencilFill,
-  BsReddit,
-  BsServer,
-} from 'react-icons/bs'
+import { TbBrandDisney, TbBrandYoutubeFilled } from 'react-icons/tb'
 import { Calendar } from '@/components/widgets/calendar'
+import { todos as todosSchema } from '@/db/schema'
+import { db } from '@/db'
 import { Links } from '@/components/widgets/Links'
+import { Todos } from '@/components/widgets/Todos'
+import { PgSerial } from 'drizzle-orm/pg-core'
 
-export const Route = createFileRoute('/')({ component: App })
+const getTodos = createServerFn({
+  method: 'GET',
+}).handler(async () => {
+  return await db.query.todos.findMany({
+    orderBy: [desc(todosSchema.createdAt)],
+  })
+})
+
+const createTodo = createServerFn({
+  method: 'POST',
+})
+  .inputValidator((data: { title: string }) => data)
+  .handler(async ({ data }) => {
+    await db.insert(todosSchema).values({ title: data.title, done: false })
+    return { success: true }
+  })
+
+const toggleDoneTodo = createServerFn({
+  method: 'POST',
+})
+  .inputValidator((data: { done: boolean; id: string }) => data)
+  .handler(async ({ data }) => {
+    await db
+      .update(todosSchema)
+      .set({ done: data.done })
+      // @ts-expect-error eq issue
+      .where(eq(todosSchema.id, data.id))
+    return { success: true }
+  })
+
+export const Route = createFileRoute('/')({
+  component: App,
+  loader: async () => await getTodos(),
+})
 
 const groups = [
   {
@@ -168,6 +201,8 @@ const groups = [
 ]
 
 function App() {
+  const todos = Route.useLoaderData()
+
   return (
     <div className="bg-background text-highlight grid gap-4 grid-cols-2 md:grid-cols-4">
       <div className="col-span-1 min-w-[258px]">
@@ -176,7 +211,13 @@ function App() {
       <div className="md:col-span-2">
         <Links groups={groups} />
       </div>
-      <div className="col-span-1">three</div>
+      <div className="col-span-1">
+        <Todos
+          todos={todos}
+          createTodo={createTodo}
+          toggleDoneTodo={toggleDoneTodo}
+        />
+      </div>
     </div>
   )
 }

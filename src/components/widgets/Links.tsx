@@ -1,6 +1,7 @@
 import clsx from 'clsx'
+import { ArrowUpRight } from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
-import { ArrowUpRight, LinkIcon } from 'lucide-react'
+import type { IconType } from 'react-icons/lib'
 
 type Link = {
   category: string
@@ -8,7 +9,7 @@ type Link = {
   links: Array<{
     title: string
     link: string
-    Icon: React.ReactNode
+    Icon: IconType
   }>
 }
 export const Links = ({ groups }: { groups: Array<Link> }) => {
@@ -21,9 +22,7 @@ export const Links = ({ groups }: { groups: Array<Link> }) => {
             <ul>
               {group.links.map((link) => (
                 <li className="flex gap-2 mb-1 items-center">
-                  <div className="text-muted-foreground">
-                    {link.Icon && link.Icon()}
-                  </div>
+                  <div className="text-muted-foreground">{link.Icon({})}</div>
                   <div className="flex items-start gap-1">
                     <a href={link.link} target="_blank">
                       {link.title}

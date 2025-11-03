@@ -9,7 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 export const Route = createFileRoute('/matches')({ component: Matches })
 
 function Matches() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['mtches'],
     queryFn: () =>
       get('https://streamed.pk/api/matches/live').then((rsp) =>
@@ -26,7 +26,7 @@ function Matches() {
 
   return (
     <div className="bg-background text-highlight grid grid-cols-4 gap-4">
-      {data && data.length ? (
+      {isLoading ? null : data?.length ? (
         data.map((match) => (
           <Card
             className="cursor-pointer"
