@@ -26,7 +26,7 @@ function Matches() {
 
   return (
     <div className="bg-background text-highlight grid grid-cols-4 gap-4">
-      {data &&
+      {data && data.length ? (
         data.map((match) => (
           <Card
             className="cursor-pointer"
@@ -97,7 +97,12 @@ function Matches() {
               </CardContent>
             )}
           </Card>
-        ))}
+        ))
+      ) : (
+        <h3 className="text-center text-lg col-span-4 block w-full mt-12">
+          No games live right now
+        </h3>
+      )}
     </div>
   )
 }
