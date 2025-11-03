@@ -1,12 +1,9 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import MDEditor, { selectWord } from '@uiw/react-md-editor'
-// No import is required in the WebPack.
-import '@uiw/react-md-editor/markdown-editor.css'
-// No import is required in the WebPack.
-import '@uiw/react-markdown-preview/markdown.css'
+import MDEditor from '@uiw/react-md-editor'
+
 import { ArrowLeft, Calendar, Save, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -151,7 +148,7 @@ function CreateMemoPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
+    <div className="container mx-auto p-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="outline" size="sm" onClick={handleCancel}>
