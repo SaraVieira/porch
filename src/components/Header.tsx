@@ -32,6 +32,30 @@ export default function Header() {
           >
             Matches
           </a>
+          <a
+            href="/upload"
+            className={clsx(
+              location.pathname === '/upload'
+                ? 'border-b-orange-accent'
+                : 'border-b-transparent ',
+              'border-b-2 h-full block nav-item nav-item-current pb-2',
+            )}
+            aria-current="page"
+          >
+            Upload
+          </a>
+          <a
+            href="/memos"
+            className={clsx(
+              location.pathname === '/memos'
+                ? 'border-b-orange-accent'
+                : 'border-b-transparent ',
+              'border-b-2 h-full block nav-item nav-item-current pb-2',
+            )}
+            aria-current="page"
+          >
+            Memos
+          </a>
         </nav>
       </div>
     </div>
