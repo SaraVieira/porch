@@ -1,22 +1,13 @@
 import clsx from 'clsx'
 import { ArrowUpRight } from 'lucide-react'
 import { Card, CardContent } from '../ui/card'
-import type { IconType } from 'react-icons/lib'
+import { linkGroups } from '@/lib/links'
 
-type Link = {
-  category: string
-  color: string
-  links: Array<{
-    title: string
-    link: string
-    Icon: IconType
-  }>
-}
-export const Links = ({ groups }: { groups: Array<Link> }) => {
+export const Links = () => {
   return (
     <Card>
       <CardContent className="md:grid grid-cols-3 gap-3">
-        {groups.map((group, i) => (
+        {linkGroups.map((group, i) => (
           <div className={clsx(i > 0 && 'mt-8 md:mt-0')}>
             <h3 className={clsx('mb-2', group.color)}>{group.category}</h3>
             <ul>
