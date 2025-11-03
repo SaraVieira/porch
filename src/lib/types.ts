@@ -29,3 +29,26 @@ export interface APIMatch {
     id: string // Source-specific match ID
   }>
 }
+
+
+export interface Memo {
+  id: number
+  title: string
+  content: string
+  mood: string
+  date: string
+  createdAt: Date | null
+  updatedAt: Date | null
+}
+
+
+export type MoodType =
+  | 'happy'
+  | 'sad'
+  | 'neutral'
+  | 'excited'
+  | 'anxious'
+  | 'calm'
+  | 'energetic'
+  | 'tired'
+  | 'grateful'
