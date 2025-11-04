@@ -7,6 +7,16 @@ export function cn(...inputs: Array<ClassValue>) {
 }
 
 export const get = (url: string) => fetch(url).then((rsp) => rsp.json())
+export const deleteMethod = (url: string) =>
+  fetch(url, { method: 'DELETE' }).then((rsp) => rsp.json())
+export const post = (url: string, body: unknown) =>
+  fetch(url, { method: 'POST', body: JSON.stringify(body) }).then((rsp) =>
+    rsp.json(),
+  )
+export const put = (url: string, body: unknown) =>
+  fetch(url, { method: 'PUT', body: JSON.stringify(body) }).then((rsp) =>
+    rsp.json(),
+  )
 
 export function getCountryCode(language: string): string {
   switch (language.toLowerCase()) {

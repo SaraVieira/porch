@@ -8,11 +8,17 @@ export const Links = () => {
     <Card>
       <CardContent className="md:grid grid-cols-3 gap-3">
         {linkGroups.map((group, i) => (
-          <div className={clsx(i > 0 && 'mt-8 md:mt-0')}>
+          <div
+            className={clsx(i > 0 && 'mt-8 md:mt-0')}
+            key={`${group.category}`}
+          >
             <h3 className={clsx('mb-2', group.color)}>{group.category}</h3>
             <ul>
               {group.links.map((link) => (
-                <li className="flex gap-2 mb-1 items-center">
+                <li
+                  className="flex gap-2 mb-1 items-center"
+                  key={`${group.category}-${link.link}`}
+                >
                   <div className="text-muted-foreground">{link.Icon({})}</div>
                   <div className="flex items-start gap-1">
                     <a href={link.link} target="_blank">

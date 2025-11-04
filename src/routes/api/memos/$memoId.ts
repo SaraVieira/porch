@@ -1,14 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { MemosService } from '@/lib/memos'
 
-const json = (data: any, options?: { status?: number }) => new Response(JSON.stringify(data), {
-  status: options?.status || 200,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+const json = (data: any, options?: { status?: number }) =>
+  new Response(JSON.stringify(data), {
+    status: options?.status || 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 
-export const Route = createFileRoute('/api/memos/$id')({
+export const Route = createFileRoute('/api/memos/$memoId')({
   server: {
     handlers: {
       GET: GET,
@@ -17,7 +18,6 @@ export const Route = createFileRoute('/api/memos/$id')({
     },
   },
 })
-
 
 export async function GET({ params }: { params: { id: string } }) {
   try {
@@ -38,7 +38,13 @@ export async function GET({ params }: { params: { id: string } }) {
   }
 }
 
-export async function PUT({ params, request }: { params: { id: string }, request: Request }) {
+export async function PUT({
+  params,
+  request,
+}: {
+  params: { id: string }
+  request: Request
+}) {
   try {
     const id = parseInt(params.id)
     if (isNaN(id)) {

@@ -1,12 +1,13 @@
 import { useRouter } from '@tanstack/react-router'
 import { X } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Item, ItemContent } from '../ui/item'
 import { Checkbox } from '../ui/checkbox'
 import type { RequiredFetcher } from '@tanstack/react-start'
-import { CheckedState } from '@radix-ui/react-checkbox'
+import type { CheckedState } from '@radix-ui/react-checkbox'
 
 type Todo = {
   id: number
@@ -21,7 +22,15 @@ export function Todos({
   todos,
   createTodo,
   toggleDoneTodo,
+  removeTodo,
 }: {
+  removeTodo: RequiredFetcher<
+    undefined,
+    (data: { id: string }) => {
+      id: string
+    },
+    Promise<any>
+  >
   todos: Array<Todo>
   toggleDoneTodo: RequiredFetcher<
     undefined,
@@ -44,6 +53,7 @@ export function Todos({
   >
 }) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
@@ -53,6 +63,7 @@ export function Todos({
 
     try {
       await createTodo({ data: { title } })
+      queryClient.invalidateQueries(['todos'])
       router.invalidate()
       ;(e.target as HTMLFormElement).reset()
     } catch (error) {
@@ -60,13 +71,15 @@ export function Todos({
     }
   }
 
-  const onChange = ({ state, id }: { state: CheckedState; id: string }) =>
+  const onChange = ({ state, id }: { state: CheckedState; id: string }) => {
     toggleDoneTodo({
       data: {
         id,
         done: !!state,
       },
     })
+    queryClient.invalidateQueries(['todos'])
+  }
 
   return (
     <Card>
@@ -76,8 +89,11 @@ export function Todos({
 
       <CardContent>
         <ul className="space-y-3 mb-6">
-          {todos.map((todo) => (
-            <li className="flex w-full max-w-md flex-col gap-6">
+          {todos.map((todo, i) => (
+            <li
+              className="flex w-full max-w-md flex-col gap-6"
+              key={`${todo.title}-${i}`}
+            >
               <Item variant="outline" className="p-2">
                 <ItemContent>
                   <div className="flex items-center justify-between">
@@ -91,7 +107,14 @@ export function Todos({
                       {todo.title}
                     </div>
 
-                    <Button variant={'ghost'} className="w-auto">
+                    <Button
+                      variant={'ghost'}
+                      className="w-auto"
+                      onClick={() => {
+                        removeTodo({ data: { id: todo.id.toString() } })
+                        queryClient.invalidateQueries(['todos'])
+                      }}
+                    >
                       <X className="w-4" />
                     </Button>
                   </div>

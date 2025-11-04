@@ -40,7 +40,7 @@ export interface Memo {
 }
 
 export class MemosService {
-  static async getAllMemos(): Promise<Memo[]> {
+  static async getAllMemos(): Promise<Array<Memo>> {
     ensureServerSide()
     try {
       const result = await db!
@@ -48,14 +48,14 @@ export class MemosService {
         .from(memos)
         .orderBy(desc(memos.updatedAt))
 
-      return result.map(memo => ({
+      return result.map((memo) => ({
         id: memo.id,
         title: memo.title,
         content: memo.content,
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }))
     } catch (error) {
       console.error('Error fetching memos:', error)
@@ -84,7 +84,7 @@ export class MemosService {
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }
     } catch (error) {
       console.error('Error fetching memo by id:', error)
@@ -101,7 +101,7 @@ export class MemosService {
           title: input.title,
           content: input.content,
           mood: input.mood,
-          date: input.date
+          date: input.date,
         })
         .returning()
 
@@ -113,7 +113,7 @@ export class MemosService {
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }
     } catch (error) {
       console.error('Error creating memo:', error)
@@ -131,7 +131,7 @@ export class MemosService {
           content: input.content,
           mood: input.mood,
           date: input.date,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         })
         .where(eq(memos.id, input.id))
         .returning()
@@ -148,7 +148,7 @@ export class MemosService {
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }
     } catch (error) {
       console.error('Error updating memo:', error)
@@ -159,10 +159,7 @@ export class MemosService {
   static async deleteMemo(id: number): Promise<boolean> {
     ensureServerSide()
     try {
-      const result = await db!
-        .delete(memos)
-        .where(eq(memos.id, id))
-        .returning()
+      const result = await db!.delete(memos).where(eq(memos.id, id)).returning()
 
       return result.length > 0
     } catch (error) {
@@ -180,14 +177,14 @@ export class MemosService {
         .where(eq(memos.date, date))
         .orderBy(desc(memos.updatedAt))
 
-      return result.map(memo => ({
+      return result.map((memo) => ({
         id: memo.id,
         title: memo.title,
         content: memo.content,
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }))
     } catch (error) {
       console.error('Error fetching memos by date:', error)
@@ -204,14 +201,14 @@ export class MemosService {
         .where(eq(memos.mood, mood))
         .orderBy(desc(memos.updatedAt))
 
-      return result.map(memo => ({
+      return result.map((memo) => ({
         id: memo.id,
         title: memo.title,
         content: memo.content,
         mood: memo.mood,
         date: memo.date,
         createdAt: memo.createdAt,
-        updatedAt: memo.updatedAt
+        updatedAt: memo.updatedAt,
       }))
     } catch (error) {
       console.error('Error fetching memos by mood:', error)

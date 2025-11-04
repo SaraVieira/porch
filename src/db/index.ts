@@ -11,7 +11,7 @@ if (typeof window === 'undefined') {
 }
 
 let pool: Pool | undefined
-let db: ReturnType<typeof drizzle> | undefined
+let db: ReturnType<typeof drizzle>
 
 if (typeof window === 'undefined') {
   pool = new Pool({

@@ -15,8 +15,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as MemosIndexRouteImport } from './routes/memos/index'
 import { Route as MemosCreateRouteImport } from './routes/memos/create'
 import { Route as MemosMemoIdRouteImport } from './routes/memos/$memoId'
-import { Route as ApiMemosRouteImport } from './routes/api/memos'
-import { Route as ApiMemosIdRouteImport } from './routes/api/memos.$id'
+import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
+import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
+import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
 
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
@@ -48,47 +50,63 @@ const MemosMemoIdRoute = MemosMemoIdRouteImport.update({
   path: '/memos/$memoId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiMemosRoute = ApiMemosRouteImport.update({
-  id: '/api/memos',
-  path: '/api/memos',
+const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
+  id: '/api/todos/',
+  path: '/api/todos/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiMemosIdRoute = ApiMemosIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ApiMemosRoute,
+const ApiMemosIndexRoute = ApiMemosIndexRouteImport.update({
+  id: '/api/memos/',
+  path: '/api/memos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
+  id: '/api/todos/$todoId',
+  path: '/api/todos/$todoId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMemosMemoIdRoute = ApiMemosMemoIdRouteImport.update({
+  id: '/api/memos/$memoId',
+  path: '/api/memos/$memoId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/matches': typeof MatchesRoute
   '/upload': typeof UploadRoute
-  '/api/memos': typeof ApiMemosRouteWithChildren
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos': typeof MemosIndexRoute
-  '/api/memos/$id': typeof ApiMemosIdRoute
+  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/memos': typeof ApiMemosIndexRoute
+  '/api/todos': typeof ApiTodosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/matches': typeof MatchesRoute
   '/upload': typeof UploadRoute
-  '/api/memos': typeof ApiMemosRouteWithChildren
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos': typeof MemosIndexRoute
-  '/api/memos/$id': typeof ApiMemosIdRoute
+  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/memos': typeof ApiMemosIndexRoute
+  '/api/todos': typeof ApiTodosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/matches': typeof MatchesRoute
   '/upload': typeof UploadRoute
-  '/api/memos': typeof ApiMemosRouteWithChildren
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos/': typeof MemosIndexRoute
-  '/api/memos/$id': typeof ApiMemosIdRoute
+  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/memos/': typeof ApiMemosIndexRoute
+  '/api/todos/': typeof ApiTodosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,41 +114,50 @@ export interface FileRouteTypes {
     | '/'
     | '/matches'
     | '/upload'
-    | '/api/memos'
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos'
-    | '/api/memos/$id'
+    | '/api/memos/$memoId'
+    | '/api/todos/$todoId'
+    | '/api/memos'
+    | '/api/todos'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/matches'
     | '/upload'
-    | '/api/memos'
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos'
-    | '/api/memos/$id'
+    | '/api/memos/$memoId'
+    | '/api/todos/$todoId'
+    | '/api/memos'
+    | '/api/todos'
   id:
     | '__root__'
     | '/'
     | '/matches'
     | '/upload'
-    | '/api/memos'
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos/'
-    | '/api/memos/$id'
+    | '/api/memos/$memoId'
+    | '/api/todos/$todoId'
+    | '/api/memos/'
+    | '/api/todos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MatchesRoute: typeof MatchesRoute
   UploadRoute: typeof UploadRoute
-  ApiMemosRoute: typeof ApiMemosRouteWithChildren
   MemosMemoIdRoute: typeof MemosMemoIdRoute
   MemosCreateRoute: typeof MemosCreateRoute
   MemosIndexRoute: typeof MemosIndexRoute
+  ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
+  ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
+  ApiMemosIndexRoute: typeof ApiMemosIndexRoute
+  ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -177,43 +204,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemosMemoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/memos': {
-      id: '/api/memos'
-      path: '/api/memos'
-      fullPath: '/api/memos'
-      preLoaderRoute: typeof ApiMemosRouteImport
+    '/api/todos/': {
+      id: '/api/todos/'
+      path: '/api/todos'
+      fullPath: '/api/todos'
+      preLoaderRoute: typeof ApiTodosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/memos/$id': {
-      id: '/api/memos/$id'
-      path: '/$id'
-      fullPath: '/api/memos/$id'
-      preLoaderRoute: typeof ApiMemosIdRouteImport
-      parentRoute: typeof ApiMemosRoute
+    '/api/memos/': {
+      id: '/api/memos/'
+      path: '/api/memos'
+      fullPath: '/api/memos'
+      preLoaderRoute: typeof ApiMemosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/todos/$todoId': {
+      id: '/api/todos/$todoId'
+      path: '/api/todos/$todoId'
+      fullPath: '/api/todos/$todoId'
+      preLoaderRoute: typeof ApiTodosTodoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/memos/$memoId': {
+      id: '/api/memos/$memoId'
+      path: '/api/memos/$memoId'
+      fullPath: '/api/memos/$memoId'
+      preLoaderRoute: typeof ApiMemosMemoIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface ApiMemosRouteChildren {
-  ApiMemosIdRoute: typeof ApiMemosIdRoute
-}
-
-const ApiMemosRouteChildren: ApiMemosRouteChildren = {
-  ApiMemosIdRoute: ApiMemosIdRoute,
-}
-
-const ApiMemosRouteWithChildren = ApiMemosRoute._addFileChildren(
-  ApiMemosRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MatchesRoute: MatchesRoute,
   UploadRoute: UploadRoute,
-  ApiMemosRoute: ApiMemosRouteWithChildren,
   MemosMemoIdRoute: MemosMemoIdRoute,
   MemosCreateRoute: MemosCreateRoute,
   MemosIndexRoute: MemosIndexRoute,
+  ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
+  ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
+  ApiMemosIndexRoute: ApiMemosIndexRoute,
+  ApiTodosIndexRoute: ApiTodosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
