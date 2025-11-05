@@ -1,14 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { desc, eq } from 'drizzle-orm'
-
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { Calendar } from '@/components/widgets/calendar'
-import { todos as todosSchema } from '@/db/schema'
-import { db } from '@/db'
 import { Links } from '@/components/widgets/Links'
 import { Todos } from '@/components/widgets/Todos'
 import { deleteMethod, get, post, put } from '@/lib/utils'
+import { Spotify } from '@/components/widgets/spotify'
 
 const getTodos = createServerFn({
   method: 'GET',
@@ -48,13 +45,14 @@ function App() {
 
   return (
     <div className="bg-background text-highlight grid gap-4 grid-cols-2 md:grid-cols-4">
-      <div className="col-span-1 min-w-[258px]">
+      <div className="col-span-1 min-w-[258px] gap-4 flex flex-col">
         <Calendar />
       </div>
-      <div className="md:col-span-2">
+      <div className="md:col-span-2 gap-4 flex flex-col">
         <Links />
       </div>
-      <div className="col-span-1">
+      <div className="col-span-1 gap-4 flex flex-col">
+        <Spotify />
         <Todos
           removeTodo={removeTodo}
           todos={todos}
