@@ -6,6 +6,7 @@ import { Links } from '@/components/widgets/Links'
 import { Todos } from '@/components/widgets/Todos'
 import { deleteMethod, get, post, put } from '@/lib/utils'
 import { Spotify } from '@/components/widgets/spotify'
+import { Romm } from '@/components/widgets/romm'
 
 const getTodos = createServerFn({
   method: 'GET',
@@ -79,6 +80,7 @@ function App() {
           createTodo={createTodo}
           toggleDoneTodo={toggleDoneTodo}
         />
+        <Romm />
       </div>
     </div>
   )
