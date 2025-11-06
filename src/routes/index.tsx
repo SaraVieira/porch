@@ -11,6 +11,11 @@ const getTodos = createServerFn({
   method: 'GET',
 }).handler(() => get('/api/todos'))
 
+const getSpotify = createServerFn({
+  method: 'GET',
+}).handler(() =>
+  get('https://deskbuddy.deploy.iamsaravieira.com/spotify/status'),
+)
 const createTodo = createServerFn({
   method: 'POST',
 })
@@ -31,16 +36,31 @@ const removeTodo = createServerFn({
 
 export const Route = createFileRoute('/')({
   component: App,
-  loader: async () => await getTodos(),
+  loader: async () => {
+    const todos = await getTodos()
+    const spotifyData = await getSpotify()
+
+    return {
+      todos,
+      spotifyData,
+    }
+  },
 })
 
 function App() {
-  const todosLoader = Route.useLoaderData()
+  const loader = Route.useLoaderData()
 
   const { data: todos } = useSuspenseQuery({
     queryKey: ['todos'],
     queryFn: () => getTodos(),
-    initialData: todosLoader,
+    initialData: loader.todos,
+  })
+
+  const { data: spotifyData } = useSuspenseQuery({
+    queryKey: ['spotify-current-song'],
+    staleTime: 1000,
+    queryFn: () => getSpotify(),
+    initialData: loader.spotifyData,
   })
 
   return (
@@ -52,7 +72,7 @@ function App() {
         <Links />
       </div>
       <div className="col-span-1 gap-4 flex flex-col">
-        <Spotify />
+        <Spotify spotifyData={spotifyData} />
         <Todos
           removeTodo={removeTodo}
           todos={todos}

@@ -12,26 +12,32 @@ import {
   Shuffle,
   Repeat,
 } from 'lucide-react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { get, post } from '@/lib/utils'
+import { millisecondsToSeconds } from 'date-fns'
 
-// Fake data for the currently playing song
-const fakeCurrentSong = {
-  title: 'Bohemian Rhapsody',
-  artist: 'Queen',
-  album: 'A Night at the Opera',
-  duration: 355, // in seconds (5:55)
-  currentTime: 127, // in seconds (2:07)
-  coverUrl:
-    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=center',
-  isLiked: true,
-}
-
-export function Spotify() {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [currentTime, setCurrentTime] = useState(fakeCurrentSong.currentTime)
-  const [isShuffled, setIsShuffled] = useState(false)
+export function Spotify({ spotifyData }) {
+  const nextMutation = useMutation({
+    mutationFn: async () =>
+      get('https://deskbuddy.deploy.iamsaravieira.com/spotify/next'),
+  })
+  const prevMutation = useMutation({
+    mutationFn: async () =>
+      get('https://deskbuddy.deploy.iamsaravieira.com/spotify/prev'),
+  })
+  const play = useMutation({
+    mutationFn: async () =>
+      get('https://deskbuddy.deploy.iamsaravieira.com/spotify/play'),
+  })
+  const pause = useMutation({
+    mutationFn: async () =>
+      get('https://deskbuddy.deploy.iamsaravieira.com/spotify/pause'),
+  })
+  const [isPlaying, setIsPlaying] = useState(spotifyData?.is_playing || false)
+  const [currentTime, setCurrentTime] = useState(spotifyData.progress_ms || 0)
   const [repeatMode, setRepeatMode] = useState(0) // 0: off, 1: all, 2: one
+  const queryClient = useQueryClient()
 
-  // Format time from seconds to MM:SS
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -39,28 +45,28 @@ export function Spotify() {
   }
 
   // Calculate progress percentage
-  const progressPercentage = (currentTime / fakeCurrentSong.duration) * 100
+  const progressPercentage = (currentTime / spotifyData.duration_ms) * 100
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      await pause.mutateAsync()
+    } else {
+      await play.mutateAsync()
+    }
     setIsPlaying(!isPlaying)
+    queryClient.invalidateQueries(['spotify-current-song'])
   }
 
-  const handlePrevious = () => {
-    // In real implementation, this would skip to previous song
-    console.log('Previous song')
+  const handlePrevious = async () => {
+    setIsPlaying(true)
+    await prevMutation.mutateAsync()
+    queryClient.invalidateQueries(['spotify-current-song'])
   }
 
-  const handleNext = () => {
-    // In real implementation, this would skip to next song
-    console.log('Next song')
-  }
-
-  const handleShuffle = () => {
-    setIsShuffled(!isShuffled)
-  }
-
-  const handleRepeat = () => {
-    setRepeatMode((prev) => (prev + 1) % 3)
+  const handleNext = async () => {
+    setIsPlaying(true)
+    await nextMutation.mutateAsync()
+    queryClient.invalidateQueries(['spotify-current-song'])
   }
 
   return (
@@ -76,19 +82,17 @@ export function Spotify() {
         {/* Album Cover and Song Info */}
         <div className="flex gap-4">
           <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <div className="text-white text-xs font-bold text-center">
-              QUEEN
-            </div>
+            <img src={spotifyData.item.album.images[0].url} />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-foreground truncate">
-              {fakeCurrentSong.title}
+              {spotifyData?.song}
             </h3>
             <p className="text-sm text-muted-foreground truncate">
-              {fakeCurrentSong.artist}
+              {spotifyData?.artists}
             </p>
             <p className="text-xs text-muted-foreground truncate">
-              {fakeCurrentSong.album}
+              {spotifyData.item.album.name}
             </p>
           </div>
         </div>
@@ -97,8 +101,10 @@ export function Spotify() {
         <div className="space-y-2">
           <Progress value={progressPercentage} className="h-1" />
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{formatTime(currentTime)}</span>
-            <span>{formatTime(fakeCurrentSong.duration)}</span>
+            <span>{formatTime(millisecondsToSeconds(currentTime))}</span>
+            <span>
+              {formatTime(millisecondsToSeconds(spotifyData?.duration_ms))}
+            </span>
           </div>
         </div>
 
@@ -107,8 +113,11 @@ export function Spotify() {
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={handleShuffle}
-            className={isShuffled ? 'text-green-500' : 'text-muted-foreground'}
+            className={
+              spotifyData.shuffle_state
+                ? 'text-green-500'
+                : 'text-muted-foreground'
+            }
           >
             <Shuffle className="w-4 h-4" />
           </Button>
@@ -121,7 +130,7 @@ export function Spotify() {
             variant="outline"
             size="icon"
             onClick={handlePlayPause}
-            className="bg-white text-black hover:bg-gray-100 border-white"
+            className="bg-white text-white hover:bg-gray-100 border-white"
           >
             {isPlaying ? (
               <Pause className="w-5 h-5" />
@@ -137,9 +146,10 @@ export function Spotify() {
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={handleRepeat}
             className={
-              repeatMode > 0 ? 'text-green-500' : 'text-muted-foreground'
+              spotifyData.repeat_state !== 'off'
+                ? 'text-green-500'
+                : 'text-muted-foreground'
             }
           >
             <Repeat className="w-4 h-4" />
