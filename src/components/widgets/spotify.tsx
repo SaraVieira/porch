@@ -1,22 +1,21 @@
 import { useState } from 'react'
+import {
+  Pause,
+  Play,
+  Repeat,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+} from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { millisecondsToSeconds } from 'date-fns'
+import clsx from 'clsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Progress } from '../ui/progress'
-import {
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Volume2,
-  Heart,
-  Shuffle,
-  Repeat,
-} from 'lucide-react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { get, post } from '@/lib/utils'
-import { millisecondsToSeconds } from 'date-fns'
+import { get } from '@/lib/utils'
 
-export function Spotify({ spotifyData }) {
+export function Spotify({ spotifyData }: { spotifyData: any }) {
   const nextMutation = useMutation({
     mutationFn: async () =>
       get('https://deskbuddy.deploy.iamsaravieira.com/spotify/next'),
@@ -54,35 +53,48 @@ export function Spotify({ spotifyData }) {
       await play.mutateAsync()
     }
     setIsPlaying(!isPlaying)
-    queryClient.invalidateQueries(['spotify-current-song'])
+    queryClient.invalidateQueries({
+      queryKey: ['spotify-current-song'],
+    })
   }
 
   const handlePrevious = async () => {
     setIsPlaying(true)
     await prevMutation.mutateAsync()
-    queryClient.invalidateQueries(['spotify-current-song'])
+    queryClient.invalidateQueries({
+      queryKey: ['spotify-current-song'],
+    })
   }
 
   const handleNext = async () => {
     setIsPlaying(true)
     await nextMutation.mutateAsync()
-    queryClient.invalidateQueries(['spotify-current-song'])
+    queryClient.invalidateQueries({
+      queryKey: ['spotify-current-song'],
+    })
   }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-          Now Playing
+          <div
+            className={clsx(
+              'w-4 h-4 rounded-full',
+              spotifyData.closed ? 'bg-red-500' : 'bg-green-500',
+            )}
+          ></div>
+          {spotifyData.closed ? 'Paused' : 'Now Playing'}
         </CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-4">
         {/* Album Cover and Song Info */}
         <div className="flex gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <img src={spotifyData.item.album.images[0].url} />
+          <div className="w-16 h-16 bg-linear-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shrink-0">
+            {spotifyData?.item?.album?.images ? (
+              <img src={spotifyData.item.album.images[0].url} />
+            ) : null}
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-foreground truncate">
@@ -92,7 +104,7 @@ export function Spotify({ spotifyData }) {
               {spotifyData?.artists}
             </p>
             <p className="text-xs text-muted-foreground truncate">
-              {spotifyData.item.album.name}
+              {spotifyData.item?.album?.name}
             </p>
           </div>
         </div>
@@ -102,15 +114,18 @@ export function Spotify({ spotifyData }) {
           <Progress value={progressPercentage} className="h-1" />
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{formatTime(millisecondsToSeconds(currentTime))}</span>
-            <span>
-              {formatTime(millisecondsToSeconds(spotifyData?.duration_ms))}
-            </span>
+            {!spotifyData.closed ? (
+              <span>
+                {formatTime(millisecondsToSeconds(spotifyData?.duration_ms))}
+              </span>
+            ) : null}
           </div>
         </div>
 
         {/* Control Buttons */}
         <div className="flex items-center justify-center gap-4">
           <Button
+            disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
             className={
@@ -122,11 +137,17 @@ export function Spotify({ spotifyData }) {
             <Shuffle className="w-4 h-4" />
           </Button>
 
-          <Button variant="ghost" size="icon-sm" onClick={handlePrevious}>
+          <Button
+            disabled={spotifyData.closed}
+            variant="ghost"
+            size="icon-sm"
+            onClick={handlePrevious}
+          >
             <SkipBack className="w-4 h-4" />
           </Button>
 
           <Button
+            disabled={spotifyData.closed}
             variant="outline"
             size="icon"
             onClick={handlePlayPause}
@@ -139,11 +160,17 @@ export function Spotify({ spotifyData }) {
             )}
           </Button>
 
-          <Button variant="ghost" size="icon-sm" onClick={handleNext}>
+          <Button
+            disabled={spotifyData.closed}
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleNext}
+          >
             <SkipForward className="w-4 h-4" />
           </Button>
 
           <Button
+            disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
             className={

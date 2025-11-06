@@ -40,7 +40,7 @@ export function getCountryCode(language: string): string {
   }
 }
 
-export function formatBytes(bytes: string, decimals = 2) {
+export function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return '0 Bytes'
 
   const k = 1024
