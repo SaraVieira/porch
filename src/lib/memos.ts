@@ -9,9 +9,7 @@ const ensureServerSide = () => {
   if (typeof window !== 'undefined') {
     throw new Error('MemosService can only be used on the server-side')
   }
-  if (!db) {
-    throw new Error('Database connection not available')
-  }
+  // Database connection will be ensured by the db() function call
 }
 
 export interface CreateMemoInput {

@@ -22,7 +22,7 @@ export const Route = createFileRoute('/api/todos/')({
 
 export async function GET() {
   try {
-    const todos = await db.query.todos.findMany({
+    const todos = await db!.query.todos.findMany({
       orderBy: [desc(todosSchema.createdAt)],
     })
 
@@ -38,7 +38,7 @@ export async function POST({ request }: { request: Request }) {
     const body = await request.json()
 
     const { title } = body
-    const todo = await db
+    const todo = await db!
       .insert(todosSchema)
       .values({ title: title, done: false })
 

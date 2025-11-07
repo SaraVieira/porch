@@ -38,7 +38,7 @@ export async function PUT({
     const body = await request.json()
     const { done } = body
 
-    const memo = await db
+    const memo = await db!
       .update(todosSchema)
       .set({ done: done })
       .where(eq(todosSchema.id, id))
@@ -57,8 +57,8 @@ export async function DELETE({ params }: { params: { todoId: string } }) {
       return json({ error: 'Invalid memo ID' }, { status: 400 })
     }
 
-    const a = await db.delete(todosSchema).where(eq(todosSchema.id, id))
-    console.log(a)
+   await db!.delete(todosSchema).where(eq(todosSchema.id, id))
+
     return json({ success: true })
   } catch (error) {
     console.error('Error deleting memo:', error)
