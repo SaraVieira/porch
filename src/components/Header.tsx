@@ -5,9 +5,9 @@ export default function Header() {
   const location = useLocation()
 
   return (
-    <div className="bg-widget-background mt-4 pt-4 text-highlight container mx-auto rounded border-widget-content-border">
+    <div className="mt-4 pt-4 text-highlight container mx-auto rounded border-widget-content-border">
       <div className="header flex padding-inline-widget widget-content-frame">
-        <nav className="overflow-auto min-w-0 gap-8 h-full flex grow hide-scrollbars ml-12">
+        <nav className="overflow-auto min-w-0 gap-8 h-full flex grow hide-scrollbars">
           <a
             href="/"
             className={clsx(

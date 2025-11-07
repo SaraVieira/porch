@@ -29,7 +29,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Homepage',
       },
     ],
     links: [
@@ -49,7 +49,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-highlight dark">
+      <body className="bg-background text-highlight dark min-h-screen">
         <Header />
         <div className="container mx-auto my-8">{children}</div>
         <Toaster />

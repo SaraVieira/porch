@@ -65,7 +65,7 @@ function App() {
   })
 
   return (
-    <div className="bg-background text-highlight grid gap-4 grid-cols-2 md:grid-cols-4">
+    <div className="text-highlight grid gap-4 grid-cols-2 md:grid-cols-4">
       <div className="col-span-1 min-w-[258px] gap-4 flex flex-col">
         <Calendar />
       </div>
