@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardTitle } from './ui/card'
 import { ScrollArea } from './ui/scroll-area'
 import type { APIMatch, Stream } from '@/lib/types'
-import { get, getCountryCode } from '@/lib/utils'
+import { formatDate, get, getCountryCode } from '@/lib/utils'
 import { FAKE_MATCH_POSTER } from '@/lib/consts'
 
 export const Match = ({ match }: { match: APIMatch }) => {
@@ -46,13 +46,7 @@ export const Match = ({ match }: { match: APIMatch }) => {
           />
 
           <span className="mt-2 text-muted-foreground block w-full text-center">
-            {new Date(match.date).toLocaleDateString('en-GB', {
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
+            {formatDate(match.date, true)}
           </span>
         </CardContent>
       )}

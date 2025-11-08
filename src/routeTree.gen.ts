@@ -20,10 +20,12 @@ import { Route as BooksCountriesRouteImport } from './routes/books/countries'
 import { Route as BooksConferencesRouteImport } from './routes/books/conferences'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
 import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
+import { Route as ApiGamesIndexRouteImport } from './routes/api/games/index'
 import { Route as ApiCountriesIndexRouteImport } from './routes/api/countries/index'
 import { Route as ApiConferencesIndexRouteImport } from './routes/api/conferences/index'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
+import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
 import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countries/$countryId'
 import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/conferences/$conferenceId'
 
@@ -82,6 +84,11 @@ const ApiMemosIndexRoute = ApiMemosIndexRouteImport.update({
   path: '/api/memos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGamesIndexRoute = ApiGamesIndexRouteImport.update({
+  id: '/api/games/',
+  path: '/api/games/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCountriesIndexRoute = ApiCountriesIndexRouteImport.update({
   id: '/api/countries/',
   path: '/api/countries/',
@@ -100,6 +107,11 @@ const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
 const ApiMemosMemoIdRoute = ApiMemosMemoIdRouteImport.update({
   id: '/api/memos/$memoId',
   path: '/api/memos/$memoId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGamesGameIdRoute = ApiGamesGameIdRouteImport.update({
+  id: '/api/games/$gameId',
+  path: '/api/games/$gameId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCountriesCountryIdRoute = ApiCountriesCountryIdRouteImport.update({
@@ -126,10 +138,12 @@ export interface FileRoutesByFullPath {
   '/memos': typeof MemosIndexRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
+  '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
+  '/api/games': typeof ApiGamesIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
 }
@@ -145,10 +159,12 @@ export interface FileRoutesByTo {
   '/memos': typeof MemosIndexRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
+  '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
+  '/api/games': typeof ApiGamesIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
 }
@@ -165,10 +181,12 @@ export interface FileRoutesById {
   '/memos/': typeof MemosIndexRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
+  '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences/': typeof ApiConferencesIndexRoute
   '/api/countries/': typeof ApiCountriesIndexRoute
+  '/api/games/': typeof ApiGamesIndexRoute
   '/api/memos/': typeof ApiMemosIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
 }
@@ -186,10 +204,12 @@ export interface FileRouteTypes {
     | '/memos'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
+    | '/api/games/$gameId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences'
     | '/api/countries'
+    | '/api/games'
     | '/api/memos'
     | '/api/todos'
   fileRoutesByTo: FileRoutesByTo
@@ -205,10 +225,12 @@ export interface FileRouteTypes {
     | '/memos'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
+    | '/api/games/$gameId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences'
     | '/api/countries'
+    | '/api/games'
     | '/api/memos'
     | '/api/todos'
   id:
@@ -224,10 +246,12 @@ export interface FileRouteTypes {
     | '/memos/'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
+    | '/api/games/$gameId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences/'
     | '/api/countries/'
+    | '/api/games/'
     | '/api/memos/'
     | '/api/todos/'
   fileRoutesById: FileRoutesById
@@ -244,10 +268,12 @@ export interface RootRouteChildren {
   MemosIndexRoute: typeof MemosIndexRoute
   ApiConferencesConferenceIdRoute: typeof ApiConferencesConferenceIdRoute
   ApiCountriesCountryIdRoute: typeof ApiCountriesCountryIdRoute
+  ApiGamesGameIdRoute: typeof ApiGamesGameIdRoute
   ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
   ApiConferencesIndexRoute: typeof ApiConferencesIndexRoute
   ApiCountriesIndexRoute: typeof ApiCountriesIndexRoute
+  ApiGamesIndexRoute: typeof ApiGamesIndexRoute
   ApiMemosIndexRoute: typeof ApiMemosIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
 }
@@ -331,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/games/': {
+      id: '/api/games/'
+      path: '/api/games'
+      fullPath: '/api/games'
+      preLoaderRoute: typeof ApiGamesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/countries/': {
       id: '/api/countries/'
       path: '/api/countries'
@@ -357,6 +390,13 @@ declare module '@tanstack/react-router' {
       path: '/api/memos/$memoId'
       fullPath: '/api/memos/$memoId'
       preLoaderRoute: typeof ApiMemosMemoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/games/$gameId': {
+      id: '/api/games/$gameId'
+      path: '/api/games/$gameId'
+      fullPath: '/api/games/$gameId'
+      preLoaderRoute: typeof ApiGamesGameIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/countries/$countryId': {
@@ -388,10 +428,12 @@ const rootRouteChildren: RootRouteChildren = {
   MemosIndexRoute: MemosIndexRoute,
   ApiConferencesConferenceIdRoute: ApiConferencesConferenceIdRoute,
   ApiCountriesCountryIdRoute: ApiCountriesCountryIdRoute,
+  ApiGamesGameIdRoute: ApiGamesGameIdRoute,
   ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
   ApiConferencesIndexRoute: ApiConferencesIndexRoute,
   ApiCountriesIndexRoute: ApiCountriesIndexRoute,
+  ApiGamesIndexRoute: ApiGamesIndexRoute,
   ApiMemosIndexRoute: ApiMemosIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
 }

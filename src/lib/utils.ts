@@ -61,3 +61,12 @@ export function formatBytes(bytes: number, decimals = 2) {
 
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
+
+export const formatDate = (date: string | Date | number, time?: boolean) => {
+  return new Date(date).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    ...(time ? { hour: '2-digit', minute: '2-digit' } : {}),
+  })
+}
