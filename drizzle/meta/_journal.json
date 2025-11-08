@@ -15,6 +15,27 @@
       "when": 1762120959803,
       "tag": "0001_cloudy_maginty",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762598797427,
+      "tag": "0002_green_swordsman",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1762599650939,
+      "tag": "0003_melted_gargoyle",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1762600085875,
+      "tag": "0004_sharp_winter_soldier",
+      "breakpoints": true
     }
   ]
 }

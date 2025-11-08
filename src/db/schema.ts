@@ -1,6 +1,8 @@
 import {
   boolean,
   date,
+  integer,
+  jsonb,
   pgTable,
   serial,
   text,
@@ -24,4 +26,44 @@ export const memos = pgTable('memos', {
   date: text('date').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export const countries = pgTable('countries', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  region: text('region'),
+  flag: text('flag'),
+  location: jsonb('location').$type<Array<number>>(),
+  subregion: text('subregion'),
+  currency: text('currency'),
+})
+
+export const games = pgTable('games', {
+  id: text('id').primaryKey(),
+  image: text('image'),
+  name: text('name').notNull(),
+  dev: text('dev'),
+  genres: jsonb('genres').$type<Array<string>>(),
+  platforms: jsonb('platforms').$type<Array<string>>(),
+  summary: text('summary'),
+  steam: integer('steam'),
+  score: integer('score'),
+  release: text('release'),
+  time: text('time'),
+  notes: text('notes'),
+  date: text('date'),
+})
+
+export const conferences = pgTable('conferences', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  notes: text('notes'),
+  city: text('city'),
+  link: text('link'),
+  country_name: text('country_name'),
+  country_region: text('country_region'),
+  country_flag: text('country_flag'),
+  country_lat: text('country_lat'),
+  country_lng: text('country_lng'),
+  country_subregion: text('country_subregion'),
 })

@@ -1,13 +1,14 @@
 import { config } from 'dotenv'
 
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { Pool } from 'pg'
+import * as schema from './schema.ts'
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
+
 // Only load dotenv on server-side
 if (typeof window === 'undefined') {
   config()
 }
-
-import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
-import * as schema from './schema.ts'
 
 // Server-side database initialization
 let dbInstance: NodePgDatabase<typeof schema> | null = null
