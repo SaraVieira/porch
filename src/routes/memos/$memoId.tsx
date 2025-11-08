@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { MOODS } from '@/lib/consts'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import MarkdownPreview from '@uiw/react-markdown-preview'
 import { ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { MOODS } from '@/lib/consts'
 import { Badge } from '@/components/ui/badge'
 import { useDeleteMemo } from '@/lib/hooks/useDeleteMemo'
 
@@ -22,7 +22,7 @@ function RouteComponent() {
   const { memo } = Route.useLoaderData()
   const { handleDeleteMemo } = useDeleteMemo()
 
-  const moodInfo = MOODS.find((mood) => mood.type === memo?.mood) || MOODS[4]
+  const moodInfo = MOODS.find((mood) => mood.type === memo.mood) || MOODS[4]
   const MoodIcon = moodInfo.icon
 
   return (
@@ -41,11 +41,10 @@ function RouteComponent() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Editor Panel */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>{memo?.title}</CardTitle>
+              <CardTitle>{memo.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
@@ -94,7 +93,7 @@ function RouteComponent() {
                 {/* Memo Content */}
                 <div className="prose prose-sm max-w-none">
                   <MarkdownPreview
-                    source={memo?.content}
+                    source={memo.content}
                     style={{ background: 'transparent' }}
                   />
                 </div>

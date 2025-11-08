@@ -1,8 +1,8 @@
-import { db } from '@/db'
-import { memos } from '@/db/schema'
-import { eq, desc } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { MoodType } from './types'
 import { MOODS } from './consts'
+import { memos } from '@/db/schema'
+import { db } from '@/db'
 
 // Server-side check helper
 const ensureServerSide = () => {
@@ -166,7 +166,7 @@ export class MemosService {
     }
   }
 
-  static async getMemosByDate(date: string): Promise<Memo[]> {
+  static async getMemosByDate(date: string): Promise<Array<Memo>> {
     ensureServerSide()
     try {
       const result = await db!
@@ -190,7 +190,7 @@ export class MemosService {
     }
   }
 
-  static async getMemosByMood(mood: string): Promise<Memo[]> {
+  static async getMemosByMood(mood: string): Promise<Array<Memo>> {
     ensureServerSide()
     try {
       const result = await db!

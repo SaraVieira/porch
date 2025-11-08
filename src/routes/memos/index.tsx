@@ -1,12 +1,12 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { Plus } from 'lucide-react'
+import type { Memo, MoodType } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Memo, MoodType } from '@/lib/types'
 import { MOODS } from '@/lib/consts'
 import { useDeleteMemo } from '@/lib/hooks/useDeleteMemo'
 
@@ -36,19 +36,15 @@ function MemosPage() {
     router.navigate({ to: `/memos/${memo.id}`, reloadDocument: true })
   }, [])
 
-  const groupMemosByDate = (memos: Memo[]) => {
-    return memos.reduce(
+  const groupMemosByDate = (newMemos: Array<Memo>) =>
+    newMemos.reduce(
       (groups, memo) => {
         const date = memo.date
-        if (!groups[date]) {
-          groups[date] = []
-        }
         groups[date].push(memo)
         return groups
       },
-      {} as Record<string, Memo[]>,
+      {} as Record<string, Array<Memo>>,
     )
-  }
 
   const groupedMemos = groupMemosByDate(memos)
 

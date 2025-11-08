@@ -1,16 +1,16 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useState, useRef, useCallback } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import MDEditor from '@uiw/react-md-editor'
 
-import { ArrowLeft, Calendar, Save, Image as ImageIcon } from 'lucide-react'
+import { ArrowLeft, Calendar, Image as ImageIcon, Save } from 'lucide-react'
+import type { MoodType } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { uploadFileToZipline, validateFile } from '@/lib/upload'
-import { MoodType } from '@/lib/types'
 import { MOODS } from '@/lib/consts'
 
 export const Route = createFileRoute('/memos/create')({
@@ -73,7 +73,7 @@ function CreateMemoPage() {
     },
   })
 
-  const handleImageUpload = useCallback(async () => {
+  const handleImageUpload = useCallback(() => {
     if (!fileInputRef.current) return
     fileInputRef.current.click()
   }, [])

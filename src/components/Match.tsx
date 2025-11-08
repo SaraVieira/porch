@@ -1,9 +1,9 @@
-import { APIMatch, Stream } from '@/lib/types'
-import { Card, CardContent, CardTitle } from './ui/card'
-import { get, getCountryCode } from '@/lib/utils'
-import { ScrollArea } from './ui/scroll-area'
-import { FAKE_MATCH_POSTER } from '@/lib/consts'
 import { useState } from 'react'
+import { Card, CardContent, CardTitle } from './ui/card'
+import { ScrollArea } from './ui/scroll-area'
+import type { APIMatch, Stream } from '@/lib/types'
+import { get, getCountryCode } from '@/lib/utils'
+import { FAKE_MATCH_POSTER } from '@/lib/consts'
 
 export const Match = ({ match }: { match: APIMatch }) => {
   const [gameLinks, setGameLinks] = useState<{ [id: string]: Array<Stream> }>(
@@ -14,23 +14,24 @@ export const Match = ({ match }: { match: APIMatch }) => {
     const data = (
       await Promise.all(
         match.sources.map(async (source) => {
-          const data = (await get(
+          const streams = (await get(
             `https://streamed.pk/api/stream/${source.source}/${source.id}`,
           )) as Array<Stream>
-          return data
+          return streams
         }),
       )
     ).flat()
     setGameLinks((prev) => ({ ...prev, [match.id]: data }))
-    if (data?.length === 1) {
+    if (data.length === 1) {
       window.open(data[0].embedUrl, '_blank')
     }
   }
 
   return (
     <Card key={match.id} className="cursor-pointer" onClick={onClick}>
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {gameLinks[match.id] ? (
-        <Links links={gameLinks[match.id]!} />
+        <Links links={gameLinks[match.id]} />
       ) : (
         <CardContent>
           <CardTitle className="mb-2">{match.title}</CardTitle>
@@ -59,7 +60,7 @@ export const Match = ({ match }: { match: APIMatch }) => {
   )
 }
 
-const Links = ({ links }: { links: Stream[] }) => {
+const Links = ({ links }: { links: Array<Stream> }) => {
   return (
     <CardContent>
       <ScrollArea className="h-52">

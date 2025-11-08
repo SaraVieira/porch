@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { ArrowUpRight } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '../ui/card'
-import { formatBytes } from '@/lib/utils'
+import { formatBytes, get } from '@/lib/utils'
 
 export const Romm = () => {
   const { data: stats } = useQuery({
     queryKey: ['romm', 'stats'],
-    queryFn: async () => {
-      const res = await fetch('https://roms.iamsaravieira.com/api/stats').then(
-        (res) => res.json(),
-      )
-      return res
-    },
+    queryFn: () => get('https://roms.iamsaravieira.com/api/stats'),
   })
 
   if (!stats) return null

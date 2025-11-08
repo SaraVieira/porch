@@ -78,7 +78,9 @@ export function Todos({
         done: !!state,
       },
     })
-    queryClient.invalidateQueries(['todos'])
+    queryClient.invalidateQueries({
+      queryKey: ['todos'],
+    })
   }
 
   return (
@@ -131,7 +133,6 @@ export function Todos({
 
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input type="text" name="title" placeholder="Add a new todo..." />
-          <Button type="submit">Add Todo</Button>
         </form>
       </CardContent>
     </Card>

@@ -36,6 +36,13 @@
       "when": 1762600085875,
       "tag": "0004_sharp_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1762618623378,
+      "tag": "0005_curly_vindicator",
+      "breakpoints": true
     }
   ]
 }

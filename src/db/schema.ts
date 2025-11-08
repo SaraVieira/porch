@@ -36,6 +36,8 @@ export const countries = pgTable('countries', {
   location: jsonb('location').$type<Array<number>>(),
   subregion: text('subregion'),
   currency: text('currency'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 })
 
 export const games = pgTable('games', {
@@ -52,6 +54,8 @@ export const games = pgTable('games', {
   time: text('time'),
   notes: text('notes'),
   date: text('date'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 })
 
 export const conferences = pgTable('conferences', {
@@ -66,4 +70,6 @@ export const conferences = pgTable('conferences', {
   country_lat: text('country_lat'),
   country_lng: text('country_lng'),
   country_subregion: text('country_subregion'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 })
