@@ -1,3 +1,11 @@
+import type { WebAuthnCredential } from '@simplewebauthn/server'
+
+export interface LoggedInUser {
+  id: string
+  username: string
+  credentials: Array<WebAuthnCredential>
+}
+
 export interface Stream {
   id: string // Unique identifier for the stream
   streamNo: number // Stream number/index
@@ -30,7 +38,6 @@ export interface APIMatch {
   }>
 }
 
-
 export interface Memo {
   id: number
   title: string
@@ -40,7 +47,6 @@ export interface Memo {
   createdAt: Date | null
   updatedAt: Date | null
 }
-
 
 export type MoodType =
   | 'happy'

@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import { clsx } from 'clsx'
 import * as tailwindMerge from 'tailwind-merge'
 import type { ClassValue } from 'clsx'
@@ -68,5 +69,17 @@ export const formatDate = (date: string | Date | number, time?: boolean) => {
     month: 'numeric',
     year: 'numeric',
     ...(time ? { hour: '2-digit', minute: '2-digit' } : {}),
+  })
+}
+
+export function hashPassword(password: string) {
+  return new Promise<string>((resolve, reject) => {
+    crypto.pbkdf2(password, 'salt', 100000, 64, 'sha256', (err, derivedKey) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(derivedKey.toString('hex'))
+      }
+    })
   })
 }

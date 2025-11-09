@@ -73,3 +73,8 @@ export const conferences = pgTable('conferences', {
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 })
+
+export const user = pgTable('user', {
+  id: serial('id').primaryKey(),
+  password: text('password').notNull(),
+})

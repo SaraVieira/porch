@@ -10,7 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as MatchesRouteImport } from './routes/matches'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as _authedRouteImport } from './routes/__authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MemosIndexRouteImport } from './routes/memos/index'
 import { Route as MemosCreateRouteImport } from './routes/memos/create'
@@ -34,9 +38,28 @@ const UploadRoute = UploadRouteImport.update({
   path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MatchesRoute = MatchesRouteImport.update({
   id: '/matches',
   path: '/matches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const _authedRoute = _authedRouteImport.update({
+  id: '/__authed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -128,7 +151,10 @@ const ApiConferencesConferenceIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
@@ -149,7 +175,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
@@ -171,7 +200,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/__authed': typeof _authedRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
@@ -194,7 +227,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/logout'
     | '/matches'
+    | '/signup'
     | '/upload'
     | '/books/conferences'
     | '/books/countries'
@@ -215,7 +251,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
+    | '/logout'
     | '/matches'
+    | '/signup'
     | '/upload'
     | '/books/conferences'
     | '/books/countries'
@@ -236,7 +275,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/__authed'
+    | '/login'
+    | '/logout'
     | '/matches'
+    | '/signup'
     | '/upload'
     | '/books/conferences'
     | '/books/countries'
@@ -258,7 +301,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  _authedRoute: typeof _authedRoute
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
   MatchesRoute: typeof MatchesRoute
+  SignupRoute: typeof SignupRoute
   UploadRoute: typeof UploadRoute
   BooksConferencesRoute: typeof BooksConferencesRoute
   BooksCountriesRoute: typeof BooksCountriesRoute
@@ -287,11 +334,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/matches': {
       id: '/matches'
       path: '/matches'
       fullPath: '/matches'
       preLoaderRoute: typeof MatchesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/__authed': {
+      id: '/__authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof _authedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -418,7 +493,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  _authedRoute: _authedRoute,
+  LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
   MatchesRoute: MatchesRoute,
+  SignupRoute: SignupRoute,
   UploadRoute: UploadRoute,
   BooksConferencesRoute: BooksConferencesRoute,
   BooksCountriesRoute: BooksCountriesRoute,

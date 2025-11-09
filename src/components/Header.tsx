@@ -7,13 +7,14 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 
-export default function Header() {
+export default function Header({ user }: { user: { id: number } | null }) {
   const location = useLocation()
   const navigate = useNavigate()
 
+  if (!user) return null
   return (
     <div className="mt-4 pt-4 text-highlight container mx-auto rounded border-widget-content-border">
-      <div className="header flex padding-inline-widget widget-content-frame">
+      <div className="header flex padding-inline-widget widget-content-frame justify-between">
         <nav className="overflow-auto min-w-0 gap-8 h-full flex grow hide-scrollbars">
           <Link
             to="/"
@@ -108,6 +109,10 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
+
+        <Link to="/logout" className="underline underline-offset-4">
+          Logout
+        </Link>
       </div>
     </div>
   )

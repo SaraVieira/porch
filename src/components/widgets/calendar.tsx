@@ -29,7 +29,7 @@ export function Calendar() {
 
   return (
     <Card className="w-full py-4">
-      <CardContent className="px-0 w-full">
+      <CardContent className="px-1 w-full">
         <BaseCalendar
           mode="single"
           selected={date}
