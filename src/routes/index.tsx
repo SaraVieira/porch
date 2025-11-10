@@ -8,6 +8,7 @@ import { deleteMethod, get, post, put } from '@/lib/utils'
 import { Spotify } from '@/components/widgets/spotify'
 import { Romm } from '@/components/widgets/romm'
 import { Coolify } from '@/components/widgets/Coolify'
+import { Weather } from '@/components/widgets/weather'
 
 const getTodos = createServerFn({
   method: 'GET',
@@ -17,6 +18,14 @@ const getSpotify = createServerFn({
   method: 'GET',
 }).handler(() =>
   get('https://deskbuddy.deploy.iamsaravieira.com/spotify/status'),
+)
+
+const getWeather = createServerFn({
+  method: 'GET',
+}).handler(() =>
+  get(
+    'https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&timezone=Europe/London',
+  ),
 )
 const createTodo = createServerFn({
   method: 'POST',
@@ -41,10 +50,12 @@ export const Route = createFileRoute('/')({
   loader: async () => {
     const todos = await getTodos()
     const spotifyData = await getSpotify()
+    const weatherData = await getWeather()
 
     return {
       todos,
       spotifyData,
+      weatherData,
     }
   },
 })
@@ -65,6 +76,13 @@ function App() {
     initialData: loader.spotifyData,
   })
 
+  const { data: weatherData } = useSuspenseQuery({
+    queryKey: ['weather'],
+    staleTime: 300000, // 5 minutes
+    queryFn: () => getWeather(),
+    initialData: loader.weatherData,
+  })
+
   return (
     <div className="text-highlight grid gap-4 grid-cols-2 md:grid-cols-4">
       <div className="col-span-1 min-w-[258px] gap-4 flex flex-col">
@@ -75,6 +93,7 @@ function App() {
         <Coolify />
       </div>
       <div className="col-span-1 gap-4 flex flex-col">
+        <Weather weatherData={weatherData} />
         <Spotify spotifyData={spotifyData} />
         <Todos
           removeTodo={removeTodo}
