@@ -8,7 +8,7 @@ import { deleteMethod, get, post, put } from '@/lib/utils'
 import { Spotify } from '@/components/widgets/spotify'
 import { Romm } from '@/components/widgets/romm'
 import { Coolify } from '@/components/widgets/Coolify'
-import { Weather } from '@/components/widgets/weather'
+import { Weather } from '@/components/widgets/Widget'
 
 const getTodos = createServerFn({
   method: 'GET',

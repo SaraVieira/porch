@@ -1,4 +1,105 @@
+import {
+  Cloud,
+  CloudDrizzle,
+  CloudLightning,
+  CloudRain,
+  CloudSnow,
+  Eye,
+  Sun,
+  Zap,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import type { WeatherColumn, WeatherData } from './types'
+
+export const getWeatherIcon = (weatherCode: number): LucideIcon => {
+  const iconMap: Record<number, LucideIcon> = {
+    // Clear sky
+    0: Sun,
+    // Mainly clear
+    1: Sun,
+    // Partly cloudy
+    2: Cloud,
+    // Overcast
+    3: Cloud,
+    // Fog
+    45: Eye,
+    48: Eye,
+    // Drizzle
+    51: CloudDrizzle,
+    53: CloudDrizzle,
+    55: CloudDrizzle,
+    56: CloudDrizzle,
+    57: CloudDrizzle,
+    // Rain
+    61: CloudRain,
+    63: CloudRain,
+    65: CloudRain,
+    66: CloudRain,
+    67: CloudRain,
+    // Snow
+    71: CloudSnow,
+    73: CloudSnow,
+    75: CloudSnow,
+    77: CloudSnow,
+    // Rain showers
+    80: CloudRain,
+    81: CloudRain,
+    82: CloudRain,
+    // Snow showers
+    85: CloudSnow,
+    86: CloudSnow,
+    // Thunderstorm
+    95: CloudLightning,
+    96: Zap,
+    99: Zap,
+  }
+
+  return iconMap[weatherCode] || Cloud
+}
+
+export const getWeatherIconColor = (weatherCode: number): string => {
+  const colorMap: Record<number, string> = {
+    // Clear/sunny - yellow
+    0: 'text-yellow-400',
+    1: 'text-yellow-400',
+    // Cloudy - gray
+    2: 'text-gray-400',
+    3: 'text-gray-400',
+    // Fog - gray
+    45: 'text-gray-500',
+    48: 'text-gray-500',
+    // Drizzle - light blue
+    51: 'text-blue-300',
+    53: 'text-blue-300',
+    55: 'text-blue-300',
+    56: 'text-blue-300',
+    57: 'text-blue-300',
+    // Rain - blue
+    61: 'text-blue-400',
+    63: 'text-blue-400',
+    65: 'text-blue-400',
+    66: 'text-blue-400',
+    67: 'text-blue-400',
+    // Snow - light blue/white
+    71: 'text-blue-100',
+    73: 'text-blue-100',
+    75: 'text-blue-100',
+    77: 'text-blue-100',
+    // Rain showers - blue
+    80: 'text-blue-400',
+    81: 'text-blue-400',
+    82: 'text-blue-400',
+    // Snow showers - light blue
+    85: 'text-blue-100',
+    86: 'text-blue-100',
+    // Thunderstorm - purple/yellow
+    95: 'text-purple-400',
+    96: 'text-yellow-300',
+    99: 'text-yellow-300',
+  }
+
+  return colorMap[weatherCode] || 'text-gray-400'
+}
 
 export const weatherCodes: Record<number, string> = {
   0: 'Clear Sky',

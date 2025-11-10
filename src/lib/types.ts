@@ -428,4 +428,43 @@ export interface WeatherData {
     precipitation_probability: Array<number>
     weather_code: Array<number>
   }
+  daily?: {
+    time: Array<string>
+    weather_code: Array<number>
+    temperature_2m_max: Array<number>
+    temperature_2m_min: Array<number>
+    precipitation_probability_max: Array<number>
+  }
+}
+
+export interface DailyWeather {
+  date: string
+  weatherCode: number
+  maxTemp: number
+  minTemp: number
+  precipitationProbability: number
+}
+
+export interface PlaceResult {
+  id: number
+  name: string
+  latitude: number
+  longitude: number
+  country: string
+  admin1?: string
+  admin2?: string
+  timezone: string
+}
+
+export interface PlacesResponse {
+  results: Array<PlaceResult>
+}
+
+export interface SearchedLocationWeather {
+  location: PlaceResult
+  current: {
+    temperature_2m: number
+    apparent_temperature: number
+    weather_code: number
+  }
 }

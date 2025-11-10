@@ -1,5 +1,5 @@
-import { Card, CardContent } from '../ui/card'
 import type { WeatherData } from '@/lib/types'
+import { CarouselItem } from '@/components/ui/carousel'
 import {
   getTimeLabels,
   getWeatherDescription,
@@ -7,7 +7,11 @@ import {
 } from '@/lib/weather'
 import { cn } from '@/lib/utils'
 
-export function Weather({ weatherData }: { weatherData: WeatherData }) {
+export const CurrentWeather = ({
+  weatherData,
+}: {
+  weatherData: WeatherData
+}) => {
   const weatherCondition = getWeatherDescription(
     weatherData.current.weather_code,
   )
@@ -16,27 +20,31 @@ export function Weather({ weatherData }: { weatherData: WeatherData }) {
   const timeLabels = getTimeLabels()
 
   return (
-    <Card className="animate-fade-in">
-      <CardContent className="px-6">
-        <div className="text-center space-y-2 mb-6">
-          <div className="text-lg font-light">{weatherCondition}</div>
+    <CarouselItem>
+      <div className="space-y-6">
+        {/* Current Weather */}
+        <div className="text-center space-y-2">
+          <div className="font-light text-highlight">{weatherCondition}</div>
           <div className="text-base text-sm">Feels like {feelsLike}°C</div>
         </div>
 
+        {/* Weather Columns */}
         <div className="weather-columns flex justify-center mt-4">
           {columns.map((column, index) => (
             <div
               key={index}
               className={cn(
-                'weather-column relative flex items-center justify-end flex-col pt-1 w-1/12',
+                'weather-column relative flex items-center justify-end flex-col pt-1',
                 column.isCurrentColumn && 'weather-column-current',
               )}
               style={{ width: 'calc(100% / 12)' }}
             >
+              {/* Rain Effect */}
               {column.hasPrecipitation && (
                 <div className="weather-column-rain" />
               )}
 
+              {/* Temperature Value */}
               <div
                 className={cn(
                   'weather-column-value',
@@ -46,6 +54,7 @@ export function Weather({ weatherData }: { weatherData: WeatherData }) {
                 {Math.abs(column.temperature)}
               </div>
 
+              {/* Temperature Bar */}
               <div
                 className="weather-bar"
                 style={
@@ -55,13 +64,12 @@ export function Weather({ weatherData }: { weatherData: WeatherData }) {
                 }
               />
 
-              <div className="weather-column-time text-sm">
-                {timeLabels[index]}
-              </div>
+              {/* Time Label */}
+              <div className="weather-column-time">{timeLabels[index]}</div>
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </CarouselItem>
   )
 }
