@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import type { Memo, MoodType } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -10,6 +10,22 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { MOODS } from '@/lib/consts'
 import { useDeleteMemo } from '@/lib/hooks/useDeleteMemo'
 
+const groupMemosByDate = (newMemos: Array<Memo>) => {
+  if (!newMemos.length) return {}
+  return newMemos.reduce(
+    (groups, memo) => {
+      console.log(memo)
+      const date = memo.date
+      if (!groups[date]) {
+        groups[date] = []
+      }
+      groups[date].push(memo)
+      return groups
+    },
+    {} as Record<string, Array<Memo>>,
+  )
+}
+
 export const getMoodInfo = (moodType: MoodType) => {
   return MOODS.find((mood) => mood.type === moodType) || MOODS[4]
 }
@@ -18,14 +34,14 @@ export const Route = createFileRoute('/memos/')({
   loader: async () => {
     const { MemosService } = await import('@/lib/memos')
     const memos = await MemosService.getAllMemos()
-    return { memos }
+    return { groupedMemos: groupMemosByDate(memos), memos }
   },
   component: MemosPage,
 })
 
 function MemosPage() {
   const router = useRouter()
-  const { memos } = Route.useLoaderData()
+  const { memos, groupedMemos } = Route.useLoaderData()
   const { handleDeleteMemo } = useDeleteMemo()
 
   const createNewMemo = useCallback(() => {
@@ -35,18 +51,6 @@ function MemosPage() {
   const viewMemo = useCallback((memo: Memo) => {
     router.navigate({ to: `/memos/${memo.id}`, reloadDocument: true })
   }, [])
-
-  const groupMemosByDate = (newMemos: Array<Memo>) =>
-    newMemos.reduce(
-      (groups, memo) => {
-        const date = memo.date
-        groups[date].push(memo)
-        return groups
-      },
-      {} as Record<string, Array<Memo>>,
-    )
-
-  const groupedMemos = groupMemosByDate(memos)
 
   return (
     <div className="container mx-auto p-6">
