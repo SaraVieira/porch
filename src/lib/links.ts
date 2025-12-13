@@ -139,7 +139,7 @@ export const linkGroups = [
     links: [
       {
         title: 'Dashboard',
-        link: 'https://d.iamsaravieira.com',
+        link: 'https://dashboard.iamsaravieira.com',
         Icon: BsServer,
       },
       {

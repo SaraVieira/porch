@@ -23,7 +23,7 @@ const getCoolifyData = async () => {
   const data = { services: [], applications: [] }
   try {
     const services = await fetch(
-      'https://d.iamsaravieira.com/api/v1/services',
+      'https://dashboard.iamsaravieira.com/api/v1/services',
       {
         headers: {
           Authorization:
@@ -33,7 +33,7 @@ const getCoolifyData = async () => {
     ).then((rsp) => rsp.json())
     data.services = services
     const applications = await fetch(
-      'https://d.iamsaravieira.com/api/v1/applications',
+      'https://dashboard.iamsaravieira.com/api/v1/applications',
       {
         headers: {
           Authorization:
