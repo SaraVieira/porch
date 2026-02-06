@@ -1,12 +1,13 @@
-import { useRouter } from '@tanstack/react-router'
 import { X } from 'lucide-react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useQuery } from '@tanstack/react-query'
+import { createServerFn } from '@tanstack/react-start'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Item, ItemContent } from '../ui/item'
 import { Checkbox } from '../ui/checkbox'
-import type { RequiredFetcher } from '@tanstack/react-start'
+import { Skeleton } from '../ui/skeleton'
+import { get, post, put, deleteMethod } from '@/lib/utils'
 import type { CheckedState } from '@radix-ui/react-checkbox'
 
 type Todo = {
@@ -18,42 +19,36 @@ type Todo = {
   done_by: string | null
 }
 
-export function Todos({
-  todos,
-  createTodo,
-  toggleDoneTodo,
-  removeTodo,
-}: {
-  removeTodo: RequiredFetcher<
-    undefined,
-    (data: { id: string }) => {
-      id: string
-    },
-    Promise<any>
-  >
-  todos: Array<Todo>
-  toggleDoneTodo: RequiredFetcher<
-    undefined,
-    (data: { done: boolean; id: string }) => {
-      done: boolean
-      id: string
-    },
-    Promise<{
-      success: boolean
-    }>
-  >
-  createTodo: RequiredFetcher<
-    undefined,
-    (data: { title: string }) => {
-      title: string
-    },
-    Promise<{
-      success: boolean
-    }>
-  >
-}) {
-  const router = useRouter()
+const getTodos = createServerFn({
+  method: 'GET',
+}).handler(() => get('/api/todos'))
+
+const createTodo = createServerFn({
+  method: 'POST',
+})
+  .inputValidator((data: { title: string }) => data)
+  .handler(({ data }) => post('/api/todos', data))
+
+const toggleDoneTodo = createServerFn({
+  method: 'POST',
+})
+  .inputValidator((data: { done: boolean; id: string }) => data)
+  .handler(({ data }) => put(`/api/todos/${data.id}`, data))
+
+const removeTodo = createServerFn({
+  method: 'POST',
+})
+  .inputValidator((data: { id: string }) => data)
+  .handler(({ data }) => deleteMethod(`/api/todos/${data.id}`))
+
+export function Todos() {
   const queryClient = useQueryClient()
+
+  const { data: todos, isLoading } = useQuery<Array<Todo>>({
+    queryKey: ['todos'],
+    queryFn: () => getTodos(),
+  })
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
@@ -64,7 +59,6 @@ export function Todos({
     try {
       await createTodo({ data: { title } })
       queryClient.invalidateQueries({ queryKey: ['todos'] })
-      router.invalidate()
       ;(e.target as HTMLFormElement).reset()
     } catch (error) {
       console.error('Failed to create todo:', error)
@@ -81,6 +75,23 @@ export function Todos({
     queryClient.invalidateQueries({
       queryKey: ['todos'],
     })
+  }
+
+  if (isLoading || !todos) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Todos</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-10 w-full" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (

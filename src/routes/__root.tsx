@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   HeadContent,
   Scripts,
@@ -8,6 +9,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { createServerFn } from '@tanstack/react-start'
+import { Provider, useAtomValue } from 'jotai'
 import Header from '../components/Header'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
@@ -16,6 +18,7 @@ import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
 import { useAppSession } from '@/lib/hooks/useSession'
+import { borderAccentAtom, orangeAccentAtom } from '@/lib/atoms'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -76,6 +79,25 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   },
 })
 
+function AccentApplicator() {
+  const borderAccent = useAtomValue(borderAccentAtom)
+  const orangeAccent = useAtomValue(orangeAccentAtom)
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      '--color-border-accent',
+      borderAccent,
+    )
+    document.documentElement.style.setProperty(
+      '--color-orange-accent',
+      orangeAccent,
+    )
+    document.documentElement.style.setProperty('--orange-accent', orangeAccent)
+  }, [borderAccent, orangeAccent])
+
+  return null
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { user } = Route.useRouteContext()
   return (
@@ -84,9 +106,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-background text-highlight dark min-h-screen">
-        <Header user={user} />
-        <div className="container mx-auto my-8 h-full">{children}</div>
-        <Toaster />
+        <Provider>
+          <AccentApplicator />
+          <Header user={user} />
+          <div className="container mx-auto my-8 h-full">{children}</div>
+          <Toaster />
+        </Provider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',

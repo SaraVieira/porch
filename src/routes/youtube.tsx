@@ -52,7 +52,7 @@ function YouTubePage() {
             href={video.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="group rounded-lg border border-green-400 overflow-hidden hover:shadow-md transition-shadow bg-card"
+            className="group rounded-lg border border-border-accent overflow-hidden hover:shadow-md transition-shadow bg-card"
           >
             <div className="aspect-video relative overflow-hidden">
               <img

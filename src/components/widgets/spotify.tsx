@@ -7,15 +7,31 @@ import {
   SkipBack,
   SkipForward,
 } from 'lucide-react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createServerFn } from '@tanstack/react-start'
 import { millisecondsToSeconds } from 'date-fns'
 import clsx from 'clsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Progress } from '../ui/progress'
+import { Skeleton } from '../ui/skeleton'
 import { get } from '@/lib/utils'
 
-export function Spotify({ spotifyData }: { spotifyData: any }) {
+const getSpotify = createServerFn({
+  method: 'GET',
+}).handler(() =>
+  get('https://deskbuddy.deploy.iamsaravieira.com/spotify/status'),
+)
+
+export function Spotify() {
+  const queryClient = useQueryClient()
+
+  const { data: spotifyData, isLoading } = useQuery<any>({
+    queryKey: ['spotify-current-song'],
+    staleTime: 1000,
+    queryFn: () => getSpotify(),
+  })
+
   const nextMutation = useMutation({
     mutationFn: async () =>
       get('https://deskbuddy.deploy.iamsaravieira.com/spotify/next'),
@@ -32,10 +48,32 @@ export function Spotify({ spotifyData }: { spotifyData: any }) {
     mutationFn: async () =>
       get('https://deskbuddy.deploy.iamsaravieira.com/spotify/pause'),
   })
-  const [isPlaying, setIsPlaying] = useState(spotifyData?.is_playing || false)
-  const [currentTime] = useState(spotifyData.progress_ms || 0)
-  const [repeatMode] = useState(0) // 0: off, 1: all, 2: one
-  const queryClient = useQueryClient()
+
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [repeatMode] = useState(0)
+
+  if (isLoading || !spotifyData) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Spotify</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex gap-4">
+            <Skeleton className="w-16 h-16 rounded-lg shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
+              <Skeleton className="h-3 w-1/3" />
+            </div>
+          </div>
+          <Skeleton className="h-1 w-full" />
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const currentTime = spotifyData.progress_ms || 0
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -43,7 +81,6 @@ export function Spotify({ spotifyData }: { spotifyData: any }) {
     return `${mins}:${secs.toString().padStart(2, '0')}`
   }
 
-  // Calculate progress percentage
   const progressPercentage = (currentTime / spotifyData.duration_ms) * 100
 
   const handlePlayPause = async () => {

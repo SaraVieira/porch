@@ -85,6 +85,7 @@ body {
   --font-size-base: 1.3rem;
   --font-size-h5: 1.2rem;
   --font-size-h6: 1.1rem;
+  --color-border-accent: #4ade80;
 }
 
 @theme inline {
