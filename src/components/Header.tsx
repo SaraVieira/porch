@@ -2,6 +2,9 @@ import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { Settings, Check, LayoutGrid } from 'lucide-react'
 import { useAtom } from 'jotai'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { createServerFn } from '@tanstack/react-start'
+import { get, deleteMethod } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +19,15 @@ import {
 import { Checkbox } from './ui/checkbox'
 import { borderAccentAtom, orangeAccentAtom, widgetLayoutAtom } from '@/lib/atoms'
 import { widgetRegistry, allWidgetIds } from '@/lib/widgets'
+import { Button } from './ui/button'
+
+const getGoogleStatus = createServerFn({
+  method: 'GET',
+}).handler(() => get('/api/auth/google/status'))
+
+const disconnectGoogleFn = createServerFn({
+  method: 'POST',
+}).handler(() => deleteMethod('/api/auth/google/status'))
 
 const BORDER_COLORS = [
   { label: 'Green', value: '#4ade80' },
@@ -45,6 +57,11 @@ export default function Header({ user }: { user: { id: number } | null }) {
   const [borderAccent, setBorderAccent] = useAtom(borderAccentAtom)
   const [orangeAccent, setOrangeAccent] = useAtom(orangeAccentAtom)
   const [layout, setLayout] = useAtom(widgetLayoutAtom)
+  const queryClient = useQueryClient()
+  const { data: googleStatus } = useQuery<{ connected: boolean }>({
+    queryKey: ['google-status'],
+    queryFn: () => getGoogleStatus(),
+  })
 
   const visibleWidgets = new Set([
     ...layout.left,
@@ -272,6 +289,32 @@ export default function Header({ user }: { user: { id: number } | null }) {
                       </button>
                     ))}
                   </div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium mb-2">Google Account</p>
+                  {googleStatus?.connected ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-green-400">Connected</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={async () => {
+                          await disconnectGoogleFn()
+                          queryClient.invalidateQueries({
+                            queryKey: ['google-status'],
+                          })
+                        }}
+                      >
+                        Disconnect
+                      </Button>
+                    </div>
+                  ) : (
+                    <a href="/api/auth/google">
+                      <Button variant="outline" size="sm" className="w-full">
+                        Connect Google
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </div>
             </PopoverContent>

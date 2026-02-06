@@ -64,6 +64,27 @@
       "when": 1770392204939,
       "tag": "0008_fluffy_stepford_cuckoos",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1770394405884,
+      "tag": "0009_nasty_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1770400561679,
+      "tag": "0010_magenta_talos",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1770401320635,
+      "tag": "0011_lazy_deadpool",
+      "breakpoints": true
     }
   ]
 }

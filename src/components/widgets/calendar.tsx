@@ -3,6 +3,7 @@ import { formatDateRange } from 'little-date'
 
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { createServerFn } from '@tanstack/react-start'
 import { ScrollArea } from '../ui/scroll-area'
 import { Calendar as BaseCalendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -11,20 +12,36 @@ import { get } from '@/lib/utils'
 type Event = {
   allDay: boolean
   calendar_type: string
+  color: string
   confirmed: boolean
   duration: string
   end: string
   endTime: string
+  organizer: string | null
   start: string
   startTime: string
   summary: string
 }
 
+const getCalendarEvents = createServerFn({
+  method: 'GET',
+})
+  .inputValidator((data: { month: number; year: number }) => data)
+  .handler(({ data }) =>
+    get(`/api/calendar?month=${data.month}&year=${data.year}`),
+  )
+
 export function Calendar() {
   const [date, setDate] = useState<Date | undefined>(new Date())
   const { data } = useQuery({
-    queryKey: ['calendar'],
-    queryFn: () => get('https://deskbuddy.deploy.iamsaravieira.com/events/all'),
+    queryKey: ['calendar', date?.getMonth(), date?.getFullYear()],
+    queryFn: () =>
+      getCalendarEvents({
+        data: {
+          month: date?.getMonth() ?? new Date().getMonth(),
+          year: date?.getFullYear() ?? new Date().getFullYear(),
+        },
+      }),
   })
 
   return (
@@ -62,8 +79,12 @@ export function Calendar() {
                       event.start.toString() +
                       event.end.toString()
                     }
-                    className="bg-muted after:bg-primary/70 relative rounded-md p-2 pl-6 text-sm after:absolute after:inset-y-2 after:left-2 after:w-1 after:rounded-full w-full"
+                    className="bg-muted relative rounded-md p-2 pl-6 text-sm w-full"
                   >
+                    <span
+                      className="absolute inset-y-2 left-2 w-1 rounded-full"
+                      style={{ backgroundColor: event.color || 'var(--primary)' }}
+                    />
                     <div className="font-medium">{event.summary}</div>
                     <div className="text-muted-foreground text-xs">
                       {formatDateRange(
@@ -71,6 +92,11 @@ export function Calendar() {
                         new Date(event.end),
                       )}
                     </div>
+                    {event.organizer && (
+                      <div className="text-muted-foreground text-xs mt-0.5">
+                        {event.organizer}
+                      </div>
+                    )}
                   </div>
                 ))}
           </div>

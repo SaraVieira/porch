@@ -2,7 +2,7 @@ import { atomWithStorage } from 'jotai/utils'
 
 export const widgetLayoutAtom = atomWithStorage('widget-layout', {
   left: ['calendar'],
-  center: ['links', 'youtube', 'github', 'coolify'],
+  center: ['links', 'youtube', 'github', 'coolify', 'bookmarks'],
   right: ['weather', 'spotify', 'todos', 'habits', 'romm'],
 })
 

@@ -32,13 +32,20 @@ import { Route as ApiGithubIndexRouteImport } from './routes/api/github/index'
 import { Route as ApiGamesIndexRouteImport } from './routes/api/games/index'
 import { Route as ApiCountriesIndexRouteImport } from './routes/api/countries/index'
 import { Route as ApiConferencesIndexRouteImport } from './routes/api/conferences/index'
+import { Route as ApiCalendarIndexRouteImport } from './routes/api/calendar/index'
+import { Route as ApiBookmarksIndexRouteImport } from './routes/api/bookmarks/index'
+import { Route as ApiTodosSyncRouteImport } from './routes/api/todos/sync'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
 import { Route as ApiHabitsHabitIdRouteImport } from './routes/api/habits/$habitId'
 import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
 import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countries/$countryId'
 import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/conferences/$conferenceId'
+import { Route as ApiBookmarksBookmarkIdRouteImport } from './routes/api/bookmarks/$bookmarkId'
 import { Route as ApiHabitsCompletionsIndexRouteImport } from './routes/api/habits/completions/index'
+import { Route as ApiAuthGoogleIndexRouteImport } from './routes/api/auth/google/index'
+import { Route as ApiAuthGoogleStatusRouteImport } from './routes/api/auth/google/status'
+import { Route as ApiAuthGoogleCallbackRouteImport } from './routes/api/auth/google/callback'
 
 const YoutubeRoute = YoutubeRouteImport.update({
   id: '/youtube',
@@ -154,6 +161,21 @@ const ApiConferencesIndexRoute = ApiConferencesIndexRouteImport.update({
   path: '/api/conferences/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCalendarIndexRoute = ApiCalendarIndexRouteImport.update({
+  id: '/api/calendar/',
+  path: '/api/calendar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookmarksIndexRoute = ApiBookmarksIndexRouteImport.update({
+  id: '/api/bookmarks/',
+  path: '/api/bookmarks/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTodosSyncRoute = ApiTodosSyncRouteImport.update({
+  id: '/api/todos/sync',
+  path: '/api/todos/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   id: '/api/todos/$todoId',
   path: '/api/todos/$todoId',
@@ -185,12 +207,32 @@ const ApiConferencesConferenceIdRoute =
     path: '/api/conferences/$conferenceId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiBookmarksBookmarkIdRoute = ApiBookmarksBookmarkIdRouteImport.update({
+  id: '/api/bookmarks/$bookmarkId',
+  path: '/api/bookmarks/$bookmarkId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiHabitsCompletionsIndexRoute =
   ApiHabitsCompletionsIndexRouteImport.update({
     id: '/api/habits/completions/',
     path: '/api/habits/completions/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAuthGoogleIndexRoute = ApiAuthGoogleIndexRouteImport.update({
+  id: '/api/auth/google/',
+  path: '/api/auth/google/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthGoogleStatusRoute = ApiAuthGoogleStatusRouteImport.update({
+  id: '/api/auth/google/status',
+  path: '/api/auth/google/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthGoogleCallbackRoute = ApiAuthGoogleCallbackRouteImport.update({
+  id: '/api/auth/google/callback',
+  path: '/api/auth/google/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -207,12 +249,16 @@ export interface FileRoutesByFullPath {
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos': typeof MemosIndexRoute
+  '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos/sync': typeof ApiTodosSyncRoute
+  '/api/bookmarks': typeof ApiBookmarksIndexRoute
+  '/api/calendar': typeof ApiCalendarIndexRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
   '/api/games': typeof ApiGamesIndexRoute
@@ -221,6 +267,9 @@ export interface FileRoutesByFullPath {
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
+  '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
+  '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/google': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -238,12 +287,16 @@ export interface FileRoutesByTo {
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos': typeof MemosIndexRoute
+  '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos/sync': typeof ApiTodosSyncRoute
+  '/api/bookmarks': typeof ApiBookmarksIndexRoute
+  '/api/calendar': typeof ApiCalendarIndexRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
   '/api/games': typeof ApiGamesIndexRoute
@@ -252,6 +305,9 @@ export interface FileRoutesByTo {
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
+  '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
+  '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/google': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesById {
@@ -271,12 +327,16 @@ export interface FileRoutesById {
   '/memos/$memoId': typeof MemosMemoIdRoute
   '/memos/create': typeof MemosCreateRoute
   '/memos/': typeof MemosIndexRoute
+  '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
+  '/api/todos/sync': typeof ApiTodosSyncRoute
+  '/api/bookmarks/': typeof ApiBookmarksIndexRoute
+  '/api/calendar/': typeof ApiCalendarIndexRoute
   '/api/conferences/': typeof ApiConferencesIndexRoute
   '/api/countries/': typeof ApiCountriesIndexRoute
   '/api/games/': typeof ApiGamesIndexRoute
@@ -285,6 +345,9 @@ export interface FileRoutesById {
   '/api/memos/': typeof ApiMemosIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/youtube/': typeof ApiYoutubeIndexRoute
+  '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
+  '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/google/': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions/': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -304,12 +367,16 @@ export interface FileRouteTypes {
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos'
+    | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
+    | '/api/todos/sync'
+    | '/api/bookmarks'
+    | '/api/calendar'
     | '/api/conferences'
     | '/api/countries'
     | '/api/games'
@@ -318,6 +385,9 @@ export interface FileRouteTypes {
     | '/api/memos'
     | '/api/todos'
     | '/api/youtube'
+    | '/api/auth/google/callback'
+    | '/api/auth/google/status'
+    | '/api/auth/google'
     | '/api/habits/completions'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -335,12 +405,16 @@ export interface FileRouteTypes {
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos'
+    | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
+    | '/api/todos/sync'
+    | '/api/bookmarks'
+    | '/api/calendar'
     | '/api/conferences'
     | '/api/countries'
     | '/api/games'
@@ -349,6 +423,9 @@ export interface FileRouteTypes {
     | '/api/memos'
     | '/api/todos'
     | '/api/youtube'
+    | '/api/auth/google/callback'
+    | '/api/auth/google/status'
+    | '/api/auth/google'
     | '/api/habits/completions'
   id:
     | '__root__'
@@ -367,12 +444,16 @@ export interface FileRouteTypes {
     | '/memos/$memoId'
     | '/memos/create'
     | '/memos/'
+    | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
+    | '/api/todos/sync'
+    | '/api/bookmarks/'
+    | '/api/calendar/'
     | '/api/conferences/'
     | '/api/countries/'
     | '/api/games/'
@@ -381,6 +462,9 @@ export interface FileRouteTypes {
     | '/api/memos/'
     | '/api/todos/'
     | '/api/youtube/'
+    | '/api/auth/google/callback'
+    | '/api/auth/google/status'
+    | '/api/auth/google/'
     | '/api/habits/completions/'
   fileRoutesById: FileRoutesById
 }
@@ -400,12 +484,16 @@ export interface RootRouteChildren {
   MemosMemoIdRoute: typeof MemosMemoIdRoute
   MemosCreateRoute: typeof MemosCreateRoute
   MemosIndexRoute: typeof MemosIndexRoute
+  ApiBookmarksBookmarkIdRoute: typeof ApiBookmarksBookmarkIdRoute
   ApiConferencesConferenceIdRoute: typeof ApiConferencesConferenceIdRoute
   ApiCountriesCountryIdRoute: typeof ApiCountriesCountryIdRoute
   ApiGamesGameIdRoute: typeof ApiGamesGameIdRoute
   ApiHabitsHabitIdRoute: typeof ApiHabitsHabitIdRoute
   ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
+  ApiTodosSyncRoute: typeof ApiTodosSyncRoute
+  ApiBookmarksIndexRoute: typeof ApiBookmarksIndexRoute
+  ApiCalendarIndexRoute: typeof ApiCalendarIndexRoute
   ApiConferencesIndexRoute: typeof ApiConferencesIndexRoute
   ApiCountriesIndexRoute: typeof ApiCountriesIndexRoute
   ApiGamesIndexRoute: typeof ApiGamesIndexRoute
@@ -414,6 +502,9 @@ export interface RootRouteChildren {
   ApiMemosIndexRoute: typeof ApiMemosIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
   ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
+  ApiAuthGoogleCallbackRoute: typeof ApiAuthGoogleCallbackRoute
+  ApiAuthGoogleStatusRoute: typeof ApiAuthGoogleStatusRoute
+  ApiAuthGoogleIndexRoute: typeof ApiAuthGoogleIndexRoute
   ApiHabitsCompletionsIndexRoute: typeof ApiHabitsCompletionsIndexRoute
 }
 
@@ -580,6 +671,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiConferencesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/calendar/': {
+      id: '/api/calendar/'
+      path: '/api/calendar'
+      fullPath: '/api/calendar'
+      preLoaderRoute: typeof ApiCalendarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bookmarks/': {
+      id: '/api/bookmarks/'
+      path: '/api/bookmarks'
+      fullPath: '/api/bookmarks'
+      preLoaderRoute: typeof ApiBookmarksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/todos/sync': {
+      id: '/api/todos/sync'
+      path: '/api/todos/sync'
+      fullPath: '/api/todos/sync'
+      preLoaderRoute: typeof ApiTodosSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/todos/$todoId': {
       id: '/api/todos/$todoId'
       path: '/api/todos/$todoId'
@@ -622,11 +734,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiConferencesConferenceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/bookmarks/$bookmarkId': {
+      id: '/api/bookmarks/$bookmarkId'
+      path: '/api/bookmarks/$bookmarkId'
+      fullPath: '/api/bookmarks/$bookmarkId'
+      preLoaderRoute: typeof ApiBookmarksBookmarkIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/habits/completions/': {
       id: '/api/habits/completions/'
       path: '/api/habits/completions'
       fullPath: '/api/habits/completions'
       preLoaderRoute: typeof ApiHabitsCompletionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/google/': {
+      id: '/api/auth/google/'
+      path: '/api/auth/google'
+      fullPath: '/api/auth/google'
+      preLoaderRoute: typeof ApiAuthGoogleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/google/status': {
+      id: '/api/auth/google/status'
+      path: '/api/auth/google/status'
+      fullPath: '/api/auth/google/status'
+      preLoaderRoute: typeof ApiAuthGoogleStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/google/callback': {
+      id: '/api/auth/google/callback'
+      path: '/api/auth/google/callback'
+      fullPath: '/api/auth/google/callback'
+      preLoaderRoute: typeof ApiAuthGoogleCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -648,12 +788,16 @@ const rootRouteChildren: RootRouteChildren = {
   MemosMemoIdRoute: MemosMemoIdRoute,
   MemosCreateRoute: MemosCreateRoute,
   MemosIndexRoute: MemosIndexRoute,
+  ApiBookmarksBookmarkIdRoute: ApiBookmarksBookmarkIdRoute,
   ApiConferencesConferenceIdRoute: ApiConferencesConferenceIdRoute,
   ApiCountriesCountryIdRoute: ApiCountriesCountryIdRoute,
   ApiGamesGameIdRoute: ApiGamesGameIdRoute,
   ApiHabitsHabitIdRoute: ApiHabitsHabitIdRoute,
   ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
+  ApiTodosSyncRoute: ApiTodosSyncRoute,
+  ApiBookmarksIndexRoute: ApiBookmarksIndexRoute,
+  ApiCalendarIndexRoute: ApiCalendarIndexRoute,
   ApiConferencesIndexRoute: ApiConferencesIndexRoute,
   ApiCountriesIndexRoute: ApiCountriesIndexRoute,
   ApiGamesIndexRoute: ApiGamesIndexRoute,
@@ -662,6 +806,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiMemosIndexRoute: ApiMemosIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
   ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,
+  ApiAuthGoogleCallbackRoute: ApiAuthGoogleCallbackRoute,
+  ApiAuthGoogleStatusRoute: ApiAuthGoogleStatusRoute,
+  ApiAuthGoogleIndexRoute: ApiAuthGoogleIndexRoute,
   ApiHabitsCompletionsIndexRoute: ApiHabitsCompletionsIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -12,6 +12,9 @@ import {
 export const todos = pgTable('todos', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
+  notes: text('notes'),
+  dueDate: text('due_date'),
+  googleTaskId: text('google_task_id'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
   done: boolean().default(false).notNull(),
@@ -91,5 +94,24 @@ export const habitCompletions = pgTable('habit_completions', {
   id: serial('id').primaryKey(),
   habitId: integer('habit_id').notNull(),
   date: text('date').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+export const googleTokens = pgTable('google_tokens', {
+  id: serial('id').primaryKey(),
+  accessToken: text('access_token').notNull(),
+  refreshToken: text('refresh_token').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
+  scope: text('scope').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export const bookmarks = pgTable('bookmarks', {
+  id: serial('id').primaryKey(),
+  url: text('url').notNull(),
+  title: text('title').notNull(),
+  type: text('type').default('link').notNull(),
+  thumbnail: text('thumbnail'),
   createdAt: timestamp('created_at').defaultNow(),
 })
