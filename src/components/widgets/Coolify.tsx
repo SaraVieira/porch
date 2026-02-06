@@ -1,23 +1,21 @@
 import { useEffect, useState } from 'react'
+import { ArrowUpRight } from 'lucide-react'
+import clsx from 'clsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { CoolifyAPI } from '@/lib/types'
 import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemTitle,
 } from '../ui/item'
-import { Button } from '../ui/button'
-import { ArrowUpRight } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
-import clsx from 'clsx'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '../ui/accordion'
+import type { CoolifyAPI } from '@/lib/types'
 
 const getCoolifyData = async () => {
   const data = { services: [], applications: [] }
@@ -54,7 +52,9 @@ export const Coolify = () => {
     applications: [],
   })
   useEffect(() => {
-    getCoolifyData().then(setCoolifyData)
+    getCoolifyData().then((data) => {
+      if (data) setCoolifyData(data)
+    })
   }, [])
 
   const getStatusEl = (status: string) => {
@@ -85,7 +85,7 @@ export const Coolify = () => {
         <CardTitle>Coolify</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <Accordion type="multiple" collapsible className="w-full">
+        <Accordion type="multiple" className="w-full">
           <AccordionItem value="applications">
             <AccordionTrigger>Applications</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-4 text-balance">

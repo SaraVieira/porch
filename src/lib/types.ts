@@ -468,3 +468,19 @@ export interface SearchedLocationWeather {
     weather_code: number
   }
 }
+
+export interface YouTubeVideo {
+  id: string
+  title: string
+  channelName: string
+  channelId: string
+  publishedAt: string
+  thumbnail: string
+  link: string
+}
+
+export interface YouTubeChannel {
+  id: string
+  title: string
+  url: string
+}

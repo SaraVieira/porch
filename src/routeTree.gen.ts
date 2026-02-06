@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as YoutubeRouteImport } from './routes/youtube'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as MatchesRouteImport } from './routes/matches'
@@ -22,6 +23,7 @@ import { Route as MemosMemoIdRouteImport } from './routes/memos/$memoId'
 import { Route as BooksGamesRouteImport } from './routes/books/games'
 import { Route as BooksCountriesRouteImport } from './routes/books/countries'
 import { Route as BooksConferencesRouteImport } from './routes/books/conferences'
+import { Route as ApiYoutubeIndexRouteImport } from './routes/api/youtube/index'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
 import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
 import { Route as ApiGamesIndexRouteImport } from './routes/api/games/index'
@@ -33,6 +35,11 @@ import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
 import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countries/$countryId'
 import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/conferences/$conferenceId'
 
+const YoutubeRoute = YoutubeRouteImport.update({
+  id: '/youtube',
+  path: '/youtube',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
   path: '/upload',
@@ -97,6 +104,11 @@ const BooksConferencesRoute = BooksConferencesRouteImport.update({
   path: '/books/conferences',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiYoutubeIndexRoute = ApiYoutubeIndexRouteImport.update({
+  id: '/api/youtube/',
+  path: '/api/youtube/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
   id: '/api/todos/',
   path: '/api/todos/',
@@ -156,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/matches': typeof MatchesRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
+  '/youtube': typeof YoutubeRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
@@ -172,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/api/games': typeof ApiGamesIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
+  '/api/youtube': typeof ApiYoutubeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -180,6 +194,7 @@ export interface FileRoutesByTo {
   '/matches': typeof MatchesRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
+  '/youtube': typeof YoutubeRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
@@ -196,6 +211,7 @@ export interface FileRoutesByTo {
   '/api/games': typeof ApiGamesIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
+  '/api/youtube': typeof ApiYoutubeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -206,6 +222,7 @@ export interface FileRoutesById {
   '/matches': typeof MatchesRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
+  '/youtube': typeof YoutubeRoute
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
@@ -222,6 +239,7 @@ export interface FileRoutesById {
   '/api/games/': typeof ApiGamesIndexRoute
   '/api/memos/': typeof ApiMemosIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
+  '/api/youtube/': typeof ApiYoutubeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -232,6 +250,7 @@ export interface FileRouteTypes {
     | '/matches'
     | '/signup'
     | '/upload'
+    | '/youtube'
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
@@ -248,6 +267,7 @@ export interface FileRouteTypes {
     | '/api/games'
     | '/api/memos'
     | '/api/todos'
+    | '/api/youtube'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -256,6 +276,7 @@ export interface FileRouteTypes {
     | '/matches'
     | '/signup'
     | '/upload'
+    | '/youtube'
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
@@ -272,6 +293,7 @@ export interface FileRouteTypes {
     | '/api/games'
     | '/api/memos'
     | '/api/todos'
+    | '/api/youtube'
   id:
     | '__root__'
     | '/'
@@ -281,6 +303,7 @@ export interface FileRouteTypes {
     | '/matches'
     | '/signup'
     | '/upload'
+    | '/youtube'
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
@@ -297,6 +320,7 @@ export interface FileRouteTypes {
     | '/api/games/'
     | '/api/memos/'
     | '/api/todos/'
+    | '/api/youtube/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -307,6 +331,7 @@ export interface RootRouteChildren {
   MatchesRoute: typeof MatchesRoute
   SignupRoute: typeof SignupRoute
   UploadRoute: typeof UploadRoute
+  YoutubeRoute: typeof YoutubeRoute
   BooksConferencesRoute: typeof BooksConferencesRoute
   BooksCountriesRoute: typeof BooksCountriesRoute
   BooksGamesRoute: typeof BooksGamesRoute
@@ -323,10 +348,18 @@ export interface RootRouteChildren {
   ApiGamesIndexRoute: typeof ApiGamesIndexRoute
   ApiMemosIndexRoute: typeof ApiMemosIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
+  ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/youtube': {
+      id: '/youtube'
+      path: '/youtube'
+      fullPath: '/youtube'
+      preLoaderRoute: typeof YoutubeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/upload': {
       id: '/upload'
       path: '/upload'
@@ -418,6 +451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BooksConferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/youtube/': {
+      id: '/api/youtube/'
+      path: '/api/youtube'
+      fullPath: '/api/youtube'
+      preLoaderRoute: typeof ApiYoutubeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/todos/': {
       id: '/api/todos/'
       path: '/api/todos'
@@ -499,6 +539,7 @@ const rootRouteChildren: RootRouteChildren = {
   MatchesRoute: MatchesRoute,
   SignupRoute: SignupRoute,
   UploadRoute: UploadRoute,
+  YoutubeRoute: YoutubeRoute,
   BooksConferencesRoute: BooksConferencesRoute,
   BooksCountriesRoute: BooksCountriesRoute,
   BooksGamesRoute: BooksGamesRoute,
@@ -515,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGamesIndexRoute: ApiGamesIndexRoute,
   ApiMemosIndexRoute: ApiMemosIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
+  ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

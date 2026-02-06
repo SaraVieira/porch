@@ -1,6 +1,4 @@
 import { desc, eq } from 'drizzle-orm'
-import { MoodType } from './types'
-import { MOODS } from './consts'
 import { memos } from '@/db/schema'
 import { db } from '@/db'
 

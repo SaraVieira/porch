@@ -33,8 +33,8 @@ export function Spotify({ spotifyData }: { spotifyData: any }) {
       get('https://deskbuddy.deploy.iamsaravieira.com/spotify/pause'),
   })
   const [isPlaying, setIsPlaying] = useState(spotifyData?.is_playing || false)
-  const [currentTime, setCurrentTime] = useState(spotifyData.progress_ms || 0)
-  const [repeatMode, setRepeatMode] = useState(0) // 0: off, 1: all, 2: one
+  const [currentTime] = useState(spotifyData.progress_ms || 0)
+  const [repeatMode] = useState(0) // 0: off, 1: all, 2: one
   const queryClient = useQueryClient()
 
   const formatTime = (seconds: number) => {

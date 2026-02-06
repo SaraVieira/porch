@@ -54,7 +54,7 @@ export const getWeatherIcon = (weatherCode: number): LucideIcon => {
     99: Zap,
   }
 
-  return iconMap[weatherCode] || Cloud
+  return iconMap[weatherCode] ?? Cloud
 }
 
 export const getWeatherIconColor = (weatherCode: number): string => {

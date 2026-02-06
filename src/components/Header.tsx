@@ -64,6 +64,18 @@ export default function Header({ user }: { user: { id: number } | null }) {
           >
             Memos
           </Link>
+          <Link
+            to="/youtube"
+            className={clsx(
+              location.pathname === '/youtube'
+                ? 'border-b-orange-accent'
+                : 'border-b-transparent ',
+              'border-b-2 h-full block nav-item nav-item-current pb-2',
+            )}
+            aria-current="page"
+          >
+            YouTube
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div

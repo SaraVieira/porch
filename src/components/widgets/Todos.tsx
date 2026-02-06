@@ -63,7 +63,7 @@ export function Todos({
 
     try {
       await createTodo({ data: { title } })
-      queryClient.invalidateQueries(['todos'])
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
       router.invalidate()
       ;(e.target as HTMLFormElement).reset()
     } catch (error) {
@@ -102,7 +102,7 @@ export function Todos({
                     <div className="flex items-center gap-2">
                       <Checkbox
                         onCheckedChange={(state) =>
-                          onChange({ state, id: todo.id })
+                          onChange({ state, id: todo.id.toString() })
                         }
                         checked={todo.done}
                       ></Checkbox>
@@ -114,7 +114,7 @@ export function Todos({
                       className="w-auto"
                       onClick={() => {
                         removeTodo({ data: { id: todo.id.toString() } })
-                        queryClient.invalidateQueries(['todos'])
+                        queryClient.invalidateQueries({ queryKey: ['todos'] })
                       }}
                     >
                       <X className="w-4" />

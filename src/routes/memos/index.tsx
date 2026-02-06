@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { Plus } from 'lucide-react'
 import type { Memo, MoodType } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -12,17 +12,17 @@ import { useDeleteMemo } from '@/lib/hooks/useDeleteMemo'
 
 const groupMemosByDate = (newMemos: Array<Memo>) => {
   if (!newMemos.length) return {}
-  return newMemos.reduce(
+  return newMemos.reduce<Record<string, Array<Memo>>>(
     (groups, memo) => {
-      console.log(memo)
       const date = memo.date
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!groups[date]) {
         groups[date] = []
       }
       groups[date].push(memo)
       return groups
     },
-    {} as Record<string, Array<Memo>>,
+    {},
   )
 }
 
