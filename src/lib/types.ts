@@ -469,6 +469,27 @@ export interface SearchedLocationWeather {
   }
 }
 
+export interface GitHubContributionDay {
+  date: string
+  contributionCount: number
+  contributionLevel: string
+  color: string
+}
+
+export interface GitHubContributionWeek {
+  contributionDays: Array<GitHubContributionDay>
+}
+
+export interface GitHubContributionsData {
+  totalContributions: number
+  weeks: Array<GitHubContributionWeek>
+  currentStreak: number
+  longestStreak: number
+  todayCount: number
+  thisWeekCount: number
+  thisMonthCount: number
+}
+
 export interface YouTubeVideo {
   id: string
   title: string
@@ -483,4 +504,32 @@ export interface YouTubeChannel {
   id: string
   title: string
   url: string
+}
+
+export interface Habit {
+  id: number
+  name: string
+  emoji: string | null
+  color: string | null
+  createdAt: Date | null
+}
+
+export interface HabitCompletion {
+  id: number
+  habitId: number
+  date: string
+  createdAt: Date | null
+}
+
+export interface HabitWithStats {
+  id: number
+  name: string
+  emoji: string | null
+  color: string | null
+  createdAt: Date | null
+  completions: Array<string>
+  currentStreak: number
+  longestStreak: number
+  completionRate: number
+  completedToday: boolean
 }

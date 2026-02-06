@@ -78,3 +78,18 @@ export const user = pgTable('user', {
   id: serial('id').primaryKey(),
   password: text('password').notNull(),
 })
+
+export const habits = pgTable('habits', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  emoji: text('emoji').default(''),
+  color: text('color').default('#8b5cf6'),
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+export const habitCompletions = pgTable('habit_completions', {
+  id: serial('id').primaryKey(),
+  habitId: integer('habit_id').notNull(),
+  date: text('date').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+})

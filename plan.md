@@ -11,17 +11,6 @@ Simple daily check-in habits (exercise, reading, etc.) that show streaks. Pairs 
 ### GitHub Activity
 Show recent commits/contributions pulled from the GitHub API.
 
-## New "Books" Entries
-
-### Movies / TV Shows
-Track movies and shows with ratings. Already linking to Netflix/Disney+ in the links section and have Romm for ROMs — this is a natural extension.
-
-### Books (Actual Books)
-A reading tracker with ratings. The section is literally called "The Books" so this fits perfectly.
-
-### Concerts / Events
-Similar to the conferences tracker but for personal events attended — concerts, meetups, etc.
-
 ## Quality of Life
 
 ### Notes / Snippets

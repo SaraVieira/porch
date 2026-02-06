@@ -10,7 +10,12 @@
       "mcp__chrome-devtools__take_screenshot",
       "Bash(pnpm add:*)",
       "Bash(npx tsc:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(pnpm build:*)",
+      "Bash(ls:*)",
+      "Bash(xargs:*)",
+      "Bash(pnpm db:generate:*)",
+      "Bash(pnpm db:migrate:*)"
     ]
   }
 }

@@ -15,6 +15,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as MatchesRouteImport } from './routes/matches'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HabitsRouteImport } from './routes/habits'
 import { Route as _authedRouteImport } from './routes/__authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MemosIndexRouteImport } from './routes/memos/index'
@@ -26,14 +27,18 @@ import { Route as BooksConferencesRouteImport } from './routes/books/conferences
 import { Route as ApiYoutubeIndexRouteImport } from './routes/api/youtube/index'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
 import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
+import { Route as ApiHabitsIndexRouteImport } from './routes/api/habits/index'
+import { Route as ApiGithubIndexRouteImport } from './routes/api/github/index'
 import { Route as ApiGamesIndexRouteImport } from './routes/api/games/index'
 import { Route as ApiCountriesIndexRouteImport } from './routes/api/countries/index'
 import { Route as ApiConferencesIndexRouteImport } from './routes/api/conferences/index'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
 import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
+import { Route as ApiHabitsHabitIdRouteImport } from './routes/api/habits/$habitId'
 import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
 import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countries/$countryId'
 import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/conferences/$conferenceId'
+import { Route as ApiHabitsCompletionsIndexRouteImport } from './routes/api/habits/completions/index'
 
 const YoutubeRoute = YoutubeRouteImport.update({
   id: '/youtube',
@@ -63,6 +68,11 @@ const LogoutRoute = LogoutRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HabitsRoute = HabitsRouteImport.update({
+  id: '/habits',
+  path: '/habits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const _authedRoute = _authedRouteImport.update({
@@ -119,6 +129,16 @@ const ApiMemosIndexRoute = ApiMemosIndexRouteImport.update({
   path: '/api/memos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHabitsIndexRoute = ApiHabitsIndexRouteImport.update({
+  id: '/api/habits/',
+  path: '/api/habits/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGithubIndexRoute = ApiGithubIndexRouteImport.update({
+  id: '/api/github/',
+  path: '/api/github/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGamesIndexRoute = ApiGamesIndexRouteImport.update({
   id: '/api/games/',
   path: '/api/games/',
@@ -144,6 +164,11 @@ const ApiMemosMemoIdRoute = ApiMemosMemoIdRouteImport.update({
   path: '/api/memos/$memoId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHabitsHabitIdRoute = ApiHabitsHabitIdRouteImport.update({
+  id: '/api/habits/$habitId',
+  path: '/api/habits/$habitId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGamesGameIdRoute = ApiGamesGameIdRouteImport.update({
   id: '/api/games/$gameId',
   path: '/api/games/$gameId',
@@ -160,9 +185,16 @@ const ApiConferencesConferenceIdRoute =
     path: '/api/conferences/$conferenceId',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiHabitsCompletionsIndexRoute =
+  ApiHabitsCompletionsIndexRouteImport.update({
+    id: '/api/habits/completions/',
+    path: '/api/habits/completions/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/habits': typeof HabitsRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
@@ -178,17 +210,22 @@ export interface FileRoutesByFullPath {
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
+  '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
   '/api/games': typeof ApiGamesIndexRoute
+  '/api/github': typeof ApiGithubIndexRoute
+  '/api/habits': typeof ApiHabitsIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
+  '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/habits': typeof HabitsRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
@@ -204,19 +241,24 @@ export interface FileRoutesByTo {
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
+  '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences': typeof ApiConferencesIndexRoute
   '/api/countries': typeof ApiCountriesIndexRoute
   '/api/games': typeof ApiGamesIndexRoute
+  '/api/github': typeof ApiGithubIndexRoute
+  '/api/habits': typeof ApiHabitsIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
+  '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/__authed': typeof _authedRoute
+  '/habits': typeof HabitsRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
@@ -232,19 +274,24 @@ export interface FileRoutesById {
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
+  '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/conferences/': typeof ApiConferencesIndexRoute
   '/api/countries/': typeof ApiCountriesIndexRoute
   '/api/games/': typeof ApiGamesIndexRoute
+  '/api/github/': typeof ApiGithubIndexRoute
+  '/api/habits/': typeof ApiHabitsIndexRoute
   '/api/memos/': typeof ApiMemosIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/youtube/': typeof ApiYoutubeIndexRoute
+  '/api/habits/completions/': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/habits'
     | '/login'
     | '/logout'
     | '/matches'
@@ -260,17 +307,22 @@ export interface FileRouteTypes {
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
+    | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences'
     | '/api/countries'
     | '/api/games'
+    | '/api/github'
+    | '/api/habits'
     | '/api/memos'
     | '/api/todos'
     | '/api/youtube'
+    | '/api/habits/completions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/habits'
     | '/login'
     | '/logout'
     | '/matches'
@@ -286,18 +338,23 @@ export interface FileRouteTypes {
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
+    | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences'
     | '/api/countries'
     | '/api/games'
+    | '/api/github'
+    | '/api/habits'
     | '/api/memos'
     | '/api/todos'
     | '/api/youtube'
+    | '/api/habits/completions'
   id:
     | '__root__'
     | '/'
     | '/__authed'
+    | '/habits'
     | '/login'
     | '/logout'
     | '/matches'
@@ -313,19 +370,24 @@ export interface FileRouteTypes {
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
+    | '/api/habits/$habitId'
     | '/api/memos/$memoId'
     | '/api/todos/$todoId'
     | '/api/conferences/'
     | '/api/countries/'
     | '/api/games/'
+    | '/api/github/'
+    | '/api/habits/'
     | '/api/memos/'
     | '/api/todos/'
     | '/api/youtube/'
+    | '/api/habits/completions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   _authedRoute: typeof _authedRoute
+  HabitsRoute: typeof HabitsRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   MatchesRoute: typeof MatchesRoute
@@ -341,14 +403,18 @@ export interface RootRouteChildren {
   ApiConferencesConferenceIdRoute: typeof ApiConferencesConferenceIdRoute
   ApiCountriesCountryIdRoute: typeof ApiCountriesCountryIdRoute
   ApiGamesGameIdRoute: typeof ApiGamesGameIdRoute
+  ApiHabitsHabitIdRoute: typeof ApiHabitsHabitIdRoute
   ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
   ApiConferencesIndexRoute: typeof ApiConferencesIndexRoute
   ApiCountriesIndexRoute: typeof ApiCountriesIndexRoute
   ApiGamesIndexRoute: typeof ApiGamesIndexRoute
+  ApiGithubIndexRoute: typeof ApiGithubIndexRoute
+  ApiHabitsIndexRoute: typeof ApiHabitsIndexRoute
   ApiMemosIndexRoute: typeof ApiMemosIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
   ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
+  ApiHabitsCompletionsIndexRoute: typeof ApiHabitsCompletionsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -393,6 +459,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/habits': {
+      id: '/habits'
+      path: '/habits'
+      fullPath: '/habits'
+      preLoaderRoute: typeof HabitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/__authed': {
@@ -472,6 +545,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/habits/': {
+      id: '/api/habits/'
+      path: '/api/habits'
+      fullPath: '/api/habits'
+      preLoaderRoute: typeof ApiHabitsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/github/': {
+      id: '/api/github/'
+      path: '/api/github'
+      fullPath: '/api/github'
+      preLoaderRoute: typeof ApiGithubIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/games/': {
       id: '/api/games/'
       path: '/api/games'
@@ -507,6 +594,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMemosMemoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/habits/$habitId': {
+      id: '/api/habits/$habitId'
+      path: '/api/habits/$habitId'
+      fullPath: '/api/habits/$habitId'
+      preLoaderRoute: typeof ApiHabitsHabitIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/games/$gameId': {
       id: '/api/games/$gameId'
       path: '/api/games/$gameId'
@@ -528,12 +622,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiConferencesConferenceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/habits/completions/': {
+      id: '/api/habits/completions/'
+      path: '/api/habits/completions'
+      fullPath: '/api/habits/completions'
+      preLoaderRoute: typeof ApiHabitsCompletionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   _authedRoute: _authedRoute,
+  HabitsRoute: HabitsRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   MatchesRoute: MatchesRoute,
@@ -549,14 +651,18 @@ const rootRouteChildren: RootRouteChildren = {
   ApiConferencesConferenceIdRoute: ApiConferencesConferenceIdRoute,
   ApiCountriesCountryIdRoute: ApiCountriesCountryIdRoute,
   ApiGamesGameIdRoute: ApiGamesGameIdRoute,
+  ApiHabitsHabitIdRoute: ApiHabitsHabitIdRoute,
   ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
   ApiConferencesIndexRoute: ApiConferencesIndexRoute,
   ApiCountriesIndexRoute: ApiCountriesIndexRoute,
   ApiGamesIndexRoute: ApiGamesIndexRoute,
+  ApiGithubIndexRoute: ApiGithubIndexRoute,
+  ApiHabitsIndexRoute: ApiHabitsIndexRoute,
   ApiMemosIndexRoute: ApiMemosIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
   ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,
+  ApiHabitsCompletionsIndexRoute: ApiHabitsCompletionsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -7,8 +7,10 @@ import { Todos } from '@/components/widgets/Todos'
 import { deleteMethod, get, post, put } from '@/lib/utils'
 import { Spotify } from '@/components/widgets/spotify'
 import { Romm } from '@/components/widgets/romm'
+import { Habits } from '@/components/widgets/Habits'
 import { Coolify } from '@/components/widgets/Coolify'
 import { YouTube } from '@/components/widgets/YouTube'
+import { GitHub } from '@/components/widgets/GitHub'
 import { Weather } from '@/components/widgets/Widget'
 
 const getTodos = createServerFn({
@@ -92,6 +94,7 @@ function App() {
       <div className="md:col-span-2 gap-4 flex flex-col">
         <Links />
         <YouTube />
+        <GitHub />
         <Coolify />
       </div>
       <div className="col-span-1 gap-4 flex flex-col">
@@ -103,6 +106,7 @@ function App() {
           createTodo={createTodo}
           toggleDoneTodo={toggleDoneTodo}
         />
+        <Habits />
         <Romm />
       </div>
     </div>
