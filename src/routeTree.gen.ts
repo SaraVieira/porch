@@ -38,6 +38,13 @@ import { Route as ApiCalendarIndexRouteImport } from './routes/api/calendar/inde
 import { Route as ApiBookmarksIndexRouteImport } from './routes/api/bookmarks/index'
 import { Route as ApiTodosSyncRouteImport } from './routes/api/todos/sync'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
+import { Route as ApiSpotifyStatusRouteImport } from './routes/api/spotify/status'
+import { Route as ApiSpotifyShuffleRouteImport } from './routes/api/spotify/shuffle'
+import { Route as ApiSpotifyRepeatRouteImport } from './routes/api/spotify/repeat'
+import { Route as ApiSpotifyPrevRouteImport } from './routes/api/spotify/prev'
+import { Route as ApiSpotifyPlayRouteImport } from './routes/api/spotify/play'
+import { Route as ApiSpotifyPauseRouteImport } from './routes/api/spotify/pause'
+import { Route as ApiSpotifyNextRouteImport } from './routes/api/spotify/next'
 import { Route as ApiRssRefreshRouteImport } from './routes/api/rss/refresh'
 import { Route as ApiRssFeedsRouteImport } from './routes/api/rss/feeds'
 import { Route as ApiRssCategoriesRouteImport } from './routes/api/rss/categories'
@@ -49,8 +56,11 @@ import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countrie
 import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/conferences/$conferenceId'
 import { Route as ApiBookmarksBookmarkIdRouteImport } from './routes/api/bookmarks/$bookmarkId'
 import { Route as ApiHabitsCompletionsIndexRouteImport } from './routes/api/habits/completions/index'
+import { Route as ApiAuthSpotifyIndexRouteImport } from './routes/api/auth/spotify/index'
 import { Route as ApiAuthGoogleIndexRouteImport } from './routes/api/auth/google/index'
 import { Route as ApiRssArticlesArticleIdRouteImport } from './routes/api/rss/articles/$articleId'
+import { Route as ApiAuthSpotifyStatusRouteImport } from './routes/api/auth/spotify/status'
+import { Route as ApiAuthSpotifyCallbackRouteImport } from './routes/api/auth/spotify/callback'
 import { Route as ApiAuthGoogleStatusRouteImport } from './routes/api/auth/google/status'
 import { Route as ApiAuthGoogleCallbackRouteImport } from './routes/api/auth/google/callback'
 
@@ -198,6 +208,41 @@ const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   path: '/api/todos/$todoId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSpotifyStatusRoute = ApiSpotifyStatusRouteImport.update({
+  id: '/api/spotify/status',
+  path: '/api/spotify/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyShuffleRoute = ApiSpotifyShuffleRouteImport.update({
+  id: '/api/spotify/shuffle',
+  path: '/api/spotify/shuffle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyRepeatRoute = ApiSpotifyRepeatRouteImport.update({
+  id: '/api/spotify/repeat',
+  path: '/api/spotify/repeat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyPrevRoute = ApiSpotifyPrevRouteImport.update({
+  id: '/api/spotify/prev',
+  path: '/api/spotify/prev',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyPlayRoute = ApiSpotifyPlayRouteImport.update({
+  id: '/api/spotify/play',
+  path: '/api/spotify/play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyPauseRoute = ApiSpotifyPauseRouteImport.update({
+  id: '/api/spotify/pause',
+  path: '/api/spotify/pause',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpotifyNextRoute = ApiSpotifyNextRouteImport.update({
+  id: '/api/spotify/next',
+  path: '/api/spotify/next',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiRssRefreshRoute = ApiRssRefreshRouteImport.update({
   id: '/api/rss/refresh',
   path: '/api/rss/refresh',
@@ -255,6 +300,11 @@ const ApiHabitsCompletionsIndexRoute =
     path: '/api/habits/completions/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAuthSpotifyIndexRoute = ApiAuthSpotifyIndexRouteImport.update({
+  id: '/api/auth/spotify/',
+  path: '/api/auth/spotify/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleIndexRoute = ApiAuthGoogleIndexRouteImport.update({
   id: '/api/auth/google/',
   path: '/api/auth/google/',
@@ -263,6 +313,16 @@ const ApiAuthGoogleIndexRoute = ApiAuthGoogleIndexRouteImport.update({
 const ApiRssArticlesArticleIdRoute = ApiRssArticlesArticleIdRouteImport.update({
   id: '/api/rss/articles/$articleId',
   path: '/api/rss/articles/$articleId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSpotifyStatusRoute = ApiAuthSpotifyStatusRouteImport.update({
+  id: '/api/auth/spotify/status',
+  path: '/api/auth/spotify/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSpotifyCallbackRoute = ApiAuthSpotifyCallbackRouteImport.update({
+  id: '/api/auth/spotify/callback',
+  path: '/api/auth/spotify/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthGoogleStatusRoute = ApiAuthGoogleStatusRouteImport.update({
@@ -302,6 +362,13 @@ export interface FileRoutesByFullPath {
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
   '/api/rss/refresh': typeof ApiRssRefreshRoute
+  '/api/spotify/next': typeof ApiSpotifyNextRoute
+  '/api/spotify/pause': typeof ApiSpotifyPauseRoute
+  '/api/spotify/play': typeof ApiSpotifyPlayRoute
+  '/api/spotify/prev': typeof ApiSpotifyPrevRoute
+  '/api/spotify/repeat': typeof ApiSpotifyRepeatRoute
+  '/api/spotify/shuffle': typeof ApiSpotifyShuffleRoute
+  '/api/spotify/status': typeof ApiSpotifyStatusRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks': typeof ApiBookmarksIndexRoute
@@ -317,8 +384,11 @@ export interface FileRoutesByFullPath {
   '/api/youtube': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/spotify/callback': typeof ApiAuthSpotifyCallbackRoute
+  '/api/auth/spotify/status': typeof ApiAuthSpotifyStatusRoute
   '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google': typeof ApiAuthGoogleIndexRoute
+  '/api/auth/spotify': typeof ApiAuthSpotifyIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -347,6 +417,13 @@ export interface FileRoutesByTo {
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
   '/api/rss/refresh': typeof ApiRssRefreshRoute
+  '/api/spotify/next': typeof ApiSpotifyNextRoute
+  '/api/spotify/pause': typeof ApiSpotifyPauseRoute
+  '/api/spotify/play': typeof ApiSpotifyPlayRoute
+  '/api/spotify/prev': typeof ApiSpotifyPrevRoute
+  '/api/spotify/repeat': typeof ApiSpotifyRepeatRoute
+  '/api/spotify/shuffle': typeof ApiSpotifyShuffleRoute
+  '/api/spotify/status': typeof ApiSpotifyStatusRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks': typeof ApiBookmarksIndexRoute
@@ -362,8 +439,11 @@ export interface FileRoutesByTo {
   '/api/youtube': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/spotify/callback': typeof ApiAuthSpotifyCallbackRoute
+  '/api/auth/spotify/status': typeof ApiAuthSpotifyStatusRoute
   '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google': typeof ApiAuthGoogleIndexRoute
+  '/api/auth/spotify': typeof ApiAuthSpotifyIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRoutesById {
@@ -394,6 +474,13 @@ export interface FileRoutesById {
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
   '/api/rss/refresh': typeof ApiRssRefreshRoute
+  '/api/spotify/next': typeof ApiSpotifyNextRoute
+  '/api/spotify/pause': typeof ApiSpotifyPauseRoute
+  '/api/spotify/play': typeof ApiSpotifyPlayRoute
+  '/api/spotify/prev': typeof ApiSpotifyPrevRoute
+  '/api/spotify/repeat': typeof ApiSpotifyRepeatRoute
+  '/api/spotify/shuffle': typeof ApiSpotifyShuffleRoute
+  '/api/spotify/status': typeof ApiSpotifyStatusRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks/': typeof ApiBookmarksIndexRoute
@@ -409,8 +496,11 @@ export interface FileRoutesById {
   '/api/youtube/': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/auth/spotify/callback': typeof ApiAuthSpotifyCallbackRoute
+  '/api/auth/spotify/status': typeof ApiAuthSpotifyStatusRoute
   '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google/': typeof ApiAuthGoogleIndexRoute
+  '/api/auth/spotify/': typeof ApiAuthSpotifyIndexRoute
   '/api/habits/completions/': typeof ApiHabitsCompletionsIndexRoute
 }
 export interface FileRouteTypes {
@@ -441,6 +531,13 @@ export interface FileRouteTypes {
     | '/api/rss/categories'
     | '/api/rss/feeds'
     | '/api/rss/refresh'
+    | '/api/spotify/next'
+    | '/api/spotify/pause'
+    | '/api/spotify/play'
+    | '/api/spotify/prev'
+    | '/api/spotify/repeat'
+    | '/api/spotify/shuffle'
+    | '/api/spotify/status'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks'
@@ -456,8 +553,11 @@ export interface FileRouteTypes {
     | '/api/youtube'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/auth/spotify/callback'
+    | '/api/auth/spotify/status'
     | '/api/rss/articles/$articleId'
     | '/api/auth/google'
+    | '/api/auth/spotify'
     | '/api/habits/completions'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -486,6 +586,13 @@ export interface FileRouteTypes {
     | '/api/rss/categories'
     | '/api/rss/feeds'
     | '/api/rss/refresh'
+    | '/api/spotify/next'
+    | '/api/spotify/pause'
+    | '/api/spotify/play'
+    | '/api/spotify/prev'
+    | '/api/spotify/repeat'
+    | '/api/spotify/shuffle'
+    | '/api/spotify/status'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks'
@@ -501,8 +608,11 @@ export interface FileRouteTypes {
     | '/api/youtube'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/auth/spotify/callback'
+    | '/api/auth/spotify/status'
     | '/api/rss/articles/$articleId'
     | '/api/auth/google'
+    | '/api/auth/spotify'
     | '/api/habits/completions'
   id:
     | '__root__'
@@ -532,6 +642,13 @@ export interface FileRouteTypes {
     | '/api/rss/categories'
     | '/api/rss/feeds'
     | '/api/rss/refresh'
+    | '/api/spotify/next'
+    | '/api/spotify/pause'
+    | '/api/spotify/play'
+    | '/api/spotify/prev'
+    | '/api/spotify/repeat'
+    | '/api/spotify/shuffle'
+    | '/api/spotify/status'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks/'
@@ -547,8 +664,11 @@ export interface FileRouteTypes {
     | '/api/youtube/'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/auth/spotify/callback'
+    | '/api/auth/spotify/status'
     | '/api/rss/articles/$articleId'
     | '/api/auth/google/'
+    | '/api/auth/spotify/'
     | '/api/habits/completions/'
   fileRoutesById: FileRoutesById
 }
@@ -579,6 +699,13 @@ export interface RootRouteChildren {
   ApiRssCategoriesRoute: typeof ApiRssCategoriesRoute
   ApiRssFeedsRoute: typeof ApiRssFeedsRoute
   ApiRssRefreshRoute: typeof ApiRssRefreshRoute
+  ApiSpotifyNextRoute: typeof ApiSpotifyNextRoute
+  ApiSpotifyPauseRoute: typeof ApiSpotifyPauseRoute
+  ApiSpotifyPlayRoute: typeof ApiSpotifyPlayRoute
+  ApiSpotifyPrevRoute: typeof ApiSpotifyPrevRoute
+  ApiSpotifyRepeatRoute: typeof ApiSpotifyRepeatRoute
+  ApiSpotifyShuffleRoute: typeof ApiSpotifyShuffleRoute
+  ApiSpotifyStatusRoute: typeof ApiSpotifyStatusRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
   ApiTodosSyncRoute: typeof ApiTodosSyncRoute
   ApiBookmarksIndexRoute: typeof ApiBookmarksIndexRoute
@@ -594,8 +721,11 @@ export interface RootRouteChildren {
   ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
   ApiAuthGoogleCallbackRoute: typeof ApiAuthGoogleCallbackRoute
   ApiAuthGoogleStatusRoute: typeof ApiAuthGoogleStatusRoute
+  ApiAuthSpotifyCallbackRoute: typeof ApiAuthSpotifyCallbackRoute
+  ApiAuthSpotifyStatusRoute: typeof ApiAuthSpotifyStatusRoute
   ApiRssArticlesArticleIdRoute: typeof ApiRssArticlesArticleIdRoute
   ApiAuthGoogleIndexRoute: typeof ApiAuthGoogleIndexRoute
+  ApiAuthSpotifyIndexRoute: typeof ApiAuthSpotifyIndexRoute
   ApiHabitsCompletionsIndexRoute: typeof ApiHabitsCompletionsIndexRoute
 }
 
@@ -804,6 +934,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosTodoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/spotify/status': {
+      id: '/api/spotify/status'
+      path: '/api/spotify/status'
+      fullPath: '/api/spotify/status'
+      preLoaderRoute: typeof ApiSpotifyStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/shuffle': {
+      id: '/api/spotify/shuffle'
+      path: '/api/spotify/shuffle'
+      fullPath: '/api/spotify/shuffle'
+      preLoaderRoute: typeof ApiSpotifyShuffleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/repeat': {
+      id: '/api/spotify/repeat'
+      path: '/api/spotify/repeat'
+      fullPath: '/api/spotify/repeat'
+      preLoaderRoute: typeof ApiSpotifyRepeatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/prev': {
+      id: '/api/spotify/prev'
+      path: '/api/spotify/prev'
+      fullPath: '/api/spotify/prev'
+      preLoaderRoute: typeof ApiSpotifyPrevRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/play': {
+      id: '/api/spotify/play'
+      path: '/api/spotify/play'
+      fullPath: '/api/spotify/play'
+      preLoaderRoute: typeof ApiSpotifyPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/pause': {
+      id: '/api/spotify/pause'
+      path: '/api/spotify/pause'
+      fullPath: '/api/spotify/pause'
+      preLoaderRoute: typeof ApiSpotifyPauseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/spotify/next': {
+      id: '/api/spotify/next'
+      path: '/api/spotify/next'
+      fullPath: '/api/spotify/next'
+      preLoaderRoute: typeof ApiSpotifyNextRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/rss/refresh': {
       id: '/api/rss/refresh'
       path: '/api/rss/refresh'
@@ -881,6 +1060,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHabitsCompletionsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/spotify/': {
+      id: '/api/auth/spotify/'
+      path: '/api/auth/spotify'
+      fullPath: '/api/auth/spotify'
+      preLoaderRoute: typeof ApiAuthSpotifyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google/': {
       id: '/api/auth/google/'
       path: '/api/auth/google'
@@ -893,6 +1079,20 @@ declare module '@tanstack/react-router' {
       path: '/api/rss/articles/$articleId'
       fullPath: '/api/rss/articles/$articleId'
       preLoaderRoute: typeof ApiRssArticlesArticleIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/spotify/status': {
+      id: '/api/auth/spotify/status'
+      path: '/api/auth/spotify/status'
+      fullPath: '/api/auth/spotify/status'
+      preLoaderRoute: typeof ApiAuthSpotifyStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/spotify/callback': {
+      id: '/api/auth/spotify/callback'
+      path: '/api/auth/spotify/callback'
+      fullPath: '/api/auth/spotify/callback'
+      preLoaderRoute: typeof ApiAuthSpotifyCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/google/status': {
@@ -939,6 +1139,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiRssCategoriesRoute: ApiRssCategoriesRoute,
   ApiRssFeedsRoute: ApiRssFeedsRoute,
   ApiRssRefreshRoute: ApiRssRefreshRoute,
+  ApiSpotifyNextRoute: ApiSpotifyNextRoute,
+  ApiSpotifyPauseRoute: ApiSpotifyPauseRoute,
+  ApiSpotifyPlayRoute: ApiSpotifyPlayRoute,
+  ApiSpotifyPrevRoute: ApiSpotifyPrevRoute,
+  ApiSpotifyRepeatRoute: ApiSpotifyRepeatRoute,
+  ApiSpotifyShuffleRoute: ApiSpotifyShuffleRoute,
+  ApiSpotifyStatusRoute: ApiSpotifyStatusRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
   ApiTodosSyncRoute: ApiTodosSyncRoute,
   ApiBookmarksIndexRoute: ApiBookmarksIndexRoute,
@@ -954,8 +1161,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,
   ApiAuthGoogleCallbackRoute: ApiAuthGoogleCallbackRoute,
   ApiAuthGoogleStatusRoute: ApiAuthGoogleStatusRoute,
+  ApiAuthSpotifyCallbackRoute: ApiAuthSpotifyCallbackRoute,
+  ApiAuthSpotifyStatusRoute: ApiAuthSpotifyStatusRoute,
   ApiRssArticlesArticleIdRoute: ApiRssArticlesArticleIdRoute,
   ApiAuthGoogleIndexRoute: ApiAuthGoogleIndexRoute,
+  ApiAuthSpotifyIndexRoute: ApiAuthSpotifyIndexRoute,
   ApiHabitsCompletionsIndexRoute: ApiHabitsCompletionsIndexRoute,
 }
 export const routeTree = rootRouteImport

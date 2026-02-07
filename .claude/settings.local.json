@@ -26,7 +26,11 @@
       "mcp__chrome-devtools__hover",
       "mcp__chrome-devtools__evaluate_script",
       "mcp__chrome-devtools__press_key",
-      "WebFetch(domain:www.embla-carousel.com)"
+      "WebFetch(domain:www.embla-carousel.com)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(git mv:*)",
+      "Bash(pnpm test:*)"
     ]
   }
 }

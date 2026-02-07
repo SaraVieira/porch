@@ -1,13 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { MemosService } from '@/lib/memos'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/memos/')({
   server: {

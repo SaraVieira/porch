@@ -39,7 +39,7 @@ query($username: String!) {
 }
 `
 
-function computeStreaks(
+export function computeStreaks(
   days: Array<GitHubContributionDay>,
 ): { currentStreak: number; longestStreak: number } {
   let currentStreak = 0
@@ -80,7 +80,7 @@ function computeStreaks(
   return { currentStreak, longestStreak }
 }
 
-function computeStats(
+export function computeStats(
   weeks: Array<GitHubContributionWeek>,
 ): { todayCount: number; thisWeekCount: number; thisMonthCount: number } {
   const today = new Date().toISOString().split('T')[0]

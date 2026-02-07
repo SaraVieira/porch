@@ -2,19 +2,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { desc } from 'drizzle-orm'
 import { bookmarks as bookmarksSchema } from '@/db/schema'
 import { db } from '@/db'
+import { json as jsonResponse } from '@/lib/api'
 
 const corsHeaders = {
-  'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
 const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: corsHeaders,
-  })
+  jsonResponse(data, { ...options, headers: corsHeaders })
 
 export const Route = createFileRoute('/api/bookmarks/')({
   server: {

@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { isGoogleConnected, disconnectGoogle } from '@/lib/google'
+import { isSpotifyConnected, disconnectSpotify } from '@/lib/spotify'
 import { json } from '@/lib/api'
 
-export const Route = createFileRoute('/api/auth/google/status')({
+export const Route = createFileRoute('/api/auth/spotify/status')({
   server: {
     handlers: {
       GET: GET,
@@ -13,20 +13,20 @@ export const Route = createFileRoute('/api/auth/google/status')({
 
 export async function GET() {
   try {
-    const connected = await isGoogleConnected()
+    const connected = await isSpotifyConnected()
     return json({ connected })
   } catch (error) {
-    console.error('Error checking Google status:', error)
+    console.error('Error checking Spotify status:', error)
     return json({ connected: false })
   }
 }
 
 export async function DELETE() {
   try {
-    await disconnectGoogle()
+    await disconnectSpotify()
     return json({ success: true })
   } catch (error) {
-    console.error('Error disconnecting Google:', error)
+    console.error('Error disconnecting Spotify:', error)
     return json({ error: 'Failed to disconnect' }, { status: 500 })
   }
 }

@@ -3,14 +3,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { rssArticles } from '@/db/schema'
 import { removeArticleFromCache } from '@/lib/rss'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/rss/articles/$articleId')({
   server: {

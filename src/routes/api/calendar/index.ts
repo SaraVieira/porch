@@ -1,11 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { googleFetch, isGoogleConnected } from '@/lib/google'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: { 'Content-Type': 'application/json' },
-  })
+import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/calendar/')({
   server: {

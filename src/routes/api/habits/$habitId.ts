@@ -2,14 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { eq } from 'drizzle-orm'
 import { habits as habitsSchema, habitCompletions } from '@/db/schema'
 import { db } from '@/db'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/habits/$habitId')({
   server: {

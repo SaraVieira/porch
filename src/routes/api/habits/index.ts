@@ -4,14 +4,7 @@ import { habits as habitsSchema, habitCompletions } from '@/db/schema'
 import { db } from '@/db'
 import { format, subDays, differenceInCalendarDays, parseISO } from 'date-fns'
 import type { HabitWithStats } from '@/lib/types'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/habits/')({
   server: {

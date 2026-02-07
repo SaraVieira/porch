@@ -107,6 +107,16 @@ export const googleTokens = pgTable('google_tokens', {
   updatedAt: timestamp('updated_at').defaultNow(),
 })
 
+export const spotifyTokens = pgTable('spotify_tokens', {
+  id: serial('id').primaryKey(),
+  accessToken: text('access_token').notNull(),
+  refreshToken: text('refresh_token').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
+  scope: text('scope').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
 export const bookmarks = pgTable('bookmarks', {
   id: serial('id').primaryKey(),
   url: text('url').notNull(),

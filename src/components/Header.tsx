@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import clsx from 'clsx'
 import { Settings, Check, LayoutGrid } from 'lucide-react'
+import { NavLink } from './NavLink'
 import { useAtom } from 'jotai'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
@@ -28,6 +29,14 @@ const getGoogleStatus = createServerFn({
 const disconnectGoogleFn = createServerFn({
   method: 'POST',
 }).handler(() => deleteMethod('/api/auth/google/status'))
+
+const getSpotifyStatus = createServerFn({
+  method: 'GET',
+}).handler(() => get('/api/auth/spotify/status'))
+
+const disconnectSpotifyFn = createServerFn({
+  method: 'POST',
+}).handler(() => deleteMethod('/api/auth/spotify/status'))
 
 const BORDER_COLORS = [
   { label: 'Green', value: '#4ade80' },
@@ -62,6 +71,10 @@ export default function Header({ user }: { user: { id: number } | null }) {
     queryKey: ['google-status'],
     queryFn: () => getGoogleStatus(),
   })
+  const { data: spotifyStatus } = useQuery<{ connected: boolean }>({
+    queryKey: ['spotify-status'],
+    queryFn: () => getSpotifyStatus(),
+  })
 
   const visibleWidgets = new Set([
     ...layout.left,
@@ -90,90 +103,13 @@ export default function Header({ user }: { user: { id: number } | null }) {
     <div className="mt-4 pt-4 text-highlight container mx-auto rounded border-widget-content-border">
       <div className="header flex padding-inline-widget widget-content-frame justify-between">
         <nav className="overflow-auto min-w-0 gap-8 h-full flex grow hide-scrollbars">
-          <Link
-            to="/"
-            className={clsx(
-              location.pathname === '/'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            Home
-          </Link>
-          <Link
-            to="/matches"
-            className={clsx(
-              location.pathname === '/matches'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            Matches
-          </Link>
-          <Link
-            to="/upload"
-            className={clsx(
-              location.pathname === '/upload'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            Upload
-          </Link>
-          <Link
-            to="/memos"
-            className={clsx(
-              location.pathname === '/memos'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            Memos
-          </Link>
-          <Link
-            to="/habits"
-            className={clsx(
-              location.pathname === '/habits'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            Habits
-          </Link>
-          <Link
-            to="/youtube"
-            className={clsx(
-              location.pathname === '/youtube'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            YouTube
-          </Link>
-          <Link
-            to="/rss"
-            className={clsx(
-              location.pathname === '/rss'
-                ? 'border-b-orange-accent'
-                : 'border-b-transparent ',
-              'border-b-2 h-full block nav-item nav-item-current pb-2',
-            )}
-            aria-current="page"
-          >
-            RSS
-          </Link>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/matches">Matches</NavLink>
+          <NavLink to="/upload">Upload</NavLink>
+          <NavLink to="/memos">Memos</NavLink>
+          <NavLink to="/habits">Habits</NavLink>
+          <NavLink to="/youtube">YouTube</NavLink>
+          <NavLink to="/rss">RSS</NavLink>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div
@@ -324,6 +260,32 @@ export default function Header({ user }: { user: { id: number } | null }) {
                     <a href="/api/auth/google">
                       <Button variant="outline" size="sm" className="w-full">
                         Connect Google
+                      </Button>
+                    </a>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-medium mb-2">Spotify Account</p>
+                  {spotifyStatus?.connected ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-green-400">Connected</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={async () => {
+                          await disconnectSpotifyFn()
+                          queryClient.invalidateQueries({
+                            queryKey: ['spotify-status'],
+                          })
+                        }}
+                      >
+                        Disconnect
+                      </Button>
+                    </div>
+                  ) : (
+                    <a href="/api/auth/spotify">
+                      <Button variant="outline" size="sm" className="w-full">
+                        Connect Spotify
                       </Button>
                     </a>
                   )}

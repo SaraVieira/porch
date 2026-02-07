@@ -3,14 +3,7 @@ import { desc, eq } from 'drizzle-orm'
 import { todos as todosSchema } from '@/db/schema'
 import { db } from '@/db'
 import { googleFetch, isGoogleConnected } from '@/lib/google'
-
-const json = (data: any, options?: { status?: number }) =>
-  new Response(JSON.stringify(data), {
-    status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+import { json } from '@/lib/api'
 
 const TASK_LIST_ID = '@default'
 
