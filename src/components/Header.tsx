@@ -162,6 +162,18 @@ export default function Header({ user }: { user: { id: number } | null }) {
           >
             YouTube
           </Link>
+          <Link
+            to="/rss"
+            className={clsx(
+              location.pathname === '/rss'
+                ? 'border-b-orange-accent'
+                : 'border-b-transparent ',
+              'border-b-2 h-full block nav-item nav-item-current pb-2',
+            )}
+            aria-current="page"
+          >
+            RSS
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div

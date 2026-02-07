@@ -3,12 +3,17 @@ import { desc } from 'drizzle-orm'
 import { bookmarks as bookmarksSchema } from '@/db/schema'
 import { db } from '@/db'
 
+const corsHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+}
+
 const json = (data: any, options?: { status?: number }) =>
   new Response(JSON.stringify(data), {
     status: options?.status || 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: corsHeaders,
   })
 
 export const Route = createFileRoute('/api/bookmarks/')({
@@ -16,9 +21,14 @@ export const Route = createFileRoute('/api/bookmarks/')({
     handlers: {
       GET: GET,
       POST: POST,
+      OPTIONS: OPTIONS,
     },
   },
 })
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: corsHeaders })
+}
 
 export async function GET() {
   try {

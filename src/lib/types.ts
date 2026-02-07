@@ -533,3 +533,38 @@ export interface HabitWithStats {
   completionRate: number
   completedToday: boolean
 }
+
+export interface RssCategory {
+  id: number
+  name: string
+  createdAt: Date | null
+}
+
+export interface RssFeed {
+  id: number
+  url: string
+  siteUrl: string | null
+  title: string
+  favicon: string | null
+  categoryId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
+}
+
+export interface RssArticle {
+  id: number
+  feedId: number
+  guid: string
+  title: string
+  link: string
+  publishedAt: string | null
+  author: string | null
+  createdAt: Date | null
+}
+
+export interface RssArticleWithFeed extends RssArticle {
+  feedTitle: string
+  feedFavicon: string | null
+  categoryId: number | null
+  categoryName: string | null
+}

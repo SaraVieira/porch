@@ -18,7 +18,15 @@
       "Bash(pnpm db:migrate:*)",
       "Bash(pnpm drizzle-kit generate:*)",
       "Bash(pnpm drizzle-kit push:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(/Users/saravieira/Projects/homepage/chrome-extension/icons/icon.svg << 'SVGEOF'\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 128 128\" width=\"128\" height=\"128\">\n  <!-- Dark rounded-square background -->\n  <rect x=\"0\" y=\"0\" width=\"128\" height=\"128\" rx=\"20\" ry=\"20\" fill=\"#0a0a0b\"/>\n  <!-- Green bookmark icon -->\n  <path d=\"M40 24 h48 a4 4 0 0 1 4 4 v76 l-28 -20 l-28 20 V28 a4 4 0 0 1 4 -4z\" fill=\"#4ade80\"/>\n</svg>\nSVGEOF)",
+      "Bash(rsvg-convert:*)",
+      "Bash(file:*)",
+      "mcp__chrome-devtools__wait_for",
+      "mcp__chrome-devtools__hover",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__press_key",
+      "WebFetch(domain:www.embla-carousel.com)"
     ]
   }
 }

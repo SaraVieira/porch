@@ -67,38 +67,47 @@ export function Calendar() {
         </div>
         <ScrollArea className="h-60 w-full">
           <div className="flex w-full flex-col gap-2 min-h-56">
-            {data?.events &&
-              data?.events
-                ?.filter((event: Event) =>
-                  isSameDay(date!, new Date(event.start)),
+            {(() => {
+              const dayEvents = data?.events?.filter((event: Event) =>
+                isSameDay(date!, new Date(event.start)),
+              ) ?? []
+
+              if (dayEvents.length === 0) {
+                return (
+                  <div className="text-sm text-muted-foreground text-center py-6">
+                    No events for this day
+                  </div>
                 )
-                .map((event: Event) => (
-                  <div
-                    key={
-                      event.summary +
-                      event.start.toString() +
-                      event.end.toString()
-                    }
-                    className="bg-muted relative rounded-md p-2 pl-6 text-sm w-full"
-                  >
-                    <span
-                      className="absolute inset-y-2 left-2 w-1 rounded-full"
-                      style={{ backgroundColor: event.color || 'var(--primary)' }}
-                    />
-                    <div className="font-medium">{event.summary}</div>
-                    <div className="text-muted-foreground text-xs">
-                      {formatDateRange(
-                        new Date(event.start),
-                        new Date(event.end),
-                      )}
-                    </div>
-                    {event.organizer && (
-                      <div className="text-muted-foreground text-xs mt-0.5">
-                        {event.organizer}
-                      </div>
+              }
+
+              return dayEvents.map((event: Event) => (
+                <div
+                  key={
+                    event.summary +
+                    event.start.toString() +
+                    event.end.toString()
+                  }
+                  className="bg-muted relative rounded-md p-2 pl-6 text-sm w-full"
+                >
+                  <span
+                    className="absolute inset-y-2 left-2 w-1 rounded-full"
+                    style={{ backgroundColor: event.color || 'var(--primary)' }}
+                  />
+                  <div className="font-medium">{event.summary}</div>
+                  <div className="text-muted-foreground text-xs">
+                    {formatDateRange(
+                      new Date(event.start),
+                      new Date(event.end),
                     )}
                   </div>
-                ))}
+                  {event.organizer && (
+                    <div className="text-muted-foreground text-xs mt-0.5">
+                      {event.organizer}
+                    </div>
+                  )}
+                </div>
+              ))
+            })()}
           </div>
         </ScrollArea>
       </CardFooter>

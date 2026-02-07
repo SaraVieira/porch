@@ -1,6 +1,9 @@
+import { useCallback, useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
+import AutoHeight from 'embla-carousel-auto-height'
+import type { CarouselApi } from '../../ui/carousel'
 import { Card, CardContent } from '../../ui/card'
 import {
   Carousel,
@@ -30,6 +33,17 @@ export function Weather() {
     queryFn: () => getWeather(),
   })
 
+  const [api, setApi] = useState<CarouselApi>()
+
+  // Re-init embla when slides resize (e.g. async data loads)
+  useEffect(() => {
+    if (!api) return
+    const observer = new MutationObserver(() => api.reInit())
+    const viewport = api.rootNode()
+    observer.observe(viewport, { childList: true, subtree: true, characterData: true })
+    return () => observer.disconnect()
+  }, [api])
+
   if (isLoading || !weatherData) {
     return (
       <Card className="animate-fade-in">
@@ -45,16 +59,16 @@ export function Weather() {
   }
 
   return (
-    <Card className="animate-fade-in">
+    <Card className="animate-fade-in py-4">
       <CardContent className="px-6">
-        <Carousel className="w-full">
-          <CarouselContent>
+        <Carousel className="w-full" plugins={[AutoHeight()]} setApi={setApi}>
+          <CarouselContent className="items-start transition-[height] duration-200">
             <CurrentWeather weatherData={weatherData} />
             <DailyWeather />
             <LocationWeather />
           </CarouselContent>
 
-          <div className="flex justify-center mt-4 gap-2">
+          <div className="flex justify-center mt-3 gap-2">
             <CarouselPrevious className="static translate-y-0 w-8 h-8 bg-widget-background-highlight hover:bg-progress-value border-widget-content-border">
               <ChevronLeft className="w-4 h-4" />
             </CarouselPrevious>

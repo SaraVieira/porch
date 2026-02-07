@@ -9,6 +9,7 @@ import { Todos } from '@/components/widgets/Todos'
 import { Habits } from '@/components/widgets/Habits'
 import { Romm } from '@/components/widgets/romm'
 import { Bookmarks } from '@/components/widgets/Bookmarks'
+import { Rss } from '@/components/widgets/Rss'
 
 type ColumnId = 'left' | 'center' | 'right'
 
@@ -27,6 +28,7 @@ export const widgetRegistry: Record<
   habits: { component: Habits, label: 'Habits', defaultColumn: 'right' },
   romm: { component: Romm, label: 'Romm', defaultColumn: 'right' },
   bookmarks: { component: Bookmarks, label: 'Bookmarks', defaultColumn: 'center' },
+  rss: { component: Rss, label: 'RSS', defaultColumn: 'center' },
 }
 
 export const allWidgetIds = Object.keys(widgetRegistry)

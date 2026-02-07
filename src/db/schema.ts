@@ -115,3 +115,31 @@ export const bookmarks = pgTable('bookmarks', {
   thumbnail: text('thumbnail'),
   createdAt: timestamp('created_at').defaultNow(),
 })
+
+export const rssCategories = pgTable('rss_categories', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+export const rssFeeds = pgTable('rss_feeds', {
+  id: serial('id').primaryKey(),
+  url: text('url').notNull(),
+  siteUrl: text('site_url'),
+  title: text('title').notNull(),
+  favicon: text('favicon'),
+  categoryId: integer('category_id'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+
+export const rssArticles = pgTable('rss_articles', {
+  id: serial('id').primaryKey(),
+  feedId: integer('feed_id').notNull(),
+  guid: text('guid').notNull(),
+  title: text('title').notNull(),
+  link: text('link').notNull(),
+  publishedAt: text('published_at'),
+  author: text('author'),
+  createdAt: timestamp('created_at').defaultNow(),
+})

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as YoutubeRouteImport } from './routes/youtube'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as RssRouteImport } from './routes/rss'
 import { Route as MatchesRouteImport } from './routes/matches'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
@@ -26,6 +27,7 @@ import { Route as BooksCountriesRouteImport } from './routes/books/countries'
 import { Route as BooksConferencesRouteImport } from './routes/books/conferences'
 import { Route as ApiYoutubeIndexRouteImport } from './routes/api/youtube/index'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
+import { Route as ApiRssIndexRouteImport } from './routes/api/rss/index'
 import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
 import { Route as ApiHabitsIndexRouteImport } from './routes/api/habits/index'
 import { Route as ApiGithubIndexRouteImport } from './routes/api/github/index'
@@ -36,6 +38,10 @@ import { Route as ApiCalendarIndexRouteImport } from './routes/api/calendar/inde
 import { Route as ApiBookmarksIndexRouteImport } from './routes/api/bookmarks/index'
 import { Route as ApiTodosSyncRouteImport } from './routes/api/todos/sync'
 import { Route as ApiTodosTodoIdRouteImport } from './routes/api/todos/$todoId'
+import { Route as ApiRssRefreshRouteImport } from './routes/api/rss/refresh'
+import { Route as ApiRssFeedsRouteImport } from './routes/api/rss/feeds'
+import { Route as ApiRssCategoriesRouteImport } from './routes/api/rss/categories'
+import { Route as ApiRssFeedIdRouteImport } from './routes/api/rss/$feedId'
 import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
 import { Route as ApiHabitsHabitIdRouteImport } from './routes/api/habits/$habitId'
 import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
@@ -44,6 +50,7 @@ import { Route as ApiConferencesConferenceIdRouteImport } from './routes/api/con
 import { Route as ApiBookmarksBookmarkIdRouteImport } from './routes/api/bookmarks/$bookmarkId'
 import { Route as ApiHabitsCompletionsIndexRouteImport } from './routes/api/habits/completions/index'
 import { Route as ApiAuthGoogleIndexRouteImport } from './routes/api/auth/google/index'
+import { Route as ApiRssArticlesArticleIdRouteImport } from './routes/api/rss/articles/$articleId'
 import { Route as ApiAuthGoogleStatusRouteImport } from './routes/api/auth/google/status'
 import { Route as ApiAuthGoogleCallbackRouteImport } from './routes/api/auth/google/callback'
 
@@ -60,6 +67,11 @@ const UploadRoute = UploadRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RssRoute = RssRouteImport.update({
+  id: '/rss',
+  path: '/rss',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatchesRoute = MatchesRouteImport.update({
@@ -131,6 +143,11 @@ const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
   path: '/api/todos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRssIndexRoute = ApiRssIndexRouteImport.update({
+  id: '/api/rss/',
+  path: '/api/rss/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiMemosIndexRoute = ApiMemosIndexRouteImport.update({
   id: '/api/memos/',
   path: '/api/memos/',
@@ -181,6 +198,26 @@ const ApiTodosTodoIdRoute = ApiTodosTodoIdRouteImport.update({
   path: '/api/todos/$todoId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRssRefreshRoute = ApiRssRefreshRouteImport.update({
+  id: '/api/rss/refresh',
+  path: '/api/rss/refresh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRssFeedsRoute = ApiRssFeedsRouteImport.update({
+  id: '/api/rss/feeds',
+  path: '/api/rss/feeds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRssCategoriesRoute = ApiRssCategoriesRouteImport.update({
+  id: '/api/rss/categories',
+  path: '/api/rss/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiRssFeedIdRoute = ApiRssFeedIdRouteImport.update({
+  id: '/api/rss/$feedId',
+  path: '/api/rss/$feedId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiMemosMemoIdRoute = ApiMemosMemoIdRouteImport.update({
   id: '/api/memos/$memoId',
   path: '/api/memos/$memoId',
@@ -223,6 +260,11 @@ const ApiAuthGoogleIndexRoute = ApiAuthGoogleIndexRouteImport.update({
   path: '/api/auth/google/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRssArticlesArticleIdRoute = ApiRssArticlesArticleIdRouteImport.update({
+  id: '/api/rss/articles/$articleId',
+  path: '/api/rss/articles/$articleId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleStatusRoute = ApiAuthGoogleStatusRouteImport.update({
   id: '/api/auth/google/status',
   path: '/api/auth/google/status',
@@ -240,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/rss': typeof RssRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/youtube': typeof YoutubeRoute
@@ -255,6 +298,10 @@ export interface FileRoutesByFullPath {
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/rss/$feedId': typeof ApiRssFeedIdRoute
+  '/api/rss/categories': typeof ApiRssCategoriesRoute
+  '/api/rss/feeds': typeof ApiRssFeedsRoute
+  '/api/rss/refresh': typeof ApiRssRefreshRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks': typeof ApiBookmarksIndexRoute
@@ -265,10 +312,12 @@ export interface FileRoutesByFullPath {
   '/api/github': typeof ApiGithubIndexRoute
   '/api/habits': typeof ApiHabitsIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
+  '/api/rss': typeof ApiRssIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
@@ -278,6 +327,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/rss': typeof RssRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/youtube': typeof YoutubeRoute
@@ -293,6 +343,10 @@ export interface FileRoutesByTo {
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/rss/$feedId': typeof ApiRssFeedIdRoute
+  '/api/rss/categories': typeof ApiRssCategoriesRoute
+  '/api/rss/feeds': typeof ApiRssFeedsRoute
+  '/api/rss/refresh': typeof ApiRssRefreshRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks': typeof ApiBookmarksIndexRoute
@@ -303,10 +357,12 @@ export interface FileRoutesByTo {
   '/api/github': typeof ApiGithubIndexRoute
   '/api/habits': typeof ApiHabitsIndexRoute
   '/api/memos': typeof ApiMemosIndexRoute
+  '/api/rss': typeof ApiRssIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions': typeof ApiHabitsCompletionsIndexRoute
 }
@@ -318,6 +374,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/matches': typeof MatchesRoute
+  '/rss': typeof RssRoute
   '/signup': typeof SignupRoute
   '/upload': typeof UploadRoute
   '/youtube': typeof YoutubeRoute
@@ -333,6 +390,10 @@ export interface FileRoutesById {
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
   '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
+  '/api/rss/$feedId': typeof ApiRssFeedIdRoute
+  '/api/rss/categories': typeof ApiRssCategoriesRoute
+  '/api/rss/feeds': typeof ApiRssFeedsRoute
+  '/api/rss/refresh': typeof ApiRssRefreshRoute
   '/api/todos/$todoId': typeof ApiTodosTodoIdRoute
   '/api/todos/sync': typeof ApiTodosSyncRoute
   '/api/bookmarks/': typeof ApiBookmarksIndexRoute
@@ -343,10 +404,12 @@ export interface FileRoutesById {
   '/api/github/': typeof ApiGithubIndexRoute
   '/api/habits/': typeof ApiHabitsIndexRoute
   '/api/memos/': typeof ApiMemosIndexRoute
+  '/api/rss/': typeof ApiRssIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/youtube/': typeof ApiYoutubeIndexRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/status': typeof ApiAuthGoogleStatusRoute
+  '/api/rss/articles/$articleId': typeof ApiRssArticlesArticleIdRoute
   '/api/auth/google/': typeof ApiAuthGoogleIndexRoute
   '/api/habits/completions/': typeof ApiHabitsCompletionsIndexRoute
 }
@@ -358,6 +421,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/matches'
+    | '/rss'
     | '/signup'
     | '/upload'
     | '/youtube'
@@ -373,6 +437,10 @@ export interface FileRouteTypes {
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
+    | '/api/rss/$feedId'
+    | '/api/rss/categories'
+    | '/api/rss/feeds'
+    | '/api/rss/refresh'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks'
@@ -383,10 +451,12 @@ export interface FileRouteTypes {
     | '/api/github'
     | '/api/habits'
     | '/api/memos'
+    | '/api/rss'
     | '/api/todos'
     | '/api/youtube'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/rss/articles/$articleId'
     | '/api/auth/google'
     | '/api/habits/completions'
   fileRoutesByTo: FileRoutesByTo
@@ -396,6 +466,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/matches'
+    | '/rss'
     | '/signup'
     | '/upload'
     | '/youtube'
@@ -411,6 +482,10 @@ export interface FileRouteTypes {
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
+    | '/api/rss/$feedId'
+    | '/api/rss/categories'
+    | '/api/rss/feeds'
+    | '/api/rss/refresh'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks'
@@ -421,10 +496,12 @@ export interface FileRouteTypes {
     | '/api/github'
     | '/api/habits'
     | '/api/memos'
+    | '/api/rss'
     | '/api/todos'
     | '/api/youtube'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/rss/articles/$articleId'
     | '/api/auth/google'
     | '/api/habits/completions'
   id:
@@ -435,6 +512,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/matches'
+    | '/rss'
     | '/signup'
     | '/upload'
     | '/youtube'
@@ -450,6 +528,10 @@ export interface FileRouteTypes {
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
     | '/api/memos/$memoId'
+    | '/api/rss/$feedId'
+    | '/api/rss/categories'
+    | '/api/rss/feeds'
+    | '/api/rss/refresh'
     | '/api/todos/$todoId'
     | '/api/todos/sync'
     | '/api/bookmarks/'
@@ -460,10 +542,12 @@ export interface FileRouteTypes {
     | '/api/github/'
     | '/api/habits/'
     | '/api/memos/'
+    | '/api/rss/'
     | '/api/todos/'
     | '/api/youtube/'
     | '/api/auth/google/callback'
     | '/api/auth/google/status'
+    | '/api/rss/articles/$articleId'
     | '/api/auth/google/'
     | '/api/habits/completions/'
   fileRoutesById: FileRoutesById
@@ -475,6 +559,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   MatchesRoute: typeof MatchesRoute
+  RssRoute: typeof RssRoute
   SignupRoute: typeof SignupRoute
   UploadRoute: typeof UploadRoute
   YoutubeRoute: typeof YoutubeRoute
@@ -490,6 +575,10 @@ export interface RootRouteChildren {
   ApiGamesGameIdRoute: typeof ApiGamesGameIdRoute
   ApiHabitsHabitIdRoute: typeof ApiHabitsHabitIdRoute
   ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
+  ApiRssFeedIdRoute: typeof ApiRssFeedIdRoute
+  ApiRssCategoriesRoute: typeof ApiRssCategoriesRoute
+  ApiRssFeedsRoute: typeof ApiRssFeedsRoute
+  ApiRssRefreshRoute: typeof ApiRssRefreshRoute
   ApiTodosTodoIdRoute: typeof ApiTodosTodoIdRoute
   ApiTodosSyncRoute: typeof ApiTodosSyncRoute
   ApiBookmarksIndexRoute: typeof ApiBookmarksIndexRoute
@@ -500,10 +589,12 @@ export interface RootRouteChildren {
   ApiGithubIndexRoute: typeof ApiGithubIndexRoute
   ApiHabitsIndexRoute: typeof ApiHabitsIndexRoute
   ApiMemosIndexRoute: typeof ApiMemosIndexRoute
+  ApiRssIndexRoute: typeof ApiRssIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
   ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
   ApiAuthGoogleCallbackRoute: typeof ApiAuthGoogleCallbackRoute
   ApiAuthGoogleStatusRoute: typeof ApiAuthGoogleStatusRoute
+  ApiRssArticlesArticleIdRoute: typeof ApiRssArticlesArticleIdRoute
   ApiAuthGoogleIndexRoute: typeof ApiAuthGoogleIndexRoute
   ApiHabitsCompletionsIndexRoute: typeof ApiHabitsCompletionsIndexRoute
 }
@@ -529,6 +620,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rss': {
+      id: '/rss'
+      path: '/rss'
+      fullPath: '/rss'
+      preLoaderRoute: typeof RssRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matches': {
@@ -629,6 +727,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/rss/': {
+      id: '/api/rss/'
+      path: '/api/rss'
+      fullPath: '/api/rss'
+      preLoaderRoute: typeof ApiRssIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/memos/': {
       id: '/api/memos/'
       path: '/api/memos'
@@ -699,6 +804,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTodosTodoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/rss/refresh': {
+      id: '/api/rss/refresh'
+      path: '/api/rss/refresh'
+      fullPath: '/api/rss/refresh'
+      preLoaderRoute: typeof ApiRssRefreshRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/rss/feeds': {
+      id: '/api/rss/feeds'
+      path: '/api/rss/feeds'
+      fullPath: '/api/rss/feeds'
+      preLoaderRoute: typeof ApiRssFeedsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/rss/categories': {
+      id: '/api/rss/categories'
+      path: '/api/rss/categories'
+      fullPath: '/api/rss/categories'
+      preLoaderRoute: typeof ApiRssCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/rss/$feedId': {
+      id: '/api/rss/$feedId'
+      path: '/api/rss/$feedId'
+      fullPath: '/api/rss/$feedId'
+      preLoaderRoute: typeof ApiRssFeedIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/memos/$memoId': {
       id: '/api/memos/$memoId'
       path: '/api/memos/$memoId'
@@ -755,6 +888,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthGoogleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/rss/articles/$articleId': {
+      id: '/api/rss/articles/$articleId'
+      path: '/api/rss/articles/$articleId'
+      fullPath: '/api/rss/articles/$articleId'
+      preLoaderRoute: typeof ApiRssArticlesArticleIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google/status': {
       id: '/api/auth/google/status'
       path: '/api/auth/google/status'
@@ -779,6 +919,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   MatchesRoute: MatchesRoute,
+  RssRoute: RssRoute,
   SignupRoute: SignupRoute,
   UploadRoute: UploadRoute,
   YoutubeRoute: YoutubeRoute,
@@ -794,6 +935,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGamesGameIdRoute: ApiGamesGameIdRoute,
   ApiHabitsHabitIdRoute: ApiHabitsHabitIdRoute,
   ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
+  ApiRssFeedIdRoute: ApiRssFeedIdRoute,
+  ApiRssCategoriesRoute: ApiRssCategoriesRoute,
+  ApiRssFeedsRoute: ApiRssFeedsRoute,
+  ApiRssRefreshRoute: ApiRssRefreshRoute,
   ApiTodosTodoIdRoute: ApiTodosTodoIdRoute,
   ApiTodosSyncRoute: ApiTodosSyncRoute,
   ApiBookmarksIndexRoute: ApiBookmarksIndexRoute,
@@ -804,10 +949,12 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGithubIndexRoute: ApiGithubIndexRoute,
   ApiHabitsIndexRoute: ApiHabitsIndexRoute,
   ApiMemosIndexRoute: ApiMemosIndexRoute,
+  ApiRssIndexRoute: ApiRssIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
   ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,
   ApiAuthGoogleCallbackRoute: ApiAuthGoogleCallbackRoute,
   ApiAuthGoogleStatusRoute: ApiAuthGoogleStatusRoute,
+  ApiRssArticlesArticleIdRoute: ApiRssArticlesArticleIdRoute,
   ApiAuthGoogleIndexRoute: ApiAuthGoogleIndexRoute,
   ApiHabitsCompletionsIndexRoute: ApiHabitsCompletionsIndexRoute,
 }

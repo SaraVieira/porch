@@ -21,15 +21,15 @@ export const CurrentWeather = ({
 
   return (
     <CarouselItem>
-      <div className="space-y-6">
+      <div className="space-y-3">
         {/* Current Weather */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-1">
           <div className="font-light text-highlight">{weatherCondition}</div>
           <div className="text-base text-sm">Feels like {feelsLike}°C</div>
         </div>
 
         {/* Weather Columns */}
-        <div className="weather-columns flex justify-center mt-4">
+        <div className="weather-columns flex justify-center">
           {columns.map((column, index) => (
             <div
               key={index}
