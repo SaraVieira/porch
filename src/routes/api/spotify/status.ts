@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/spotify/status')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const connected = await isSpotifyConnected()
     if (!connected) {

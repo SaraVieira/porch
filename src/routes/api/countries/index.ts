@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/countries/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const countries = await db!.query.countries.findMany({
       orderBy: [desc(countriesSchema.createdAt)],
@@ -26,7 +26,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = (await request.json()) as typeof countriesSchema.$inferSelect
 

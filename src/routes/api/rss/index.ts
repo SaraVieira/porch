@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/rss/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const articles = await getRssArticles()
     return json(articles)
@@ -24,7 +24,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { url, categoryId } = body

@@ -40,7 +40,8 @@
       "Bash(security find-generic-password:*)",
       "Bash(time echo:*)",
       "WebFetch(domain:roms.iamsaravieira.com)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(pnpm knip:*)"
     ]
   }
 }

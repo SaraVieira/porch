@@ -42,7 +42,7 @@ export const Route = createFileRoute('/books/games')({
   loader: () => get('/api/games'),
 })
 
-export const columns: Array<ColumnDef<typeof games.$inferSelect>> = [
+const columns: Array<ColumnDef<typeof games.$inferSelect>> = [
   {
     accessorKey: 'image',
     header: ({ column }) => {

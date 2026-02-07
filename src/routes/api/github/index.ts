@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/github/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const data = await getGitHubContributions()
     return json(data)

@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/youtube/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const videos = await getYouTubeVideos(200)
     return json(videos)

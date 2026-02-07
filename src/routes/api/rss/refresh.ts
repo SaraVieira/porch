@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/rss/refresh')({
   },
 })
 
-export async function POST() {
+async function POST() {
   try {
     const articles = await forceRefreshRss()
     return json(articles)

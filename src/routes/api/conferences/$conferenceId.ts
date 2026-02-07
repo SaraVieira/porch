@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/conferences/$conferenceId')({
   },
 })
 
-export async function PUT({
+async function PUT({
   params,
   request,
 }: {
@@ -35,7 +35,7 @@ export async function PUT({
   }
 }
 
-export async function DELETE({ params }: { params: { conferenceId: string } }) {
+async function DELETE({ params }: { params: { conferenceId: string } }) {
   try {
     await db!
       .delete(conferencesSchema)

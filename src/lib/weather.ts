@@ -101,7 +101,7 @@ export const getWeatherIconColor = (weatherCode: number): string => {
   return colorMap[weatherCode] || 'text-gray-400'
 }
 
-export const weatherCodes: Record<number, string> = {
+const weatherCodes: Record<number, string> = {
   0: 'Clear Sky',
   1: 'Mainly Clear',
   2: 'Partly Cloudy',

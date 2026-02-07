@@ -23,11 +23,11 @@ export const Route = createFileRoute('/api/bookmarks/')({
   },
 })
 
-export function OPTIONS() {
+function OPTIONS() {
   return new Response(null, { status: 204, headers: corsHeaders })
 }
 
-export async function GET() {
+async function GET() {
   try {
     const bookmarks = await db!.query.bookmarks.findMany({
       orderBy: [desc(bookmarksSchema.createdAt)],
@@ -182,7 +182,7 @@ function titleFromUrl(url: string): string {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { url } = body

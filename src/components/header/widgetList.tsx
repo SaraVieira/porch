@@ -51,7 +51,9 @@ export const WidgetList = () => {
         <p className="text-sm font-medium mb-3">Widgets</p>
         <div className="space-y-2">
           {allWidgetIds.map((id) => {
-            const Icon = widgetRegistry[id].Icon
+            const Icon = widgetRegistry[id].Icon as
+              | React.ComponentType<{ className?: string }>
+              | undefined
             return (
               <label
                 key={id}

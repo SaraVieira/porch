@@ -12,7 +12,7 @@ export const Route = createFileRoute('/api/rss/feeds')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const feeds = await db!.query.rssFeeds.findMany({
       orderBy: [desc(rssFeeds.createdAt)],

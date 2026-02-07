@@ -30,7 +30,7 @@ export const Route = createFileRoute('/books/countries')({
   loader: () => get('/api/countries'),
 })
 
-export const columns: Array<ColumnDef<typeof conferences.$inferSelect>> = [
+const columns: Array<ColumnDef<typeof conferences.$inferSelect>> = [
   {
     accessorKey: 'name',
     header: 'Name',

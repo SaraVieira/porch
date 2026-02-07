@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/calendar/')({
 let cache: { data: any; expires: number } | null = null
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
-export async function GET({ request }: { request: Request }) {
+async function GET({ request }: { request: Request }) {
   try {
     const connected = await isGoogleConnected()
     if (!connected) {

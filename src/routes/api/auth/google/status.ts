@@ -11,7 +11,7 @@ export const Route = createFileRoute('/api/auth/google/status')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const connected = await isGoogleConnected()
     return json({ connected })
@@ -21,7 +21,7 @@ export async function GET() {
   }
 }
 
-export async function DELETE() {
+async function DELETE() {
   try {
     await disconnectGoogle()
     return json({ success: true })

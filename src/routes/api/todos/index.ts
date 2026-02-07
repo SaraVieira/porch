@@ -16,7 +16,7 @@ export const Route = createFileRoute('/api/todos/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const todos = await db!.query.todos.findMany({
       where: eq(todosSchema.done, false),
@@ -30,7 +30,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { title, dueDate, dueTime, notes } = body

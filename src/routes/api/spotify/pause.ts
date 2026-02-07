@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/spotify/pause')({
   },
 })
 
-export async function PUT() {
+async function PUT() {
   try {
     await spotifyFetch('https://api.spotify.com/v1/me/player/pause', {
       method: 'PUT',

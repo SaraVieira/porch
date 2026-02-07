@@ -1,4 +1,4 @@
-import { BsBookFill, BsPencilFill, BsReddit, BsServer } from 'react-icons/bs'
+import { BsBookFill, BsReddit, BsServer } from 'react-icons/bs'
 import { RiBlueskyFill, RiNetflixFill } from 'react-icons/ri'
 import {
   SiAliexpress,

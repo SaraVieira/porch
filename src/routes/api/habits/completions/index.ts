@@ -12,7 +12,7 @@ export const Route = createFileRoute('/api/habits/completions/')({
   },
 })
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { habitId, date } = body

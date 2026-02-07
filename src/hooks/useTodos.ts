@@ -4,7 +4,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { get, post, put, deleteMethod } from '@/lib/utils'
 import type { CheckedState } from '@radix-ui/react-checkbox'
 
-export type Todo = {
+type Todo = {
   id: number
   title: string
   notes: string | null
@@ -97,5 +97,13 @@ export function useTodos() {
     queryClient.invalidateQueries({ queryKey: ['todos'] })
   }
 
-  return { todos, isLoading, syncing, handleSync, handleCreate, handleToggle, handleRemove }
+  return {
+    todos,
+    isLoading,
+    syncing,
+    handleSync,
+    handleCreate,
+    handleToggle,
+    handleRemove,
+  }
 }

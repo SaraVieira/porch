@@ -76,7 +76,7 @@ async function refreshAccessToken(refreshToken: string) {
   }>
 }
 
-export async function getGoogleAccessToken(): Promise<string | null> {
+async function getGoogleAccessToken(): Promise<string | null> {
   const tokens = await db!.query.googleTokens.findFirst()
   if (!tokens) return null
 

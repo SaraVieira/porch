@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/games/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const games = await db!.query.games.findMany({
       orderBy: [desc(gamesSchema.date)],
@@ -26,7 +26,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = (await request.json()) as typeof gamesSchema.$inferSelect
 

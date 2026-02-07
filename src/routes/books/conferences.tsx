@@ -28,7 +28,7 @@ export const Route = createFileRoute('/books/conferences')({
   loader: () => get('/api/conferences'),
 })
 
-export const columns: Array<ColumnDef<typeof conferences.$inferSelect>> = [
+const columns: Array<ColumnDef<typeof conferences.$inferSelect>> = [
   {
     accessorKey: 'name',
     header: 'Name',

@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/games/$gameId')({
   },
 })
 
-export async function PUT({
+async function PUT({
   params,
   request,
 }: {
@@ -35,7 +35,7 @@ export async function PUT({
   }
 }
 
-export async function DELETE({ params }: { params: { gameId: string } }) {
+async function DELETE({ params }: { params: { gameId: string } }) {
   try {
     await db!.delete(gamesSchema).where(eq(gamesSchema.id, params.gameId))
 

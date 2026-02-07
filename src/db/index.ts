@@ -32,7 +32,7 @@ function createDatabase(): NodePgDatabase<typeof schema> {
   return drizzle(pool, { schema })
 }
 
-export function getDb(): NodePgDatabase<typeof schema> {
+function getDb(): NodePgDatabase<typeof schema> {
   if (typeof window !== 'undefined') {
     throw new Error('Database can only be accessed on the server-side')
   }
@@ -43,8 +43,6 @@ export function getDb(): NodePgDatabase<typeof schema> {
 
   return dbInstance
 }
-
-export { schema }
 
 // Export a default instance for convenience
 export const db = typeof window === 'undefined' ? getDb() : null

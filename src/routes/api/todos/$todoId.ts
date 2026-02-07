@@ -16,7 +16,7 @@ export const Route = createFileRoute('/api/todos/$todoId')({
   },
 })
 
-export async function PUT({
+async function PUT({
   params,
   request,
 }: {
@@ -55,7 +55,7 @@ export async function PUT({
   }
 }
 
-export async function DELETE({ params }: { params: { todoId: string } }) {
+async function DELETE({ params }: { params: { todoId: string } }) {
   try {
     const id = parseInt(params.todoId)
     if (isNaN(id)) {

@@ -1,11 +1,3 @@
-import type { WebAuthnCredential } from '@simplewebauthn/server'
-
-export interface LoggedInUser {
-  id: string
-  username: string
-  credentials: Array<WebAuthnCredential>
-}
-
 export interface Stream {
   id: string // Unique identifier for the stream
   streamNo: number // Stream number/index
@@ -92,7 +84,7 @@ export interface Service {
   databases: Array<Database>
 }
 
-export interface Server {
+interface Server {
   id: number
   uuid: string
   name: string
@@ -122,14 +114,14 @@ export interface Server {
   settings: Settings
 }
 
-export interface Proxy {
+interface Proxy {
   type: string
   status: string
   redirect_enabled: boolean
   force_stop: boolean
 }
 
-export interface Settings {
+interface Settings {
   id: number
   is_swarm_manager: boolean
   is_jump_server: boolean
@@ -176,7 +168,7 @@ export interface Settings {
   is_terminal_enabled: boolean
 }
 
-export interface Database {
+interface Database {
   id: number
   uuid: string
   name: string
@@ -293,7 +285,7 @@ export interface Application {
   updated_at: string
 }
 
-export interface Destination {
+interface Destination {
   id: number
   name: string
   uuid: string
@@ -304,7 +296,7 @@ export interface Destination {
   server: Server2
 }
 
-export interface Server2 {
+interface Server2 {
   id: number
   uuid: string
   name: string
@@ -334,14 +326,14 @@ export interface Server2 {
   settings: Settings2
 }
 
-export interface Proxy2 {
+interface Proxy2 {
   type: string
   status: string
   redirect_enabled: boolean
   force_stop: boolean
 }
 
-export interface Settings2 {
+interface Settings2 {
   id: number
   is_swarm_manager: boolean
   is_jump_server: boolean
@@ -487,21 +479,6 @@ export interface YouTubeChannel {
   url: string
 }
 
-export interface Habit {
-  id: number
-  name: string
-  emoji: string | null
-  color: string | null
-  createdAt: Date | null
-}
-
-export interface HabitCompletion {
-  id: number
-  habitId: number
-  date: string
-  createdAt: Date | null
-}
-
 export interface HabitWithStats {
   id: number
   name: string
@@ -532,7 +509,7 @@ export interface RssFeed {
   updatedAt: Date | null
 }
 
-export interface RssArticle {
+interface RssArticle {
   id: number
   feedId: number
   guid: string

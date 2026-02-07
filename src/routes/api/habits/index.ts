@@ -75,7 +75,7 @@ function computeStreaks(completionDates: Array<string>) {
   return { currentStreak, longestStreak }
 }
 
-export async function GET() {
+async function GET() {
   try {
     const habits = await db!.query.habits.findMany({
       orderBy: [desc(habitsSchema.createdAt)],
@@ -116,7 +116,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { name, emoji, color } = body

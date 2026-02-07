@@ -261,7 +261,7 @@ export async function getRssArticles(
   return limit ? articles.slice(0, limit) : articles
 }
 
-export function clearRssCache() {
+function clearRssCache() {
   cachedArticles = []
   cacheTimestamp = 0
   fetchInProgress = null

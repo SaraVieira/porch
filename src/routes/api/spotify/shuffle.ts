@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/spotify/shuffle')({
   },
 })
 
-export async function PUT({ request }: { request: Request }) {
+async function PUT({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const state = body.state ? 'true' : 'false'

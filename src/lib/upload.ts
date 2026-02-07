@@ -5,13 +5,13 @@ export interface UploadedFile {
   pending?: boolean
 }
 
-export interface UploadResponse {
+interface UploadResponse {
   files: Array<UploadedFile>
   deletesAt?: string
   assumedMimetypes?: Array<boolean>
 }
 
-export interface UploadOptions {
+interface UploadOptions {
   onProgress?: (progress: number) => void
   onSuccess?: (result: UploadedFile) => void
   onError?: (error: string) => void
@@ -19,7 +19,7 @@ export interface UploadOptions {
   token?: string
 }
 
-export interface UploadResult {
+interface UploadResult {
   success: boolean
   data?: UploadedFile
   error?: string
@@ -148,64 +148,7 @@ export const uploadFileToZipline = async (
   })
 }
 
-export const uploadMultipleFiles = async (
-  files: Array<File>,
-  options: Omit<UploadOptions, 'onProgress' | 'onSuccess' | 'onError'> & {
-    onFileProgress?: (file: File, progress: number) => void
-    onFileSuccess?: (file: File, result: UploadedFile) => void
-    onFileError?: (file: File, error: string) => void
-    onComplete?: (results: Array<UploadResult>) => void
-  } = {},
-): Promise<Array<UploadResult>> => {
-  const {
-    onFileProgress,
-    onFileSuccess,
-    onFileError,
-    onComplete,
-    ...uploadOptions
-  } = options
-
-  const results: Array<UploadResult> = []
-
-  for (const file of files) {
-    const result = await uploadFileToZipline(file, {
-      ...uploadOptions,
-      onProgress: (progress) => onFileProgress?.(file, progress),
-      onSuccess: (uploadedFile) => onFileSuccess?.(file, uploadedFile),
-      onError: (error) => onFileError?.(file, error),
-    })
-
-    results.push(result)
-  }
-
-  onComplete?.(results)
-  return results
-}
-
 // Helper function to get supported file types for input accept attribute
 export const getSupportedFileTypes = (): string => {
   return ACCEPTED_IMAGE_TYPES.join(',')
-}
-
-// Helper function to check if file is valid before upload
-export const validateFile = (
-  file: File,
-): { valid: boolean; error?: string } => {
-  if (!validateImageFile(file)) {
-    return {
-      valid: false,
-      error: `File type ${file.type} is not supported. Only image files are allowed.`,
-    }
-  }
-
-  // Check file size (optional - can be configured)
-  const maxSize = 100 * 1024 * 1024 // 100MB default
-  if (file.size > maxSize) {
-    return {
-      valid: false,
-      error: `File size ${formatFileSize(file.size)} exceeds maximum allowed size of ${formatFileSize(maxSize)}.`,
-    }
-  }
-
-  return { valid: true }
 }

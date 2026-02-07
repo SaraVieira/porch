@@ -11,7 +11,7 @@ export const Route = createFileRoute('/api/auth/spotify/status')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const connected = await isSpotifyConnected()
     return json({ connected })
@@ -21,7 +21,7 @@ export async function GET() {
   }
 }
 
-export async function DELETE() {
+async function DELETE() {
   try {
     await disconnectSpotify()
     return json({ success: true })

@@ -15,7 +15,7 @@ export const Route = createFileRoute('/api/todos/sync')({
   },
 })
 
-export async function POST() {
+async function POST() {
   try {
     const connected = await isGoogleConnected()
     if (!connected) {

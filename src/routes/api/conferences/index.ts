@@ -13,7 +13,7 @@ export const Route = createFileRoute('/api/conferences/')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const conferences = await db!.query.conferences.findMany({
       orderBy: [desc(conferencesSchema.createdAt)],
@@ -26,7 +26,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = (await request.json()) as typeof conferencesSchema.$inferSelect
 

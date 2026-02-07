@@ -12,7 +12,7 @@ export const Route = createFileRoute('/api/habits/$habitId')({
   },
 })
 
-export async function DELETE({ params }: { params: { habitId: string } }) {
+async function DELETE({ params }: { params: { habitId: string } }) {
   try {
     const id = parseInt(params.habitId)
     if (isNaN(id)) {

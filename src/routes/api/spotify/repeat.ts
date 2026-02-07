@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/spotify/repeat')({
   },
 })
 
-export async function PUT({ request }: { request: Request }) {
+async function PUT({ request }: { request: Request }) {
   try {
     const body = await request.json()
     // state: 'off' | 'context' | 'track'

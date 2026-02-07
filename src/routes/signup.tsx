@@ -8,7 +8,7 @@ import { user as userSchema } from '@/db/schema'
 import { Auth } from '@/components/Auth'
 import { useMutation } from '@/lib/hooks/useMutation'
 
-export const signupFn = createServerFn({ method: 'POST' })
+const signupFn = createServerFn({ method: 'POST' })
   .inputValidator((d: { password: string; redirectUrl?: string }) => d)
   .handler(async ({ data }) => {
     // Encrypt the password using Sha256 into plaintext

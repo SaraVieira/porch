@@ -11,7 +11,7 @@ export const Route = createFileRoute('/api/auth/google/callback')({
   },
 })
 
-export async function GET({ request }: { request: Request }) {
+async function GET({ request }: { request: Request }) {
   const url = new URL(request.url)
   const code = url.searchParams.get('code')
   const error = url.searchParams.get('error')

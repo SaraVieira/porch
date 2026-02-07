@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/rss/categories')({
   },
 })
 
-export async function GET() {
+async function GET() {
   try {
     const categories = await db!.query.rssCategories.findMany({
       orderBy: [desc(rssCategories.createdAt)],
@@ -26,7 +26,7 @@ export async function GET() {
   }
 }
 
-export async function POST({ request }: { request: Request }) {
+async function POST({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { name } = body
@@ -47,7 +47,7 @@ export async function POST({ request }: { request: Request }) {
   }
 }
 
-export async function DELETE({ request }: { request: Request }) {
+async function DELETE({ request }: { request: Request }) {
   try {
     const body = await request.json()
     const { id } = body

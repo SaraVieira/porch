@@ -10,7 +10,7 @@ export const Route = createFileRoute('/api/spotify/next')({
   },
 })
 
-export async function POST() {
+async function POST() {
   try {
     await spotifyFetch('https://api.spotify.com/v1/me/player/next', {
       method: 'POST',
