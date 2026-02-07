@@ -7,10 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { BsSteam } from 'react-icons/bs'
 import { useState } from 'react'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowUpDown, Trash2 } from 'lucide-react'
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -32,7 +32,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { AddCountryModal } from '@/components/AddCountryModal'
+import { AddGameModal } from '@/components/AddGameModal'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -42,168 +42,10 @@ export const Route = createFileRoute('/books/games')({
   loader: () => get('/api/games'),
 })
 
-const columns: Array<ColumnDef<typeof games.$inferSelect>> = [
-  {
-    accessorKey: 'image',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Image
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <img className="w-[100px]" src={row.getValue('image')} />
-          </TooltipTrigger>
-          <TooltipContent>{row.getValue('name')}</TooltipContent>
-        </Tooltip>
-      )
-    },
-    minSize: 100,
-  },
-  {
-    accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="max-w-[220px] truncate">{row.getValue('name')}</div>
-        </TooltipTrigger>
-        <TooltipContent>{row.getValue('name')}</TooltipContent>
-      </Tooltip>
-    ),
-  },
-  {
-    accessorKey: 'date',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date Finished
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) =>
-      row.getValue('date') ? formatDate(row.getValue('date')) : '',
-  },
-  {
-    accessorKey: 'release',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Date Released
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) =>
-      row.getValue('release') ? formatDate(row.getValue('release')) : '',
-  },
-  {
-    accessorKey: 'score',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Score
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => row.getValue('score') + '/100',
-  },
-  {
-    accessorKey: 'time',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Duration
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => `${parseFloat(row.getValue('time'))}h`,
-  },
-  {
-    accessorKey: 'summary',
-    header: 'Summary',
-    cell: ({ row }) => (
-      <Dialog>
-        <DialogTrigger className="underline text-green-400">
-          View Summary
-        </DialogTrigger>
-        <DialogContent>{row.getValue('summary')}</DialogContent>
-      </Dialog>
-    ),
-  },
-  {
-    accessorKey: 'notes',
-    header: 'Notes',
-    cell: ({ row }) => (
-      <Dialog>
-        <DialogTrigger className="underline text-green-400">
-          View Notes
-        </DialogTrigger>
-        <DialogContent>{row.getValue('notes')}</DialogContent>
-      </Dialog>
-    ),
-  },
-  {
-    accessorKey: 'steam',
-    header: 'Steam Link',
-
-    cell: ({ row }) => {
-      const steam = row.getValue('steam')
-      return (
-        <>
-          {!steam ? (
-            ''
-          ) : (
-            <a
-              href={`https://store.steampowered.com/app/${steam}/`}
-              target="_blank"
-              className="flex justify-center w-full"
-            >
-              <BsSteam />
-            </a>
-          )}
-        </>
-      )
-    },
-  },
-]
-
 function RouteComponent() {
   const defaultData = Route.useLoaderData()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const queryClient = useQueryClient()
   const { data: games } = useQuery({
     queryKey: ['games'],
     queryFn: async () => {
@@ -212,7 +54,200 @@ function RouteComponent() {
     },
     initialData: defaultData,
   })
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'date', desc: true },
+  ])
+
+  const deleteGame = async (id: string) => {
+    await fetch(`/api/games/${id}`, { method: 'DELETE' })
+    queryClient.invalidateQueries({ queryKey: ['games'] })
+  }
+
+  const columns: Array<ColumnDef<typeof games.$inferSelect>> = [
+    {
+      accessorKey: 'image',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Image
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => {
+        return (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <img className="w-[100px]" src={row.getValue('image')} />
+            </TooltipTrigger>
+            <TooltipContent>{row.getValue('name')}</TooltipContent>
+          </Tooltip>
+        )
+      },
+      minSize: 100,
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="max-w-[220px] truncate">
+              {row.getValue('name')}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>{row.getValue('name')}</TooltipContent>
+        </Tooltip>
+      ),
+    },
+    {
+      accessorKey: 'date',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Date Finished
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) =>
+        row.getValue('date') ? formatDate(row.getValue('date')) : '',
+    },
+    {
+      accessorKey: 'release',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Date Released
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) =>
+        row.getValue('release') ? formatDate(row.getValue('release')) : '',
+    },
+    {
+      accessorKey: 'score',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Score
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => row.getValue('score') + '/100',
+    },
+    {
+      accessorKey: 'time',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }
+          >
+            Duration
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => `${parseFloat(row.getValue('time'))}h`,
+    },
+    {
+      accessorKey: 'summary',
+      header: 'Summary',
+      cell: ({ row }) => (
+        <Dialog>
+          <DialogTrigger className="underline text-green-400">
+            View Summary
+          </DialogTrigger>
+          <DialogContent>{row.getValue('summary')}</DialogContent>
+        </Dialog>
+      ),
+    },
+    {
+      accessorKey: 'notes',
+      header: 'Notes',
+      cell: ({ row }) => (
+        <Dialog>
+          <DialogTrigger className="underline text-green-400">
+            View Notes
+          </DialogTrigger>
+          <DialogContent>{row.getValue('notes')}</DialogContent>
+        </Dialog>
+      ),
+    },
+    {
+      accessorKey: 'steam',
+      header: 'Steam Link',
+      cell: ({ row }) => {
+        const steam = row.getValue('steam')
+        return (
+          <>
+            {!steam ? (
+              ''
+            ) : (
+              <a
+                href={`https://store.steampowered.com/app/${steam}/`}
+                target="_blank"
+                className="flex justify-center w-full"
+              >
+                <BsSteam />
+              </a>
+            )}
+          </>
+        )
+      },
+    },
+    {
+      id: 'delete',
+      header: '',
+      cell: ({ row }) => (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => deleteGame(row.original.id)}
+          className="text-red-400 hover:text-red-300"
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      ),
+    },
+  ]
   const table = useReactTable({
     data: games,
     columns,
@@ -230,7 +265,7 @@ function RouteComponent() {
     <>
       <div className="flex items-center justify-between mb-8">
         <h1 className=" text-2xl font-bold">Games</h1>
-        <AddCountryModal />
+        <AddGameModal />
       </div>
       <div className="overflow-hidden rounded-md border">
         <div className="flex items-center py-4 justify-end m-2">
