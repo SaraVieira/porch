@@ -9,7 +9,7 @@ export const Route = createFileRoute('/api/auth/spotify/')({
   },
 })
 
-export async function GET() {
+export function GET() {
   const url = getSpotifyAuthUrl()
   return new Response(null, {
     status: 302,

@@ -49,12 +49,9 @@ export async function POST({ request }: { request: Request }) {
 
     const todo = result[0]
 
-    // Push to Google Tasks (fire-and-forget)
-    if (todo) {
-      pushToGoogle(todo).catch((err) =>
-        console.error('Failed to push todo to Google:', err),
-      )
-    }
+    pushToGoogle(todo).catch((err) =>
+      console.error('Failed to push todo to Google:', err),
+    )
 
     return json(todo, { status: 201 })
   } catch (error) {

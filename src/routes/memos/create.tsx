@@ -9,9 +9,9 @@ import type { MoodType } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { uploadFileToZipline, validateFile } from '@/lib/upload'
-import { MOODS } from '@/lib/consts'
+import { MoodSelector } from '@/components/pages/memos/MoodSelector'
+import { CurrentMoodCard } from '@/components/pages/memos/CurrentMoodCard'
 
 export const Route = createFileRoute('/memos/create')({
   ssr: false,
@@ -28,7 +28,6 @@ export interface Memo {
   updatedAt: Date | null
 }
 
-// Client-side API function for creating memo
 async function createMemo(memo: {
   title: string
   content: string
@@ -54,7 +53,6 @@ function CreateMemoPage() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  // Create memo mutation
   const createMemoMutation = useMutation({
     mutationFn: createMemo,
     onMutate: () => {
@@ -98,10 +96,9 @@ function CreateMemoPage() {
           onSuccess: (uploadedFile) => {
             setContent((prevContent) => {
               const imageMarkdown = `![${uploadedFile.id}](${uploadedFile.url})`
-              const newContent = prevContent
+              return prevContent
                 ? prevContent + '\n' + imageMarkdown
                 : imageMarkdown
-              return newContent
             })
             toast.success('Image uploaded successfully!')
           },
@@ -149,7 +146,6 @@ function CreateMemoPage() {
 
   return (
     <div className="container mx-auto p-6">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="outline" size="sm" onClick={handleCancel}>
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -164,7 +160,6 @@ function CreateMemoPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Editor */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
@@ -174,7 +169,6 @@ function CreateMemoPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Title */}
               <div>
                 <label className="text-sm font-medium mb-2 block">Title</label>
                 <Input
@@ -185,35 +179,11 @@ function CreateMemoPage() {
                 />
               </div>
 
-              {/* Mood Selector */}
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  How are you feeling?
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {MOODS.map((mood) => {
-                    const IconComponent = mood.icon
-                    return (
-                      <button
-                        key={mood.type}
-                        onClick={() => setSelectedMood(mood.type)}
-                        className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all hover:scale-105 ${
-                          selectedMood === mood.type
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:border-primary/50'
-                        }`}
-                      >
-                        <IconComponent className="w-4 h-4" />
-                        <span className="text-sm font-medium">
-                          {mood.label}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
+              <MoodSelector
+                selectedMood={selectedMood}
+                onSelectMood={setSelectedMood}
+              />
 
-              {/* Content Editor */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium">Content</label>
@@ -246,7 +216,6 @@ function CreateMemoPage() {
                 />
               </div>
 
-              {/* Actions */}
               <div className="flex gap-3 pt-4">
                 <Button
                   onClick={handleSave}
@@ -268,36 +237,9 @@ function CreateMemoPage() {
           </Card>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
-          {/* Current Mood */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Current Mood</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {(() => {
-                const currentMood = MOODS.find((m) => m.type === selectedMood)
-                if (!currentMood) return null
-                const IconComponent = currentMood.icon
-                return (
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 rounded-full bg-primary/10">
-                      <IconComponent className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{currentMood.label}</p>
-                      <Badge className={currentMood.color}>
-                        {currentMood.label}
-                      </Badge>
-                    </div>
-                  </div>
-                )
-              })()}
-            </CardContent>
-          </Card>
+          <CurrentMoodCard selectedMood={selectedMood} />
 
-          {/* Tips */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Writing Tips</CardTitle>

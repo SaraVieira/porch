@@ -1,13 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { db } from '@/db'
-import { rssFeeds, rssArticles, rssCategories } from '@/db/schema'
-import {
-  discoverFeed,
-  getFaviconUrl,
-  parseFeed,
-  getRssArticles,
-} from '@/lib/rss'
+import { rssFeeds, rssArticles } from '@/db/schema'
+import { discoverFeed, getFaviconUrl, getRssArticles } from '@/lib/rss'
 import { json } from '@/lib/api'
 
 export const Route = createFileRoute('/api/rss/')({

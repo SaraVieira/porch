@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   X,
   RefreshCw,
@@ -6,10 +7,6 @@ import {
   Clock,
   AlignLeft,
 } from 'lucide-react'
-import { useQueryClient, useQuery } from '@tanstack/react-query'
-import { createServerFn } from '@tanstack/react-start'
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
@@ -19,53 +16,8 @@ import { Skeleton } from '../ui/skeleton'
 import { ScrollArea } from '../ui/scroll-area'
 import { Calendar } from '../ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { get, post, put, deleteMethod } from '@/lib/utils'
-import type { CheckedState } from '@radix-ui/react-checkbox'
-
-type Todo = {
-  id: number
-  title: string
-  notes: string | null
-  dueDate: string | null
-  googleTaskId: string | null
-  done: boolean
-  createdAt: Date | null
-  updatedAt: Date | null
-  done_by: string | null
-}
-
-const getTodos = createServerFn({
-  method: 'GET',
-}).handler(() => get('/api/todos'))
-
-const createTodo = createServerFn({
-  method: 'POST',
-})
-  .inputValidator(
-    (data: {
-      title: string
-      dueDate?: string
-      dueTime?: string
-      notes?: string
-    }) => data,
-  )
-  .handler(({ data }) => post('/api/todos', data))
-
-const toggleDoneTodo = createServerFn({
-  method: 'POST',
-})
-  .inputValidator((data: { done: boolean; id: string }) => data)
-  .handler(({ data }) => put(`/api/todos/${data.id}`, data))
-
-const removeTodo = createServerFn({
-  method: 'POST',
-})
-  .inputValidator((data: { id: string }) => data)
-  .handler(({ data }) => deleteMethod(`/api/todos/${data.id}`))
-
-const syncTodos = createServerFn({
-  method: 'POST',
-}).handler(() => post('/api/todos/sync', {}))
+import { WidgetShell } from '../WidgetShell'
+import { useTodos } from '@/hooks/useTodos'
 
 function formatDueDate(dateStr: string) {
   const hasTime = dateStr.includes('T')
@@ -97,52 +49,25 @@ function formatDueDate(dateStr: string) {
 }
 
 export function Todos() {
-  const queryClient = useQueryClient()
-  const [syncing, setSyncing] = useState(false)
+  const { todos, isLoading, syncing, handleSync, handleCreate, handleToggle, handleRemove } =
+    useTodos()
   const [formOpen, setFormOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [dueTime, setDueTime] = useState('')
   const [notes, setNotes] = useState('')
 
-  const { data: todos, isLoading } = useQuery<Array<Todo>>({
-    queryKey: ['todos'],
-    queryFn: () => getTodos(),
-  })
-
-  // Sync on mount
-  useEffect(() => {
-    syncTodos()
-      .then(() => queryClient.invalidateQueries({ queryKey: ['todos'] }))
-      .catch(() => {})
-  }, [])
-
-  const handleSync = async () => {
-    setSyncing(true)
-    try {
-      await syncTodos()
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-    } catch (err) {
-      console.error('Sync failed:', err)
-    } finally {
-      setSyncing(false)
-    }
-  }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!title.trim()) return
 
     try {
-      await createTodo({
-        data: {
-          title: title.trim(),
-          ...(dueDate ? { dueDate } : {}),
-          ...(dueTime ? { dueTime } : {}),
-          ...(notes.trim() ? { notes: notes.trim() } : {}),
-        },
+      await handleCreate({
+        title: title.trim(),
+        ...(dueDate ? { dueDate } : {}),
+        ...(dueTime ? { dueTime } : {}),
+        ...(notes.trim() ? { notes: notes.trim() } : {}),
       })
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
       setTitle('')
       setDueDate('')
       setDueTime('')
@@ -153,39 +78,10 @@ export function Todos() {
     }
   }
 
-  const onChange = ({ state, id }: { state: CheckedState; id: string }) => {
-    toggleDoneTodo({
-      data: {
-        id,
-        done: !!state,
-      },
-    })
-    queryClient.invalidateQueries({
-      queryKey: ['todos'],
-    })
-  }
-
-  if (isLoading || !todos) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Todos</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="h-10 w-full" />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
-
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Todos</CardTitle>
+    <WidgetShell
+      title="Todos"
+      headerActions={
         <Button
           variant="ghost"
           size="icon"
@@ -197,205 +93,206 @@ export function Todos() {
             className={`w-3.5 h-3.5 ${syncing ? 'animate-spin' : ''}`}
           />
         </Button>
-      </CardHeader>
-
-      <CardContent>
-        <ScrollArea className="h-[350px]">
-          <ul className="space-y-3 mb-6">
-            {todos
-              .filter((t) => !t.done)
-              .map((todo, i) => (
-                <li
-                  className="flex w-full max-w-md flex-col gap-6"
-                  key={`${todo.title}-${i}`}
-                >
-                  <Item variant="outline" className="p-2">
-                    <ItemContent>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <Checkbox
-                            onCheckedChange={(state) =>
-                              onChange({ state, id: todo.id.toString() })
+      }
+      loading={isLoading || !todos}
+      skeleton={
+        <div className="space-y-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-10 w-full" />
+          ))}
+        </div>
+      }
+    >
+      <ScrollArea className="h-[350px]">
+        <ul className="space-y-3 mb-6">
+          {todos
+            ?.filter((t) => !t.done)
+            .map((todo, i) => (
+              <li
+                className="flex w-full max-w-md flex-col gap-6"
+                key={`${todo.title}-${i}`}
+              >
+                <Item variant="outline" className="p-2">
+                  <ItemContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Checkbox
+                          onCheckedChange={(state) =>
+                            handleToggle({ state, id: todo.id.toString() })
+                          }
+                          checked={todo.done}
+                        />
+                        <div className="min-w-0">
+                          <div
+                            className={
+                              todo.done ? 'line-through opacity-50' : ''
                             }
-                            checked={todo.done}
-                          />
-                          <div className="min-w-0">
-                            <div
-                              className={
-                                todo.done ? 'line-through opacity-50' : ''
-                              }
-                            >
-                              {todo.title}
-                            </div>
-                            {todo.dueDate && (
-                              <div
-                                className={`text-xs ${
-                                  formatDueDate(todo.dueDate).startsWith(
-                                    'Overdue',
-                                  )
-                                    ? 'text-red-400'
-                                    : 'text-muted-foreground'
-                                }`}
-                              >
-                                {formatDueDate(todo.dueDate)}
-                              </div>
-                            )}
+                          >
+                            {todo.title}
                           </div>
+                          {todo.dueDate && (
+                            <div
+                              className={`text-xs ${
+                                formatDueDate(todo.dueDate).startsWith(
+                                  'Overdue',
+                                )
+                                  ? 'text-red-400'
+                                  : 'text-muted-foreground'
+                              }`}
+                            >
+                              {formatDueDate(todo.dueDate)}
+                            </div>
+                          )}
                         </div>
-
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="shrink-0 h-6 w-6"
-                          onClick={() => {
-                            removeTodo({ data: { id: todo.id.toString() } })
-                            queryClient.invalidateQueries({
-                              queryKey: ['todos'],
-                            })
-                          }}
-                        >
-                          <X className="w-3 h-3" />
-                        </Button>
                       </div>
-                    </ItemContent>
-                  </Item>
-                </li>
-              ))}
-            {todos.filter((t) => !t.done).length === 0 && (
-              <li className="text-center py-8 text-indigo-300/70">
-                No todos yet. Create one below!
-              </li>
-            )}
-          </ul>
-        </ScrollArea>
 
-        {formOpen ? (
-          <form onSubmit={handleSubmit} className="space-y-3 border-t pt-3">
-            <Input
-              type="text"
-              placeholder="Task title..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              autoFocus
-            />
-            <div className="flex items-center gap-2">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className={`flex-1 justify-start text-left font-normal ${!dueDate ? 'text-muted-foreground' : ''}`}
-                  >
-                    <CalendarIcon className="w-4 h-4 mr-2" />
-                    {dueDate
-                      ? new Date(dueDate + 'T00:00:00').toLocaleDateString(
-                          'en-GB',
-                          {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                          },
-                        )
-                      : 'Pick a date'}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={
-                      dueDate ? new Date(dueDate + 'T00:00:00') : undefined
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="shrink-0 h-6 w-6"
+                        onClick={() => handleRemove(todo.id)}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </ItemContent>
+                </Item>
+              </li>
+            ))}
+          {todos?.filter((t) => !t.done).length === 0 && (
+            <li className="text-center py-8 text-indigo-300/70">
+              No todos yet. Create one below!
+            </li>
+          )}
+        </ul>
+      </ScrollArea>
+
+      {formOpen ? (
+        <form onSubmit={handleSubmit} className="space-y-3 border-t pt-3">
+          <Input
+            type="text"
+            placeholder="Task title..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            autoFocus
+          />
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={`flex-1 justify-start text-left font-normal ${!dueDate ? 'text-muted-foreground' : ''}`}
+                >
+                  <CalendarIcon className="w-4 h-4 mr-2" />
+                  {dueDate
+                    ? new Date(dueDate + 'T00:00:00').toLocaleDateString(
+                        'en-GB',
+                        {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        },
+                      )
+                    : 'Pick a date'}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={
+                    dueDate ? new Date(dueDate + 'T00:00:00') : undefined
+                  }
+                  onSelect={(date) => {
+                    if (date) {
+                      const y = date.getFullYear()
+                      const m = String(date.getMonth() + 1).padStart(2, '0')
+                      const d = String(date.getDate()).padStart(2, '0')
+                      setDueDate(`${y}-${m}-${d}`)
+                    } else {
+                      setDueDate('')
+                      setDueTime('')
                     }
-                    onSelect={(date) => {
-                      if (date) {
-                        const y = date.getFullYear()
-                        const m = String(date.getMonth() + 1).padStart(2, '0')
-                        const d = String(date.getDate()).padStart(2, '0')
-                        setDueDate(`${y}-${m}-${d}`)
-                      } else {
-                        setDueDate('')
-                        setDueTime('')
-                      }
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-              {dueDate && (
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+            {dueDate && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="shrink-0 h-8 w-8"
+                onClick={() => {
+                  setDueDate('')
+                  setDueTime('')
+                }}
+              >
+                <X className="w-3 h-3" />
+              </Button>
+            )}
+          </div>
+          {dueDate && (
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
+              <Input
+                type="time"
+                value={dueTime}
+                onChange={(e) => setDueTime(e.target.value)}
+                className="flex-1"
+              />
+              {dueTime && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   className="shrink-0 h-8 w-8"
-                  onClick={() => {
-                    setDueDate('')
-                    setDueTime('')
-                  }}
+                  onClick={() => setDueTime('')}
                 >
                   <X className="w-3 h-3" />
                 </Button>
               )}
             </div>
-            {dueDate && (
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
-                <Input
-                  type="time"
-                  value={dueTime}
-                  onChange={(e) => setDueTime(e.target.value)}
-                  className="flex-1"
-                />
-                {dueTime && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="shrink-0 h-8 w-8"
-                    onClick={() => setDueTime('')}
-                  >
-                    <X className="w-3 h-3" />
-                  </Button>
-                )}
-              </div>
-            )}
-            <div className="flex items-start gap-2">
-              <AlignLeft className="w-4 h-4 text-muted-foreground shrink-0 mt-2.5" />
-              <Textarea
-                placeholder="Description..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                className="flex-1 min-h-[60px]"
-                rows={2}
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setFormOpen(false)
-                  setTitle('')
-                  setDueDate('')
-                  setDueTime('')
-                  setNotes('')
-                }}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" size="sm" disabled={!title.trim()}>
-                Save
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <button
-            onClick={() => setFormOpen(true)}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full pt-3 border-t"
-          >
-            <Plus className="w-4 h-4" />
-            Add a new todo
-          </button>
-        )}
-      </CardContent>
-    </Card>
+          )}
+          <div className="flex items-start gap-2">
+            <AlignLeft className="w-4 h-4 text-muted-foreground shrink-0 mt-2.5" />
+            <Textarea
+              placeholder="Description..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="flex-1 min-h-[60px]"
+              rows={2}
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setFormOpen(false)
+                setTitle('')
+                setDueDate('')
+                setDueTime('')
+                setNotes('')
+              }}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" disabled={!title.trim()}>
+              Save
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <button
+          onClick={() => setFormOpen(true)}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full pt-3 border-t"
+        >
+          <Plus className="w-4 h-4" />
+          Add a new todo
+        </button>
+      )}
+    </WidgetShell>
   )
 }

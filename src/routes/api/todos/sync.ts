@@ -162,10 +162,10 @@ export async function POST() {
         )
 
         if (createRes.ok) {
-          const created = await createRes.json()
+          const newTask = await createRes.json()
           await db!
             .update(todosSchema)
-            .set({ googleTaskId: created.id, updatedAt: new Date() })
+            .set({ googleTaskId: newTask.id, updatedAt: new Date() })
             .where(eq(todosSchema.id, todo.id))
           pushed++
         }

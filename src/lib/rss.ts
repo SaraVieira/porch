@@ -1,7 +1,7 @@
 import { XMLParser } from 'fast-xml-parser'
-import { eq, desc, and, inArray, notInArray } from 'drizzle-orm'
+import { eq, and, notInArray } from 'drizzle-orm'
 import { db } from '@/db'
-import { rssFeeds, rssArticles, rssCategories } from '@/db/schema'
+import { rssArticles } from '@/db/schema'
 import type { RssArticleWithFeed } from './types'
 
 const CACHE_TTL = 30 * 60 * 1000 // 30 minutes

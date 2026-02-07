@@ -1,40 +1,32 @@
-import { useQuery } from '@tanstack/react-query'
-import { ArrowUpRight } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '../ui/card'
-import { formatBytes, get } from '@/lib/utils'
+import { WidgetShell } from '../WidgetShell'
+import { useRomm } from '@/hooks/useRomm'
+import { formatBytes } from '@/lib/utils'
 
 export const Romm = () => {
-  const { data: stats } = useQuery({
-    queryKey: ['romm', 'stats'],
-    queryFn: () => get('https://roms.iamsaravieira.com/api/stats'),
-  })
-
-  if (!stats) return null
+  const { stats, isLoading } = useRomm()
 
   return (
-    <Card>
-      <CardHeader className="flex justify-between items-center">
-        <h3 className="font-semibold">Romm Stats</h3>
-        <a href="https://roms.iamsaravieira.com" target="_blank">
-          <ArrowUpRight className="w-4 text-orange-accent" />
-        </a>
-      </CardHeader>
-      <CardContent className="flex flex-row justify-between text-center">
-        <div>
-          <div className="color-primary text-base">{stats.PLATFORMS}</div>
-          <span className="text-muted-foreground text-sm">Platforms</span>
+    <WidgetShell
+      title="Romm Stats"
+      link={{ to: 'https://roms.iamsaravieira.com', external: true }}
+      hideWhileLoading
+      loading={isLoading || !stats}
+      contentClassName="flex flex-row justify-between text-center"
+    >
+      <div>
+        <div className="color-primary text-base">{stats?.PLATFORMS}</div>
+        <span className="text-muted-foreground text-sm">Platforms</span>
+      </div>
+      <div>
+        <div className="color-highlight size-h3">{stats?.ROMS}</div>
+        <span className="text-muted-foreground text-sm">Roms</span>
+      </div>
+      <div>
+        <div className="color-highlight size-h3">
+          {stats && formatBytes(stats.TOTAL_FILESIZE_BYTES, 0)}
         </div>
-        <div>
-          <div className="color-highlight size-h3">{stats.ROMS}</div>
-          <span className="text-muted-foreground text-sm">Roms</span>
-        </div>
-        <div>
-          <div className="color-highlight size-h3">
-            {formatBytes(stats.TOTAL_FILESIZE_BYTES, 0)}
-          </div>
-          <span className="text-muted-foreground text-sm">Filesize</span>
-        </div>
-      </CardContent>
-    </Card>
+        <span className="text-muted-foreground text-sm">Filesize</span>
+      </div>
+    </WidgetShell>
   )
 }

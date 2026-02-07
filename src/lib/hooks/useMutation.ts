@@ -13,18 +13,18 @@ export function useMutation<TVariables, TData, TError = Error>(opts: {
   >('idle')
 
   const mutate = React.useCallback(
-    async (variables: TVariables): Promise<TData | undefined> => {
+    async (mutateVariables: TVariables): Promise<TData | undefined> => {
       setStatus('pending')
       setSubmittedAt(Date.now())
       setVariables(variables)
       //
       try {
-        const data = await opts.fn(variables)
-        await opts.onSuccess?.({ data })
+        const result = await opts.fn(mutateVariables)
+        await opts.onSuccess?.({ data: result })
         setStatus('success')
         setError(undefined)
-        setData(data)
-        return data
+        setData(result)
+        return result
       } catch (err: any) {
         setStatus('error')
         setError(err)

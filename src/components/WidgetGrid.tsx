@@ -6,10 +6,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  type DragStartEvent,
-  type DragOverEvent,
-  type DragEndEvent,
 } from '@dnd-kit/core'
+import type { DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core'
 import {
   SortableContext,
   useSortable,
@@ -41,7 +39,6 @@ function SortableWidget({ id }: { id: string }) {
   }
 
   const widget = widgetRegistry[id]
-  if (!widget) return null
 
   const Component = widget.component
 

@@ -9,7 +9,7 @@ export const Route = createFileRoute('/api/auth/google/')({
   },
 })
 
-export async function GET() {
+export function GET() {
   const url = getGoogleAuthUrl()
   return new Response(null, {
     status: 302,

@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { desc, eq } from 'drizzle-orm'
-import { habits as habitsSchema, habitCompletions } from '@/db/schema'
+import { desc } from 'drizzle-orm'
+import { habits as habitsSchema } from '@/db/schema'
 import { db } from '@/db'
 import { format, subDays, differenceInCalendarDays, parseISO } from 'date-fns'
 import type { HabitWithStats } from '@/lib/types'

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
 import AutoHeight from 'embla-carousel-auto-height'
-import type { CarouselApi } from '../../ui/carousel'
 import { Card, CardContent } from '../../ui/card'
 import {
   Carousel,
@@ -15,8 +14,9 @@ import { Skeleton } from '../../ui/skeleton'
 import { CurrentWeather } from './Current'
 import { DailyWeather } from './Daily'
 import LocationWeather from './Locatiion'
-import { get } from '@/lib/utils'
+import type { CarouselApi } from '../../ui/carousel'
 import type { WeatherData } from '@/lib/types'
+import { get } from '@/lib/utils'
 
 const getWeather = createServerFn({
   method: 'GET',

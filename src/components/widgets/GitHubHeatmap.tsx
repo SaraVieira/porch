@@ -25,6 +25,7 @@ function getMonthLabels(weeks: Array<GitHubContributionWeek>) {
 
   for (let i = 0; i < weeks.length; i++) {
     const firstDay = weeks[i].contributionDays[0]
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!firstDay) continue
     const month = new Date(firstDay.date).getMonth()
     if (month !== lastMonth) {

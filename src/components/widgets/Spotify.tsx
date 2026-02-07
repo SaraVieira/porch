@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from 'react'
 import {
   Pause,
   Play,
@@ -8,18 +7,12 @@ import {
   SkipBack,
   SkipForward,
 } from 'lucide-react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createServerFn } from '@tanstack/react-start'
 import clsx from 'clsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Progress } from '../ui/progress'
 import { Skeleton } from '../ui/skeleton'
-import { get } from '@/lib/utils'
-
-const getSpotify = createServerFn({
-  method: 'GET',
-}).handler(() => get('/api/spotify/status'))
+import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
 
 const formatTime = (ms: number) => {
   const totalSeconds = Math.floor(ms / 1000)
@@ -29,81 +22,21 @@ const formatTime = (ms: number) => {
 }
 
 export function Spotify() {
-  const queryClient = useQueryClient()
-  const [localProgress, setLocalProgress] = useState(0)
-  const lastFetchTime = useRef(Date.now())
-
-  const { data: spotifyData, isLoading } = useQuery<any>({
-    queryKey: ['spotify-current-song'],
-    queryFn: () => getSpotify(),
-    refetchInterval: 5000,
-  })
-
-  // Interpolate progress between polls
-  useEffect(() => {
-    if (!spotifyData || spotifyData.closed) return
-
-    lastFetchTime.current = Date.now()
-    setLocalProgress(spotifyData.progress_ms || 0)
-
-    const interval = setInterval(() => {
-      setLocalProgress((prev) => {
-        const next = prev + 1000
-        if (next >= (spotifyData.duration_ms || 0))
-          return spotifyData.duration_ms || 0
-        return next
-      })
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [
-    spotifyData?.progress_ms,
-    spotifyData?.song,
-    spotifyData?.closed,
-    spotifyData?.duration_ms,
-  ])
-
-  const invalidate = () =>
-    queryClient.invalidateQueries({ queryKey: ['spotify-current-song'] })
-
-  const nextMutation = useMutation({
-    mutationFn: () =>
-      fetch('/api/spotify/next', { method: 'POST' }).then((r) => r.json()),
-    onSuccess: () => setTimeout(invalidate, 300),
-  })
-  const prevMutation = useMutation({
-    mutationFn: () =>
-      fetch('/api/spotify/prev', { method: 'POST' }).then((r) => r.json()),
-    onSuccess: () => setTimeout(invalidate, 300),
-  })
-  const playMutation = useMutation({
-    mutationFn: () =>
-      fetch('/api/spotify/play', { method: 'PUT' }).then((r) => r.json()),
-    onSuccess: invalidate,
-  })
-  const pauseMutation = useMutation({
-    mutationFn: () =>
-      fetch('/api/spotify/pause', { method: 'PUT' }).then((r) => r.json()),
-    onSuccess: invalidate,
-  })
-  const shuffleMutation = useMutation({
-    mutationFn: (state: boolean) =>
-      fetch('/api/spotify/shuffle', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ state }),
-      }).then((r) => r.json()),
-    onSuccess: invalidate,
-  })
-  const repeatMutation = useMutation({
-    mutationFn: (state: string) =>
-      fetch('/api/spotify/repeat', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ state }),
-      }).then((r) => r.json()),
-    onSuccess: invalidate,
-  })
+  const {
+    data: spotifyData,
+    isLoading,
+    localProgress,
+    isPlaying,
+    progressPercentage,
+    play,
+    pause,
+    next,
+    prev,
+    shuffle,
+    repeat,
+    shuffleState,
+    repeatState,
+  } = useSpotifyPlayer()
 
   if (isLoading || !spotifyData) {
     return (
@@ -126,35 +59,12 @@ export function Spotify() {
     )
   }
 
-  const isPlaying = !spotifyData.closed
-  const progressPercentage = spotifyData.duration_ms
-    ? (localProgress / spotifyData.duration_ms) * 100
-    : 0
-
   const handlePlayPause = () => {
     if (isPlaying) {
-      pauseMutation.mutate()
+      pause()
     } else {
-      playMutation.mutate()
+      play()
     }
-  }
-
-  const handleShuffle = () => {
-    shuffleMutation.mutate(!spotifyData.shuffle_state)
-  }
-
-  const nextRepeatState = () => {
-    // Cycle: off → context → track → off
-    const cycle: Record<string, string> = {
-      off: 'context',
-      context: 'track',
-      track: 'off',
-    }
-    return cycle[spotifyData.repeat_state] || 'off'
-  }
-
-  const handleRepeat = () => {
-    repeatMutation.mutate(nextRepeatState())
   }
 
   return (
@@ -172,7 +82,6 @@ export function Spotify() {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Album Cover and Song Info */}
         <div className="flex gap-4">
           <div className="w-16 h-16 bg-linear-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shrink-0">
             {spotifyData?.item?.album?.images ? (
@@ -192,7 +101,6 @@ export function Spotify() {
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="space-y-2">
           <Progress value={progressPercentage} className="h-1" />
           <div className="flex justify-between text-xs text-muted-foreground">
@@ -203,15 +111,14 @@ export function Spotify() {
           </div>
         </div>
 
-        {/* Control Buttons */}
         <div className="flex items-center justify-center gap-4">
           <Button
             disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
-            onClick={handleShuffle}
+            onClick={shuffle}
             className={
-              spotifyData.shuffle_state
+              shuffleState
                 ? 'text-green-500'
                 : 'text-muted-foreground'
             }
@@ -223,7 +130,7 @@ export function Spotify() {
             disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
-            onClick={() => prevMutation.mutate()}
+            onClick={prev}
           >
             <SkipBack className="w-4 h-4" />
           </Button>
@@ -246,7 +153,7 @@ export function Spotify() {
             disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
-            onClick={() => nextMutation.mutate()}
+            onClick={next}
           >
             <SkipForward className="w-4 h-4" />
           </Button>
@@ -255,14 +162,14 @@ export function Spotify() {
             disabled={spotifyData.closed}
             variant="ghost"
             size="icon-sm"
-            onClick={handleRepeat}
+            onClick={repeat}
             className={
-              spotifyData.repeat_state !== 'off'
+              repeatState !== 'off'
                 ? 'text-green-500'
                 : 'text-muted-foreground'
             }
           >
-            {spotifyData.repeat_state === 'track' ? (
+            {repeatState === 'track' ? (
               <Repeat1 className="w-4 h-4" />
             ) : (
               <Repeat className="w-4 h-4" />
