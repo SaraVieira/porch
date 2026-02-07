@@ -498,6 +498,8 @@ export interface YouTubeVideo {
   publishedAt: string
   thumbnail: string
   link: string
+  duration?: string
+  viewCount?: string
 }
 
 export interface YouTubeChannel {

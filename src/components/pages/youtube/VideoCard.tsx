@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns'
 import { Bookmark } from 'lucide-react'
 import type { YouTubeVideo } from '@/lib/types'
+import { formatDuration, formatViewCount } from '@/lib/youtube-format'
 import { useBookmarks } from '@/hooks/useBookmarks'
 
 type VideoCardProps = {
@@ -12,11 +13,9 @@ export function VideoCard({ video }: VideoCardProps) {
   const isBookmarked = bookmarks?.some((b) => b.url === video.link)
 
   return (
-    <a
-      href={video.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group rounded-lg border border-border-accent overflow-hidden hover:shadow-md transition-shadow bg-card"
+    <div
+      onClick={() => window.open(video.link, '_blank', 'noopener,noreferrer')}
+      className="group cursor-pointer rounded-lg border border-border-accent overflow-hidden hover:shadow-md transition-shadow bg-card"
     >
       <div className="aspect-video relative overflow-hidden">
         <img
@@ -25,6 +24,11 @@ export function VideoCard({ video }: VideoCardProps) {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform"
           loading="lazy"
         />
+        {video.duration && (
+          <span className="absolute bottom-1 right-1 bg-black/80 text-white text-xs font-medium px-1.5 py-0.5 rounded">
+            {formatDuration(video.duration)}
+          </span>
+        )}
       </div>
       <div className="p-3 flex flex-col gap-1">
         <div className="flex items-start justify-between gap-1">
@@ -33,7 +37,6 @@ export function VideoCard({ video }: VideoCardProps) {
           </span>
           <button
             onClick={(e) => {
-              e.preventDefault()
               e.stopPropagation()
               if (!isBookmarked) createBookmark(video.link)
             }}
@@ -51,8 +54,9 @@ export function VideoCard({ video }: VideoCardProps) {
           {formatDistanceToNow(new Date(video.publishedAt), {
             addSuffix: true,
           })}
+          {video.viewCount && ` · ${formatViewCount(video.viewCount)} views`}
         </span>
       </div>
-    </a>
+    </div>
   )
 }

@@ -150,6 +150,45 @@ async function filterOutShorts(
   return results
 }
 
+async function enrichVideosWithDetails(
+  videos: Array<YouTubeVideo>,
+): Promise<Array<YouTubeVideo>> {
+  const ENRICH_BATCH = 50
+  const detailsMap = new Map<string, { duration?: string; viewCount?: string }>()
+
+  for (let i = 0; i < videos.length; i += ENRICH_BATCH) {
+    const batch = videos.slice(i, i + ENRICH_BATCH)
+    const ids = batch.map((v) => v.id).join(',')
+
+    try {
+      const res = await googleFetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=${ids}`,
+      )
+
+      if (!res.ok) {
+        console.error('Failed to enrich videos:', await res.text())
+        continue
+      }
+
+      const data = await res.json()
+      for (const item of data.items ?? []) {
+        detailsMap.set(item.id, {
+          duration: item.contentDetails?.duration,
+          viewCount: item.statistics?.viewCount,
+        })
+      }
+    } catch (err) {
+      console.error('Error enriching video batch:', err)
+    }
+  }
+
+  return videos.map((video) => {
+    const details = detailsMap.get(video.id)
+    if (!details) return video
+    return { ...video, duration: details.duration, viewCount: details.viewCount }
+  })
+}
+
 async function fetchAllVideos(): Promise<Array<YouTubeVideo>> {
   const channels = await fetchSubscriptions()
   const allVideos: Array<YouTubeVideo> = []
@@ -172,7 +211,8 @@ async function fetchAllVideos(): Promise<Array<YouTubeVideo>> {
     (v) => !FILTERED_CHANNELS.includes(v.channelName),
   )
 
-  return filterOutShorts(filtered.slice(0, 500))
+  const nonShorts = await filterOutShorts(filtered.slice(0, 500))
+  return enrichVideosWithDetails(nonShorts)
 }
 
 async function refreshCache(): Promise<Array<YouTubeVideo>> {

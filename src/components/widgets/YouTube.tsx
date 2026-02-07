@@ -5,6 +5,7 @@ import { Skeleton } from '../ui/skeleton'
 import { WidgetShell } from '../WidgetShell'
 import { useYouTube } from '@/hooks/useYouTube'
 import { useBookmarks } from '@/hooks/useBookmarks'
+import { formatDuration, formatViewCount } from '@/lib/youtube-format'
 
 function VideoSkeleton() {
   return (
@@ -48,12 +49,19 @@ export const YouTube = () => {
                 rel="noopener noreferrer"
                 className="flex gap-3 p-2 rounded hover:bg-accent/50 transition-colors"
               >
-                <img
-                  src={video.thumbnail}
-                  alt=""
-                  className="w-30 h-17 rounded object-cover shrink-0"
-                  loading="lazy"
-                />
+                <div className="relative shrink-0">
+                  <img
+                    src={video.thumbnail}
+                    alt=""
+                    className="w-30 h-17 rounded object-cover"
+                    loading="lazy"
+                  />
+                  {video.duration && (
+                    <span className="absolute bottom-0.5 right-0.5 bg-black/80 text-white text-[10px] font-medium px-1 py-px rounded">
+                      {formatDuration(video.duration)}
+                    </span>
+                  )}
+                </div>
                 <div className="flex flex-col gap-0.5 min-w-0 flex-1">
                   <span className="text-sm font-medium line-clamp-2 leading-tight">
                     {video.title}
@@ -65,6 +73,8 @@ export const YouTube = () => {
                     {formatDistanceToNow(new Date(video.publishedAt), {
                       addSuffix: true,
                     })}
+                    {video.viewCount &&
+                      ` · ${formatViewCount(video.viewCount)} views`}
                   </span>
                 </div>
                 <button
