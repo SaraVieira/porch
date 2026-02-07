@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "@tanstack/react-router"
-import { useCallback } from "react"
-import { toast } from "sonner"
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
+import { useCallback } from 'react'
+import { toast } from 'sonner'
 
 export async function deleteMemo(id: number): Promise<void> {
   const response = await fetch(`/api/memos/${id}`, {
@@ -26,9 +25,12 @@ export const useDeleteMemo = () => {
     },
   })
 
-  const handleDeleteMemo = useCallback(({id}: {id: number}) => {
-    deleteMemoMutation.mutate(id)
-  }, [deleteMemoMutation])
+  const handleDeleteMemo = useCallback(
+    ({ id }: { id: number }) => {
+      deleteMemoMutation.mutate(id)
+    },
+    [deleteMemoMutation],
+  )
 
   return { handleDeleteMemo }
 }

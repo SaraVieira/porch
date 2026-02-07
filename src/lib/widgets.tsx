@@ -27,7 +27,11 @@ export const widgetRegistry: Record<
   todos: { component: Todos, label: 'Todos', defaultColumn: 'right' },
   habits: { component: Habits, label: 'Habits', defaultColumn: 'right' },
   romm: { component: Romm, label: 'Romm', defaultColumn: 'right' },
-  bookmarks: { component: Bookmarks, label: 'Bookmarks', defaultColumn: 'center' },
+  bookmarks: {
+    component: Bookmarks,
+    label: 'Bookmarks',
+    defaultColumn: 'center',
+  },
   rss: { component: Rss, label: 'RSS', defaultColumn: 'center' },
 }
 

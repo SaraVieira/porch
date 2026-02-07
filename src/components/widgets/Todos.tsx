@@ -1,4 +1,11 @@
-import { X, RefreshCw, Plus, CalendarIcon, Clock, AlignLeft } from 'lucide-react'
+import {
+  X,
+  RefreshCw,
+  Plus,
+  CalendarIcon,
+  Clock,
+  AlignLeft,
+} from 'lucide-react'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
 import { useState, useEffect } from 'react'
@@ -35,7 +42,12 @@ const createTodo = createServerFn({
   method: 'POST',
 })
   .inputValidator(
-    (data: { title: string; dueDate?: string; dueTime?: string; notes?: string }) => data,
+    (data: {
+      title: string
+      dueDate?: string
+      dueTime?: string
+      notes?: string
+    }) => data,
   )
   .handler(({ data }) => post('/api/todos', data))
 
@@ -69,7 +81,8 @@ function formatDueDate(dateStr: string) {
   if (diff < 0) label = 'Overdue'
   else if (diff === 0) label = 'Today'
   else if (diff === 1) label = 'Tomorrow'
-  else label = due.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  else
+    label = due.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 
   if (hasTime) {
     const time = dateStr.split('T')[1]
@@ -189,55 +202,65 @@ export function Todos() {
       <CardContent>
         <ScrollArea className="h-[350px]">
           <ul className="space-y-3 mb-6">
-            {todos.filter((t) => !t.done).map((todo, i) => (
-              <li
-                className="flex w-full max-w-md flex-col gap-6"
-                key={`${todo.title}-${i}`}
-              >
-                <Item variant="outline" className="p-2">
-                  <ItemContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <Checkbox
-                          onCheckedChange={(state) =>
-                            onChange({ state, id: todo.id.toString() })
-                          }
-                          checked={todo.done}
-                        />
-                        <div className="min-w-0">
-                          <div className={todo.done ? 'line-through opacity-50' : ''}>
-                            {todo.title}
-                          </div>
-                          {todo.dueDate && (
+            {todos
+              .filter((t) => !t.done)
+              .map((todo, i) => (
+                <li
+                  className="flex w-full max-w-md flex-col gap-6"
+                  key={`${todo.title}-${i}`}
+                >
+                  <Item variant="outline" className="p-2">
+                    <ItemContent>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Checkbox
+                            onCheckedChange={(state) =>
+                              onChange({ state, id: todo.id.toString() })
+                            }
+                            checked={todo.done}
+                          />
+                          <div className="min-w-0">
                             <div
-                              className={`text-xs ${
-                                formatDueDate(todo.dueDate).startsWith('Overdue')
-                                  ? 'text-red-400'
-                                  : 'text-muted-foreground'
-                              }`}
+                              className={
+                                todo.done ? 'line-through opacity-50' : ''
+                              }
                             >
-                              {formatDueDate(todo.dueDate)}
+                              {todo.title}
                             </div>
-                          )}
+                            {todo.dueDate && (
+                              <div
+                                className={`text-xs ${
+                                  formatDueDate(todo.dueDate).startsWith(
+                                    'Overdue',
+                                  )
+                                    ? 'text-red-400'
+                                    : 'text-muted-foreground'
+                                }`}
+                              >
+                                {formatDueDate(todo.dueDate)}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="shrink-0 h-6 w-6"
-                        onClick={() => {
-                          removeTodo({ data: { id: todo.id.toString() } })
-                          queryClient.invalidateQueries({ queryKey: ['todos'] })
-                        }}
-                      >
-                        <X className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </ItemContent>
-                </Item>
-              </li>
-            ))}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="shrink-0 h-6 w-6"
+                          onClick={() => {
+                            removeTodo({ data: { id: todo.id.toString() } })
+                            queryClient.invalidateQueries({
+                              queryKey: ['todos'],
+                            })
+                          }}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </ItemContent>
+                  </Item>
+                </li>
+              ))}
             {todos.filter((t) => !t.done).length === 0 && (
               <li className="text-center py-8 text-indigo-300/70">
                 No todos yet. Create one below!
@@ -265,18 +288,23 @@ export function Todos() {
                   >
                     <CalendarIcon className="w-4 h-4 mr-2" />
                     {dueDate
-                      ? new Date(dueDate + 'T00:00:00').toLocaleDateString('en-GB', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })
+                      ? new Date(dueDate + 'T00:00:00').toLocaleDateString(
+                          'en-GB',
+                          {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          },
+                        )
                       : 'Pick a date'}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={dueDate ? new Date(dueDate + 'T00:00:00') : undefined}
+                    selected={
+                      dueDate ? new Date(dueDate + 'T00:00:00') : undefined
+                    }
                     onSelect={(date) => {
                       if (date) {
                         const y = date.getFullYear()

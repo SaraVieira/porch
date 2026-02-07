@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { Sun, Cloud, CloudDrizzle, CloudRain, CloudSnow, CloudLightning, Eye, Zap } from 'lucide-react'
+import {
+  Sun,
+  Cloud,
+  CloudDrizzle,
+  CloudRain,
+  CloudSnow,
+  CloudLightning,
+  Eye,
+  Zap,
+} from 'lucide-react'
 import {
   getWeatherDescription,
   getWeatherIcon,
@@ -95,7 +104,10 @@ describe('processWeatherData', () => {
         weather_code: 0,
       },
       hourly: {
-        time: Array.from({ length: 24 }, (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`),
+        time: Array.from(
+          { length: 24 },
+          (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`,
+        ),
         temperature_2m: temps,
         precipitation_probability: precip,
         weather_code: Array.from({ length: 24 }, () => 0),
@@ -134,7 +146,10 @@ describe('processWeatherData', () => {
     const result = processWeatherData(
       makeWeatherData({
         hourly: {
-          time: Array.from({ length: 24 }, (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`),
+          time: Array.from(
+            { length: 24 },
+            (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`,
+          ),
           temperature_2m: Array.from({ length: 24 }, () => 15),
           precipitation_probability: precip,
           weather_code: Array.from({ length: 24 }, () => 0),
@@ -149,7 +164,10 @@ describe('processWeatherData', () => {
     const result = processWeatherData(
       makeWeatherData({
         hourly: {
-          time: Array.from({ length: 24 }, (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`),
+          time: Array.from(
+            { length: 24 },
+            (_, i) => `2024-01-01T${String(i).padStart(2, '0')}:00`,
+          ),
           temperature_2m: Array.from({ length: 24 }, () => 15),
           precipitation_probability: precip,
           weather_code: Array.from({ length: 24 }, () => 0),

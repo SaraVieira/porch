@@ -8,12 +8,12 @@ Replace the DeskBuddy middleman for calendar events with direct Google Calendar 
 
 ## Current State
 
-| Feature | Current | Target |
-|---------|---------|--------|
-| Calendar | Fetches from `deskbuddy.deploy.iamsaravieira.com/events/all` | Direct Google Calendar API |
-| Todos | Local PostgreSQL only, basic fields | Synced with Google Tasks, expanded schema |
-| Auth | Password-only, session-based | Keep existing + add Google OAuth for API access |
-| YouTube | RSS feed parsing (no API key) | No change needed |
+| Feature  | Current                                                      | Target                                          |
+| -------- | ------------------------------------------------------------ | ----------------------------------------------- |
+| Calendar | Fetches from `deskbuddy.deploy.iamsaravieira.com/events/all` | Direct Google Calendar API                      |
+| Todos    | Local PostgreSQL only, basic fields                          | Synced with Google Tasks, expanded schema       |
+| Auth     | Password-only, session-based                                 | Keep existing + add Google OAuth for API access |
+| YouTube  | RSS feed parsing (no API key)                                | No change needed                                |
 
 ---
 
@@ -58,10 +58,12 @@ Single row table (single user app). Store refresh token to get new access tokens
 ### 1.4 API Routes
 
 **`src/routes/api/auth/google/index.ts`** — GET: Redirect to Google OAuth consent screen
+
 - Scopes: `https://www.googleapis.com/auth/calendar.readonly`, `https://www.googleapis.com/auth/tasks`
 - Set `access_type=offline` and `prompt=consent` to get refresh token
 
 **`src/routes/api/auth/google/callback.ts`** — GET: Handle OAuth callback
+
 - Exchange auth code for tokens
 - Store in `google_tokens` table
 - Redirect back to dashboard
@@ -93,20 +95,21 @@ export async function googleFetch(url: string, options?: RequestInit) {
 ### 1.6 Settings UI
 
 Add a "Connect Google" button in the Header settings popover:
+
 - Shows "Connect Google Account" if no token stored
 - Shows "Google Connected" with a disconnect option if connected
 - Connect button links to `/api/auth/google`
 
 ### Files
 
-| File | Action |
-|------|--------|
-| `src/db/schema.ts` | Add `googleTokens` table |
-| `src/routes/api/auth/google/index.ts` | Create — OAuth redirect |
-| `src/routes/api/auth/google/callback.ts` | Create — OAuth callback |
-| `src/lib/google.ts` | Create — token helper + `googleFetch` |
-| `src/components/Header.tsx` | Modify — add Connect Google button |
-| `.env.example` | Add Google env vars |
+| File                                     | Action                                |
+| ---------------------------------------- | ------------------------------------- |
+| `src/db/schema.ts`                       | Add `googleTokens` table              |
+| `src/routes/api/auth/google/index.ts`    | Create — OAuth redirect               |
+| `src/routes/api/auth/google/callback.ts` | Create — OAuth callback               |
+| `src/lib/google.ts`                      | Create — token helper + `googleFetch` |
+| `src/components/Header.tsx`              | Modify — add Connect Google button    |
+| `.env.example`                           | Add Google env vars                   |
 
 ---
 
@@ -120,7 +123,7 @@ Add a "Connect Google" button in the Header settings popover:
 // Fetch events for a date range (e.g., current month)
 const res = await googleFetch(
   `https://www.googleapis.com/calendar/v3/calendars/primary/events?` +
-  `timeMin=${startOfMonth}&timeMax=${endOfMonth}&singleEvents=true&orderBy=startTime`
+    `timeMin=${startOfMonth}&timeMax=${endOfMonth}&singleEvents=true&orderBy=startTime`,
 )
 ```
 
@@ -154,10 +157,10 @@ Cache calendar events for 5 minutes server-side to avoid hitting Google API on e
 
 ### Files
 
-| File | Action |
-|------|--------|
-| `src/routes/api/calendar/index.ts` | Create — Google Calendar API proxy |
-| `src/components/widgets/calendar.tsx` | Modify — swap data source |
+| File                                  | Action                             |
+| ------------------------------------- | ---------------------------------- |
+| `src/routes/api/calendar/index.ts`    | Create — Google Calendar API proxy |
+| `src/components/widgets/calendar.tsx` | Modify — swap data source          |
 
 ---
 
@@ -169,10 +172,10 @@ Cache calendar events for 5 minutes server-side to avoid hitting Google API on e
 export const todos = pgTable('todos', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
-  notes: text('notes'),                          // NEW — maps to Google Tasks notes
-  dueDate: text('due_date'),                     // NEW — maps to Google Tasks due
-  googleTaskId: text('google_task_id'),           // NEW — link to Google Tasks
-  googleTaskListId: text('google_task_list_id'),  // NEW — which task list
+  notes: text('notes'), // NEW — maps to Google Tasks notes
+  dueDate: text('due_date'), // NEW — maps to Google Tasks due
+  googleTaskId: text('google_task_id'), // NEW — link to Google Tasks
+  googleTaskListId: text('google_task_list_id'), // NEW — which task list
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
   done: boolean().default(false).notNull(),
@@ -183,11 +186,13 @@ export const todos = pgTable('todos', {
 ### 3.2 Sync Strategy: Push + Periodic Pull
 
 **Push (immediate):** When user creates/updates/deletes a todo locally:
+
 1. Perform the local DB operation
 2. Fire-and-forget push to Google Tasks API
 3. Store the returned `googleTaskId` on the local record
 
 **Pull (periodic):** Background sync every 5 minutes (or on widget mount):
+
 1. Fetch all tasks from Google Tasks API
 2. For each Google task:
    - If it has a matching local todo (by `googleTaskId`) → update local if Google version is newer
@@ -212,33 +217,39 @@ export const todos = pgTable('todos', {
 Modify the existing todo CRUD routes to also push changes to Google Tasks:
 
 **`src/routes/api/todos/index.ts`** — POST (create):
+
 ```ts
 // After inserting into DB:
 const googleTask = await googleFetch(
   `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks`,
-  { method: 'POST', body: JSON.stringify({ title, notes, due }) }
+  { method: 'POST', body: JSON.stringify({ title, notes, due }) },
 )
 // Update local record with googleTaskId
 ```
 
 **`src/routes/api/todos/$todoId.ts`** — PUT (toggle done / update):
+
 ```ts
 // After updating DB:
 if (todo.googleTaskId) {
   await googleFetch(
     `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks/${todo.googleTaskId}`,
-    { method: 'PATCH', body: JSON.stringify({ status: done ? 'completed' : 'needsAction' }) }
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ status: done ? 'completed' : 'needsAction' }),
+    },
   )
 }
 ```
 
 **`src/routes/api/todos/$todoId.ts`** — DELETE:
+
 ```ts
 // After deleting from DB:
 if (todo.googleTaskId) {
   await googleFetch(
     `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks/${todo.googleTaskId}`,
-    { method: 'DELETE' }
+    { method: 'DELETE' },
   )
 }
 ```
@@ -252,13 +263,13 @@ if (todo.googleTaskId) {
 
 ### Files
 
-| File | Action |
-|------|--------|
-| `src/db/schema.ts` | Modify — expand `todos` table |
-| `src/routes/api/todos/index.ts` | Modify — push creates to Google |
-| `src/routes/api/todos/$todoId.ts` | Modify — push updates/deletes to Google |
-| `src/routes/api/todos/sync.ts` | Create — pull sync endpoint |
-| `src/components/widgets/Todos.tsx` | Modify — due dates, sync button |
+| File                               | Action                                  |
+| ---------------------------------- | --------------------------------------- |
+| `src/db/schema.ts`                 | Modify — expand `todos` table           |
+| `src/routes/api/todos/index.ts`    | Modify — push creates to Google         |
+| `src/routes/api/todos/$todoId.ts`  | Modify — push updates/deletes to Google |
+| `src/routes/api/todos/sync.ts`     | Create — pull sync endpoint             |
+| `src/components/widgets/Todos.tsx` | Modify — due dates, sync button         |
 
 ---
 
@@ -267,6 +278,7 @@ if (todo.googleTaskId) {
 ### 4.1 Graceful Degradation
 
 All Google API calls should be wrapped in try/catch. If Google is unreachable or tokens are expired/revoked:
+
 - Local operations still work
 - Show a subtle "sync failed" indicator
 - Queue failed pushes for retry
@@ -274,6 +286,7 @@ All Google API calls should be wrapped in try/catch. If Google is unreachable or
 ### 4.2 Initial Sync Flow
 
 When user first connects Google:
+
 1. Pull all existing Google Tasks → insert locally
 2. Push any existing local todos → create in Google Tasks
 3. Mark all as linked via `googleTaskId`
@@ -281,6 +294,7 @@ When user first connects Google:
 ### 4.3 Task List Selection
 
 Google Tasks supports multiple lists. Options:
+
 - **Simple:** Use the default `@default` task list for everything
 - **Better:** Let user pick which task list to sync (dropdown in settings)
 
@@ -298,6 +312,7 @@ Phase 4 (Polish)    ████░░░░░░  ~1 session
 ```
 
 **Recommended sequence:**
+
 1. Phase 1 — OAuth (must be first, everything depends on it)
 2. Phase 2 — Calendar (quick win, replaces DeskBuddy immediately)
 3. Phase 3 — Tasks sync (biggest piece, do push-only first, then add pull)

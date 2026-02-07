@@ -2,12 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import {
-  eachDayOfInterval,
-  subDays,
-  format,
-  isToday,
-} from 'date-fns'
+import { eachDayOfInterval, subDays, format, isToday } from 'date-fns'
 import { get } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -15,7 +10,11 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { Flame, Trash2, Trophy, TrendingUp } from 'lucide-react'
 import type { HabitWithStats } from '@/lib/types'
 
@@ -116,14 +115,18 @@ function HabitsPage() {
                         <TooltipTrigger asChild>
                           <div
                             className={`w-10 text-center text-xs ${
-                              isToday(day) ? 'text-orange-accent font-bold' : 'text-muted-foreground'
+                              isToday(day)
+                                ? 'text-orange-accent font-bold'
+                                : 'text-muted-foreground'
                             }`}
                           >
                             <div>{format(day, 'EEE')}</div>
                             <div>{format(day, 'd')}</div>
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent>{format(day, 'MMM d, yyyy')}</TooltipContent>
+                        <TooltipContent>
+                          {format(day, 'MMM d, yyyy')}
+                        </TooltipContent>
                       </Tooltip>
                     ))}
                     <div className="w-10 shrink-0" />
@@ -131,7 +134,10 @@ function HabitsPage() {
 
                   {/* Habit rows */}
                   {habits.map((habit) => (
-                    <div key={habit.id} className="flex items-center gap-0 py-1.5">
+                    <div
+                      key={habit.id}
+                      className="flex items-center gap-0 py-1.5"
+                    >
                       <div className="w-40 shrink-0 truncate text-sm font-medium pr-2">
                         {habit.emoji} {habit.name}
                       </div>
@@ -139,10 +145,15 @@ function HabitsPage() {
                         const dateStr = format(day, 'yyyy-MM-dd')
                         const completed = habit.completions.includes(dateStr)
                         return (
-                          <div key={dateStr} className="w-10 flex justify-center">
+                          <div
+                            key={dateStr}
+                            className="w-10 flex justify-center"
+                          >
                             <Checkbox
                               checked={completed}
-                              onCheckedChange={() => toggleCompletion(habit.id, dateStr)}
+                              onCheckedChange={() =>
+                                toggleCompletion(habit.id, dateStr)
+                              }
                             />
                           </div>
                         )
@@ -189,14 +200,18 @@ function HabitsPage() {
                       <Flame className="w-4 h-4" />
                       Current streak
                     </div>
-                    <Badge variant="secondary">{habit.currentStreak} days</Badge>
+                    <Badge variant="secondary">
+                      {habit.currentStreak} days
+                    </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                       <Trophy className="w-4 h-4" />
                       Longest streak
                     </div>
-                    <Badge variant="secondary">{habit.longestStreak} days</Badge>
+                    <Badge variant="secondary">
+                      {habit.longestStreak} days
+                    </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-sm text-muted-foreground">

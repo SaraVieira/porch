@@ -12,18 +12,15 @@ import { useDeleteMemo } from '@/lib/hooks/useDeleteMemo'
 
 const groupMemosByDate = (newMemos: Array<Memo>) => {
   if (!newMemos.length) return {}
-  return newMemos.reduce<Record<string, Array<Memo>>>(
-    (groups, memo) => {
-      const date = memo.date
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!groups[date]) {
-        groups[date] = []
-      }
-      groups[date].push(memo)
-      return groups
-    },
-    {},
-  )
+  return newMemos.reduce<Record<string, Array<Memo>>>((groups, memo) => {
+    const date = memo.date
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!groups[date]) {
+      groups[date] = []
+    }
+    groups[date].push(memo)
+    return groups
+  }, {})
 }
 
 export const getMoodInfo = (moodType: MoodType) => {

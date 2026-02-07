@@ -88,9 +88,7 @@ export function parseFeed(xml: string): Array<ParsedArticle> {
   }
 }
 
-export async function discoverFeed(
-  url: string,
-): Promise<{
+export async function discoverFeed(url: string): Promise<{
   title: string
   siteUrl: string | null
   articles: Array<ParsedArticle>

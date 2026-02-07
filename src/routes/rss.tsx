@@ -264,15 +264,26 @@ function RssPage() {
                   </div>
                 </div>
               </a>
-              <div className={`flex shrink-0 transition-opacity ${bookmarkedUrls.has(article.link) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+              <div
+                className={`flex shrink-0 transition-opacity ${bookmarkedUrls.has(article.link) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+              >
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-7 w-7"
-                  onClick={(e) => !bookmarkedUrls.has(article.link) && handleBookmark(e, article.link)}
-                  title={bookmarkedUrls.has(article.link) ? 'Already bookmarked' : 'Save to bookmarks'}
+                  onClick={(e) =>
+                    !bookmarkedUrls.has(article.link) &&
+                    handleBookmark(e, article.link)
+                  }
+                  title={
+                    bookmarkedUrls.has(article.link)
+                      ? 'Already bookmarked'
+                      : 'Save to bookmarks'
+                  }
                 >
-                  <Bookmark className={`w-4 h-4 ${bookmarkedUrls.has(article.link) ? 'fill-current text-orange-accent' : ''}`} />
+                  <Bookmark
+                    className={`w-4 h-4 ${bookmarkedUrls.has(article.link) ? 'fill-current text-orange-accent' : ''}`}
+                  />
                 </Button>
                 <Button
                   variant="ghost"

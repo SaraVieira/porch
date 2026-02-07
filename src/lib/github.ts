@@ -39,9 +39,10 @@ query($username: String!) {
 }
 `
 
-export function computeStreaks(
-  days: Array<GitHubContributionDay>,
-): { currentStreak: number; longestStreak: number } {
+export function computeStreaks(days: Array<GitHubContributionDay>): {
+  currentStreak: number
+  longestStreak: number
+} {
   let currentStreak = 0
   let longestStreak = 0
   let streak = 0
@@ -80,9 +81,11 @@ export function computeStreaks(
   return { currentStreak, longestStreak }
 }
 
-export function computeStats(
-  weeks: Array<GitHubContributionWeek>,
-): { todayCount: number; thisWeekCount: number; thisMonthCount: number } {
+export function computeStats(weeks: Array<GitHubContributionWeek>): {
+  todayCount: number
+  thisWeekCount: number
+  thisMonthCount: number
+} {
   const today = new Date().toISOString().split('T')[0]
   const now = new Date()
   const currentMonth = now.getMonth()
@@ -137,8 +140,7 @@ async function fetchContributions(): Promise<GitHubContributionsData> {
   }
 
   const json = await response.json()
-  const calendar =
-    json.data.user.contributionsCollection.contributionCalendar
+  const calendar = json.data.user.contributionsCollection.contributionCalendar
 
   const weeks: Array<GitHubContributionWeek> = calendar.weeks.map(
     (week: any) => ({

@@ -12,11 +12,7 @@ export const Route = createFileRoute('/api/bookmarks/$bookmarkId')({
   },
 })
 
-export async function DELETE({
-  params,
-}: {
-  params: { bookmarkId: string }
-}) {
+export async function DELETE({ params }: { params: { bookmarkId: string } }) {
   try {
     const id = parseInt(params.bookmarkId)
     if (isNaN(id)) {

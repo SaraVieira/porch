@@ -57,7 +57,10 @@ export const Rss = () => {
       )
     : []
 
-  const handleDeleteArticle = async (e: React.MouseEvent, articleId: number) => {
+  const handleDeleteArticle = async (
+    e: React.MouseEvent,
+    articleId: number,
+  ) => {
     e.preventDefault()
     e.stopPropagation()
     await fetch(`/api/rss/articles/${articleId}`, { method: 'DELETE' })
@@ -154,15 +157,26 @@ export const Rss = () => {
                       )}
                     </div>
                   </a>
-                  <div className={`flex shrink-0 transition-opacity ${bookmarkedUrls.has(article.link) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                  <div
+                    className={`flex shrink-0 transition-opacity ${bookmarkedUrls.has(article.link) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                  >
                     <Button
                       variant="ghost"
                       size="icon"
                       className="h-6 w-6"
-                      onClick={(e) => !bookmarkedUrls.has(article.link) && handleBookmark(e, article)}
-                      title={bookmarkedUrls.has(article.link) ? 'Already bookmarked' : 'Save to bookmarks'}
+                      onClick={(e) =>
+                        !bookmarkedUrls.has(article.link) &&
+                        handleBookmark(e, article)
+                      }
+                      title={
+                        bookmarkedUrls.has(article.link)
+                          ? 'Already bookmarked'
+                          : 'Save to bookmarks'
+                      }
                     >
-                      <Bookmark className={`w-3.5 h-3.5 ${bookmarkedUrls.has(article.link) ? 'fill-current text-orange-accent' : ''}`} />
+                      <Bookmark
+                        className={`w-3.5 h-3.5 ${bookmarkedUrls.has(article.link) ? 'fill-current text-orange-accent' : ''}`}
+                      />
                     </Button>
                     <Button
                       variant="ghost"

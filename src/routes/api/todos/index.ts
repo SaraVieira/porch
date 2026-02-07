@@ -63,7 +63,12 @@ export async function POST({ request }: { request: Request }) {
   }
 }
 
-async function pushToGoogle(todo: { id: number; title: string; dueDate: string | null; notes: string | null }) {
+async function pushToGoogle(todo: {
+  id: number
+  title: string
+  dueDate: string | null
+  notes: string | null
+}) {
   const connected = await isGoogleConnected()
   if (!connected) return
 

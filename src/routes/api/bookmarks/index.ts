@@ -120,9 +120,7 @@ async function fetchOgData(url: string): Promise<OgData> {
   }
 }
 
-async function fetchYouTubeOgData(
-  videoId: string,
-): Promise<OgData> {
+async function fetchYouTubeOgData(videoId: string): Promise<OgData> {
   try {
     const res = await fetch(
       `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`,
@@ -132,7 +130,9 @@ async function fetchYouTubeOgData(
     const data = await res.json()
     return {
       title: data.title || null,
-      image: data.thumbnail_url || `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+      image:
+        data.thumbnail_url ||
+        `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
     }
   } catch {
     return {
@@ -158,8 +158,10 @@ function titleFromUrl(url: string): string {
     if (parsed.hostname.includes('github.com') && parts.length >= 2) {
       const owner = parts[0]
       const repo = parts[1]
-      if (parts[2] === 'pull' && parts[3]) return `${owner}/${repo} PR #${parts[3]}`
-      if (parts[2] === 'issues' && parts[3]) return `${owner}/${repo} Issue #${parts[3]}`
+      if (parts[2] === 'pull' && parts[3])
+        return `${owner}/${repo} PR #${parts[3]}`
+      if (parts[2] === 'issues' && parts[3])
+        return `${owner}/${repo} Issue #${parts[3]}`
       return `${owner}/${repo}`
     }
     // Find the most slug-like path segment (longest with dashes/underscores)

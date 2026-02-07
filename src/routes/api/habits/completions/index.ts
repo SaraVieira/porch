@@ -27,7 +27,9 @@ export async function POST({ request }: { request: Request }) {
 
     if (existing) {
       // Uncheck — delete the completion
-      await db!.delete(habitCompletions).where(eq(habitCompletions.id, existing.id))
+      await db!
+        .delete(habitCompletions)
+        .where(eq(habitCompletions.id, existing.id))
       return json({ completed: false })
     }
 

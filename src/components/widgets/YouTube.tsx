@@ -70,7 +70,9 @@ export const YouTube = () => {
                       {video.channelName}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true })}
+                      {formatDistanceToNow(new Date(video.publishedAt), {
+                        addSuffix: true,
+                      })}
                     </span>
                   </div>
                 </a>

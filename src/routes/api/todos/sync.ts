@@ -45,9 +45,7 @@ export async function POST() {
     // Get all local todos
     const localTodos = await db!.query.todos.findMany()
     const localByGoogleId = new Map(
-      localTodos
-        .filter((t) => t.googleTaskId)
-        .map((t) => [t.googleTaskId, t]),
+      localTodos.filter((t) => t.googleTaskId).map((t) => [t.googleTaskId, t]),
     )
 
     let created = 0
@@ -68,7 +66,8 @@ export async function POST() {
         if (timeMatch) {
           timeFromNotes = timeMatch[1]
           // Strip the time line from notes to get the real notes
-          googleNotes = googleNotes.replace(/\n?⏰\s*\d{2}:\d{2}/, '').trim() || null
+          googleNotes =
+            googleNotes.replace(/\n?⏰\s*\d{2}:\d{2}/, '').trim() || null
         }
       }
 

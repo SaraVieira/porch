@@ -38,7 +38,9 @@ function getMonthLabels(weeks: Array<GitHubContributionWeek>) {
 
 export function GitHubHeatmap({
   weeks,
-}: { weeks: Array<GitHubContributionWeek> }) {
+}: {
+  weeks: Array<GitHubContributionWeek>
+}) {
   const monthLabels = getMonthLabels(weeks)
 
   return (

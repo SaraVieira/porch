@@ -40,7 +40,11 @@ export function Weather() {
     if (!api) return
     const observer = new MutationObserver(() => api.reInit())
     const viewport = api.rootNode()
-    observer.observe(viewport, { childList: true, subtree: true, characterData: true })
+    observer.observe(viewport, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
     return () => observer.disconnect()
   }, [api])
 

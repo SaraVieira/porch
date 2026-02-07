@@ -101,6 +101,8 @@ describe('getFaviconUrl', () => {
 
   it('encodes special characters in URL', () => {
     const result = getFaviconUrl('https://example.com/path?foo=bar&baz=qux')
-    expect(result).toContain(encodeURIComponent('https://example.com/path?foo=bar&baz=qux'))
+    expect(result).toContain(
+      encodeURIComponent('https://example.com/path?foo=bar&baz=qux'),
+    )
   })
 })

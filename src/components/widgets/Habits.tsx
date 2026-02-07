@@ -80,7 +80,10 @@ export const Habits = () => {
           <>
             <ul className="space-y-3 mb-6">
               {habits.map((habit) => (
-                <li key={habit.id} className="flex w-full max-w-md flex-col gap-6">
+                <li
+                  key={habit.id}
+                  className="flex w-full max-w-md flex-col gap-6"
+                >
                   <Item variant="outline" className="p-2">
                     <ItemContent>
                       <div className="flex items-center justify-between">
@@ -93,7 +96,10 @@ export const Habits = () => {
                             {habit.emoji} {habit.name}
                           </span>
                           {habit.currentStreak > 0 && (
-                            <Badge variant="secondary" className="text-xs gap-1">
+                            <Badge
+                              variant="secondary"
+                              className="text-xs gap-1"
+                            >
                               <Flame className="w-3 h-3" />
                               {habit.currentStreak}
                             </Badge>

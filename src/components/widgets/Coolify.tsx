@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import clsx from 'clsx'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemTitle,
-} from '../ui/item'
+import { Item, ItemActions, ItemContent, ItemTitle } from '../ui/item'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import {
   Accordion,

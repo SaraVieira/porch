@@ -13,11 +13,7 @@ export const Route = createFileRoute('/api/rss/$feedId')({
   },
 })
 
-export async function DELETE({
-  params,
-}: {
-  params: { feedId: string }
-}) {
+export async function DELETE({ params }: { params: { feedId: string } }) {
   try {
     const id = parseInt(params.feedId)
     if (isNaN(id)) {

@@ -12,13 +12,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from './ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Checkbox } from './ui/checkbox'
-import { borderAccentAtom, orangeAccentAtom, widgetLayoutAtom } from '@/lib/atoms'
+import {
+  borderAccentAtom,
+  orangeAccentAtom,
+  widgetLayoutAtom,
+} from '@/lib/atoms'
 import { widgetRegistry, allWidgetIds } from '@/lib/widgets'
 import { Button } from './ui/button'
 

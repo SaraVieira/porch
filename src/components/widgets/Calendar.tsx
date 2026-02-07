@@ -68,9 +68,10 @@ export function Calendar() {
         <ScrollArea className="h-60 w-full">
           <div className="flex w-full flex-col gap-2 min-h-56">
             {(() => {
-              const dayEvents = data?.events?.filter((event: Event) =>
-                isSameDay(date!, new Date(event.start)),
-              ) ?? []
+              const dayEvents =
+                data?.events?.filter((event: Event) =>
+                  isSameDay(date!, new Date(event.start)),
+                ) ?? []
 
               if (dayEvents.length === 0) {
                 return (

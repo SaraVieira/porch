@@ -16,7 +16,8 @@ export const Route = createFileRoute('/api/habits/')({
 })
 
 function computeStreaks(completionDates: Array<string>) {
-  if (completionDates.length === 0) return { currentStreak: 0, longestStreak: 0 }
+  if (completionDates.length === 0)
+    return { currentStreak: 0, longestStreak: 0 }
 
   const sorted = [...completionDates].sort().reverse()
   const today = format(new Date(), 'yyyy-MM-dd')
@@ -27,7 +28,10 @@ function computeStreaks(completionDates: Array<string>) {
 
   // Check if the streak starts today or yesterday
   const startDate = sorted[0]
-  const daysSinceStart = differenceInCalendarDays(parseISO(today), parseISO(startDate))
+  const daysSinceStart = differenceInCalendarDays(
+    parseISO(today),
+    parseISO(startDate),
+  )
   if (daysSinceStart > 1) {
     // No current streak
     currentStreak = 0
@@ -36,7 +40,10 @@ function computeStreaks(completionDates: Array<string>) {
   }
 
   for (let i = 1; i < sorted.length; i++) {
-    const diff = differenceInCalendarDays(parseISO(sorted[i - 1]), parseISO(sorted[i]))
+    const diff = differenceInCalendarDays(
+      parseISO(sorted[i - 1]),
+      parseISO(sorted[i]),
+    )
     if (diff === 1) {
       streak++
     } else {
@@ -53,7 +60,10 @@ function computeStreaks(completionDates: Array<string>) {
   if (daysSinceStart <= 1) {
     currentStreak = 1
     for (let i = 1; i < sorted.length; i++) {
-      const diff = differenceInCalendarDays(parseISO(sorted[i - 1]), parseISO(sorted[i]))
+      const diff = differenceInCalendarDays(
+        parseISO(sorted[i - 1]),
+        parseISO(sorted[i]),
+      )
       if (diff === 1) {
         currentStreak++
       } else {
@@ -84,9 +94,10 @@ export async function GET() {
       const { currentStreak, longestStreak } = computeStreaks(completions)
 
       const recentCompletions = completions.filter((d) => d >= thirtyDaysAgo)
-      const completionRate = recentCompletions.length > 0
-        ? Math.round((recentCompletions.length / 30) * 100)
-        : 0
+      const completionRate =
+        recentCompletions.length > 0
+          ? Math.round((recentCompletions.length / 30) * 100)
+          : 0
 
       return {
         ...habit,
@@ -110,13 +121,11 @@ export async function POST({ request }: { request: Request }) {
     const body = await request.json()
     const { name, emoji, color } = body
 
-    const habit = await db!
-      .insert(habitsSchema)
-      .values({
-        name,
-        emoji: emoji || '',
-        color: color || '#8b5cf6',
-      })
+    const habit = await db!.insert(habitsSchema).values({
+      name,
+      emoji: emoji || '',
+      color: color || '#8b5cf6',
+    })
 
     return json(habit.rows, { status: 201 })
   } catch (error) {

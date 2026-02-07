@@ -83,10 +83,7 @@ describe('computeStats', () => {
   it('computes today count', () => {
     const weeks: Array<GitHubContributionWeek> = [
       {
-        contributionDays: [
-          makeDay('2024-03-15', 7),
-          makeDay('2024-03-14', 3),
-        ],
+        contributionDays: [makeDay('2024-03-15', 7), makeDay('2024-03-14', 3)],
       },
     ]
     const result = computeStats(weeks)

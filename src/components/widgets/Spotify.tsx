@@ -49,31 +49,41 @@ export function Spotify() {
     const interval = setInterval(() => {
       setLocalProgress((prev) => {
         const next = prev + 1000
-        if (next >= (spotifyData.duration_ms || 0)) return spotifyData.duration_ms || 0
+        if (next >= (spotifyData.duration_ms || 0))
+          return spotifyData.duration_ms || 0
         return next
       })
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [spotifyData?.progress_ms, spotifyData?.song, spotifyData?.closed, spotifyData?.duration_ms])
+  }, [
+    spotifyData?.progress_ms,
+    spotifyData?.song,
+    spotifyData?.closed,
+    spotifyData?.duration_ms,
+  ])
 
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: ['spotify-current-song'] })
 
   const nextMutation = useMutation({
-    mutationFn: () => fetch('/api/spotify/next', { method: 'POST' }).then((r) => r.json()),
+    mutationFn: () =>
+      fetch('/api/spotify/next', { method: 'POST' }).then((r) => r.json()),
     onSuccess: () => setTimeout(invalidate, 300),
   })
   const prevMutation = useMutation({
-    mutationFn: () => fetch('/api/spotify/prev', { method: 'POST' }).then((r) => r.json()),
+    mutationFn: () =>
+      fetch('/api/spotify/prev', { method: 'POST' }).then((r) => r.json()),
     onSuccess: () => setTimeout(invalidate, 300),
   })
   const playMutation = useMutation({
-    mutationFn: () => fetch('/api/spotify/play', { method: 'PUT' }).then((r) => r.json()),
+    mutationFn: () =>
+      fetch('/api/spotify/play', { method: 'PUT' }).then((r) => r.json()),
     onSuccess: invalidate,
   })
   const pauseMutation = useMutation({
-    mutationFn: () => fetch('/api/spotify/pause', { method: 'PUT' }).then((r) => r.json()),
+    mutationFn: () =>
+      fetch('/api/spotify/pause', { method: 'PUT' }).then((r) => r.json()),
     onSuccess: invalidate,
   })
   const shuffleMutation = useMutation({

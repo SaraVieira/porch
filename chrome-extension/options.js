@@ -21,6 +21,8 @@ saveBtn.addEventListener('click', () => {
   chrome.storage.sync.set({ apiUrl: url }, () => {
     status.textContent = 'Saved!'
     status.style.color = '#4ade80'
-    setTimeout(() => { status.textContent = '' }, 2000)
+    setTimeout(() => {
+      status.textContent = ''
+    }, 2000)
   })
 })

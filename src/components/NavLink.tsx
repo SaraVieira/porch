@@ -1,7 +1,13 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import clsx from 'clsx'
 
-export function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+export function NavLink({
+  to,
+  children,
+}: {
+  to: string
+  children: React.ReactNode
+}) {
   const location = useLocation()
   const isActive = location.pathname === to
   return (

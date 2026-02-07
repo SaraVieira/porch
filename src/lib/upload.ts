@@ -50,14 +50,15 @@ export const formatFileSize = (bytes: number): string => {
 
 export const uploadFileToZipline = async (
   file: File,
-  options: UploadOptions = {}
+  options: UploadOptions = {},
 ): Promise<UploadResult> => {
   const {
     onProgress,
     onSuccess,
     onError,
-    apiEndpoint = import.meta.env.VITE_ZIPLINE_API_ENDPOINT || 'https://your-zipline-instance.com',
-    token = import.meta.env.VITE_ZIPLINE_API_TOKEN || ''
+    apiEndpoint = import.meta.env.VITE_ZIPLINE_API_ENDPOINT ||
+      'https://your-zipline-instance.com',
+    token = import.meta.env.VITE_ZIPLINE_API_TOKEN || '',
   } = options
 
   // Validate file type
@@ -69,14 +70,16 @@ export const uploadFileToZipline = async (
 
   // Validate token
   if (!token) {
-    const error = 'API token not configured. Please set VITE_ZIPLINE_API_TOKEN in your environment.'
+    const error =
+      'API token not configured. Please set VITE_ZIPLINE_API_TOKEN in your environment.'
     onError?.(error)
     return { success: false, error }
   }
 
   // Validate endpoint
   if (!apiEndpoint.trim()) {
-    const error = 'API endpoint not configured. Please set VITE_ZIPLINE_API_ENDPOINT.'
+    const error =
+      'API endpoint not configured. Please set VITE_ZIPLINE_API_ENDPOINT.'
     onError?.(error)
     return { success: false, error }
   }
@@ -152,7 +155,7 @@ export const uploadMultipleFiles = async (
     onFileSuccess?: (file: File, result: UploadedFile) => void
     onFileError?: (file: File, error: string) => void
     onComplete?: (results: Array<UploadResult>) => void
-  } = {}
+  } = {},
 ): Promise<Array<UploadResult>> => {
   const {
     onFileProgress,
@@ -185,11 +188,13 @@ export const getSupportedFileTypes = (): string => {
 }
 
 // Helper function to check if file is valid before upload
-export const validateFile = (file: File): { valid: boolean; error?: string } => {
+export const validateFile = (
+  file: File,
+): { valid: boolean; error?: string } => {
   if (!validateImageFile(file)) {
     return {
       valid: false,
-      error: `File type ${file.type} is not supported. Only image files are allowed.`
+      error: `File type ${file.type} is not supported. Only image files are allowed.`,
     }
   }
 
@@ -198,7 +203,7 @@ export const validateFile = (file: File): { valid: boolean; error?: string } => 
   if (file.size > maxSize) {
     return {
       valid: false,
-      error: `File size ${formatFileSize(file.size)} exceeds maximum allowed size of ${formatFileSize(maxSize)}.`
+      error: `File size ${formatFileSize(file.size)} exceeds maximum allowed size of ${formatFileSize(maxSize)}.`,
     }
   }
 

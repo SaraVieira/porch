@@ -34,7 +34,11 @@ export async function GET({ request }: { request: Request }) {
     const timeMax = new Date(year, month + 1, 7)
 
     const cacheKey = `${timeMin.toISOString()}-${timeMax.toISOString()}`
-    if (cache && cache.expires > Date.now() && cache.data._cacheKey === cacheKey) {
+    if (
+      cache &&
+      cache.expires > Date.now() &&
+      cache.data._cacheKey === cacheKey
+    ) {
       return json(cache.data)
     }
 
@@ -87,8 +91,7 @@ export async function GET({ request }: { request: Request }) {
         // Organizer: show name if it's not the authenticated user
         const organizer = event.organizer
         const isMe =
-          organizer?.self ||
-          (myEmail && organizer?.email === myEmail)
+          organizer?.self || (myEmail && organizer?.email === myEmail)
         const organizerName = isMe
           ? null
           : organizer?.displayName || organizer?.email || null
