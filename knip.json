@@ -4,7 +4,6 @@
   "ignore": ["chrome-extension/**", "src/components/ui/**", "eslint.config.js"],
   "tags": ["-lintignore"],
   "ignoreDependencies": [
-    "@tanstack/eslint-config",
     "@testing-library/dom",
     "react-hook-form",
     "zod",

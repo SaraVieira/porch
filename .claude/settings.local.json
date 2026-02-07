@@ -41,7 +41,8 @@
       "Bash(time echo:*)",
       "WebFetch(domain:roms.iamsaravieira.com)",
       "Bash(python3:*)",
-      "Bash(pnpm knip:*)"
+      "Bash(pnpm knip:*)",
+      "Bash(pnpm ls:*)"
     ]
   }
 }
