@@ -19,16 +19,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as HabitsRouteImport } from './routes/habits'
 import { Route as _authedRouteImport } from './routes/__authed'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MemosIndexRouteImport } from './routes/memos/index'
-import { Route as MemosCreateRouteImport } from './routes/memos/create'
-import { Route as MemosMemoIdRouteImport } from './routes/memos/$memoId'
 import { Route as BooksGamesRouteImport } from './routes/books/games'
 import { Route as BooksCountriesRouteImport } from './routes/books/countries'
 import { Route as BooksConferencesRouteImport } from './routes/books/conferences'
 import { Route as ApiYoutubeIndexRouteImport } from './routes/api/youtube/index'
 import { Route as ApiTodosIndexRouteImport } from './routes/api/todos/index'
 import { Route as ApiRssIndexRouteImport } from './routes/api/rss/index'
-import { Route as ApiMemosIndexRouteImport } from './routes/api/memos/index'
 import { Route as ApiHabitsIndexRouteImport } from './routes/api/habits/index'
 import { Route as ApiGithubIndexRouteImport } from './routes/api/github/index'
 import { Route as ApiGamesIndexRouteImport } from './routes/api/games/index'
@@ -49,7 +45,6 @@ import { Route as ApiRssRefreshRouteImport } from './routes/api/rss/refresh'
 import { Route as ApiRssFeedsRouteImport } from './routes/api/rss/feeds'
 import { Route as ApiRssCategoriesRouteImport } from './routes/api/rss/categories'
 import { Route as ApiRssFeedIdRouteImport } from './routes/api/rss/$feedId'
-import { Route as ApiMemosMemoIdRouteImport } from './routes/api/memos/$memoId'
 import { Route as ApiHabitsHabitIdRouteImport } from './routes/api/habits/$habitId'
 import { Route as ApiGamesGameIdRouteImport } from './routes/api/games/$gameId'
 import { Route as ApiCountriesCountryIdRouteImport } from './routes/api/countries/$countryId'
@@ -113,21 +108,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MemosIndexRoute = MemosIndexRouteImport.update({
-  id: '/memos/',
-  path: '/memos/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemosCreateRoute = MemosCreateRouteImport.update({
-  id: '/memos/create',
-  path: '/memos/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MemosMemoIdRoute = MemosMemoIdRouteImport.update({
-  id: '/memos/$memoId',
-  path: '/memos/$memoId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BooksGamesRoute = BooksGamesRouteImport.update({
   id: '/books/games',
   path: '/books/games',
@@ -156,11 +136,6 @@ const ApiTodosIndexRoute = ApiTodosIndexRouteImport.update({
 const ApiRssIndexRoute = ApiRssIndexRouteImport.update({
   id: '/api/rss/',
   path: '/api/rss/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiMemosIndexRoute = ApiMemosIndexRouteImport.update({
-  id: '/api/memos/',
-  path: '/api/memos/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiHabitsIndexRoute = ApiHabitsIndexRouteImport.update({
@@ -263,11 +238,6 @@ const ApiRssFeedIdRoute = ApiRssFeedIdRouteImport.update({
   path: '/api/rss/$feedId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiMemosMemoIdRoute = ApiMemosMemoIdRouteImport.update({
-  id: '/api/memos/$memoId',
-  path: '/api/memos/$memoId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiHabitsHabitIdRoute = ApiHabitsHabitIdRouteImport.update({
   id: '/api/habits/$habitId',
   path: '/api/habits/$habitId',
@@ -349,15 +319,11 @@ export interface FileRoutesByFullPath {
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
-  '/memos/$memoId': typeof MemosMemoIdRoute
-  '/memos/create': typeof MemosCreateRoute
-  '/memos': typeof MemosIndexRoute
   '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
-  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/rss/$feedId': typeof ApiRssFeedIdRoute
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
@@ -378,7 +344,6 @@ export interface FileRoutesByFullPath {
   '/api/games': typeof ApiGamesIndexRoute
   '/api/github': typeof ApiGithubIndexRoute
   '/api/habits': typeof ApiHabitsIndexRoute
-  '/api/memos': typeof ApiMemosIndexRoute
   '/api/rss': typeof ApiRssIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
@@ -404,15 +369,11 @@ export interface FileRoutesByTo {
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
-  '/memos/$memoId': typeof MemosMemoIdRoute
-  '/memos/create': typeof MemosCreateRoute
-  '/memos': typeof MemosIndexRoute
   '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
-  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/rss/$feedId': typeof ApiRssFeedIdRoute
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
@@ -433,7 +394,6 @@ export interface FileRoutesByTo {
   '/api/games': typeof ApiGamesIndexRoute
   '/api/github': typeof ApiGithubIndexRoute
   '/api/habits': typeof ApiHabitsIndexRoute
-  '/api/memos': typeof ApiMemosIndexRoute
   '/api/rss': typeof ApiRssIndexRoute
   '/api/todos': typeof ApiTodosIndexRoute
   '/api/youtube': typeof ApiYoutubeIndexRoute
@@ -461,15 +421,11 @@ export interface FileRoutesById {
   '/books/conferences': typeof BooksConferencesRoute
   '/books/countries': typeof BooksCountriesRoute
   '/books/games': typeof BooksGamesRoute
-  '/memos/$memoId': typeof MemosMemoIdRoute
-  '/memos/create': typeof MemosCreateRoute
-  '/memos/': typeof MemosIndexRoute
   '/api/bookmarks/$bookmarkId': typeof ApiBookmarksBookmarkIdRoute
   '/api/conferences/$conferenceId': typeof ApiConferencesConferenceIdRoute
   '/api/countries/$countryId': typeof ApiCountriesCountryIdRoute
   '/api/games/$gameId': typeof ApiGamesGameIdRoute
   '/api/habits/$habitId': typeof ApiHabitsHabitIdRoute
-  '/api/memos/$memoId': typeof ApiMemosMemoIdRoute
   '/api/rss/$feedId': typeof ApiRssFeedIdRoute
   '/api/rss/categories': typeof ApiRssCategoriesRoute
   '/api/rss/feeds': typeof ApiRssFeedsRoute
@@ -490,7 +446,6 @@ export interface FileRoutesById {
   '/api/games/': typeof ApiGamesIndexRoute
   '/api/github/': typeof ApiGithubIndexRoute
   '/api/habits/': typeof ApiHabitsIndexRoute
-  '/api/memos/': typeof ApiMemosIndexRoute
   '/api/rss/': typeof ApiRssIndexRoute
   '/api/todos/': typeof ApiTodosIndexRoute
   '/api/youtube/': typeof ApiYoutubeIndexRoute
@@ -518,15 +473,11 @@ export interface FileRouteTypes {
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
-    | '/memos/$memoId'
-    | '/memos/create'
-    | '/memos'
     | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
-    | '/api/memos/$memoId'
     | '/api/rss/$feedId'
     | '/api/rss/categories'
     | '/api/rss/feeds'
@@ -547,7 +498,6 @@ export interface FileRouteTypes {
     | '/api/games'
     | '/api/github'
     | '/api/habits'
-    | '/api/memos'
     | '/api/rss'
     | '/api/todos'
     | '/api/youtube'
@@ -573,15 +523,11 @@ export interface FileRouteTypes {
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
-    | '/memos/$memoId'
-    | '/memos/create'
-    | '/memos'
     | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
-    | '/api/memos/$memoId'
     | '/api/rss/$feedId'
     | '/api/rss/categories'
     | '/api/rss/feeds'
@@ -602,7 +548,6 @@ export interface FileRouteTypes {
     | '/api/games'
     | '/api/github'
     | '/api/habits'
-    | '/api/memos'
     | '/api/rss'
     | '/api/todos'
     | '/api/youtube'
@@ -629,15 +574,11 @@ export interface FileRouteTypes {
     | '/books/conferences'
     | '/books/countries'
     | '/books/games'
-    | '/memos/$memoId'
-    | '/memos/create'
-    | '/memos/'
     | '/api/bookmarks/$bookmarkId'
     | '/api/conferences/$conferenceId'
     | '/api/countries/$countryId'
     | '/api/games/$gameId'
     | '/api/habits/$habitId'
-    | '/api/memos/$memoId'
     | '/api/rss/$feedId'
     | '/api/rss/categories'
     | '/api/rss/feeds'
@@ -658,7 +599,6 @@ export interface FileRouteTypes {
     | '/api/games/'
     | '/api/github/'
     | '/api/habits/'
-    | '/api/memos/'
     | '/api/rss/'
     | '/api/todos/'
     | '/api/youtube/'
@@ -686,15 +626,11 @@ export interface RootRouteChildren {
   BooksConferencesRoute: typeof BooksConferencesRoute
   BooksCountriesRoute: typeof BooksCountriesRoute
   BooksGamesRoute: typeof BooksGamesRoute
-  MemosMemoIdRoute: typeof MemosMemoIdRoute
-  MemosCreateRoute: typeof MemosCreateRoute
-  MemosIndexRoute: typeof MemosIndexRoute
   ApiBookmarksBookmarkIdRoute: typeof ApiBookmarksBookmarkIdRoute
   ApiConferencesConferenceIdRoute: typeof ApiConferencesConferenceIdRoute
   ApiCountriesCountryIdRoute: typeof ApiCountriesCountryIdRoute
   ApiGamesGameIdRoute: typeof ApiGamesGameIdRoute
   ApiHabitsHabitIdRoute: typeof ApiHabitsHabitIdRoute
-  ApiMemosMemoIdRoute: typeof ApiMemosMemoIdRoute
   ApiRssFeedIdRoute: typeof ApiRssFeedIdRoute
   ApiRssCategoriesRoute: typeof ApiRssCategoriesRoute
   ApiRssFeedsRoute: typeof ApiRssFeedsRoute
@@ -715,7 +651,6 @@ export interface RootRouteChildren {
   ApiGamesIndexRoute: typeof ApiGamesIndexRoute
   ApiGithubIndexRoute: typeof ApiGithubIndexRoute
   ApiHabitsIndexRoute: typeof ApiHabitsIndexRoute
-  ApiMemosIndexRoute: typeof ApiMemosIndexRoute
   ApiRssIndexRoute: typeof ApiRssIndexRoute
   ApiTodosIndexRoute: typeof ApiTodosIndexRoute
   ApiYoutubeIndexRoute: typeof ApiYoutubeIndexRoute
@@ -801,27 +736,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/memos/': {
-      id: '/memos/'
-      path: '/memos'
-      fullPath: '/memos'
-      preLoaderRoute: typeof MemosIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/memos/create': {
-      id: '/memos/create'
-      path: '/memos/create'
-      fullPath: '/memos/create'
-      preLoaderRoute: typeof MemosCreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/memos/$memoId': {
-      id: '/memos/$memoId'
-      path: '/memos/$memoId'
-      fullPath: '/memos/$memoId'
-      preLoaderRoute: typeof MemosMemoIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/books/games': {
       id: '/books/games'
       path: '/books/games'
@@ -862,13 +776,6 @@ declare module '@tanstack/react-router' {
       path: '/api/rss'
       fullPath: '/api/rss'
       preLoaderRoute: typeof ApiRssIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/memos/': {
-      id: '/api/memos/'
-      path: '/api/memos'
-      fullPath: '/api/memos'
-      preLoaderRoute: typeof ApiMemosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/habits/': {
@@ -1011,13 +918,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiRssFeedIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/memos/$memoId': {
-      id: '/api/memos/$memoId'
-      path: '/api/memos/$memoId'
-      fullPath: '/api/memos/$memoId'
-      preLoaderRoute: typeof ApiMemosMemoIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/habits/$habitId': {
       id: '/api/habits/$habitId'
       path: '/api/habits/$habitId'
@@ -1126,15 +1026,11 @@ const rootRouteChildren: RootRouteChildren = {
   BooksConferencesRoute: BooksConferencesRoute,
   BooksCountriesRoute: BooksCountriesRoute,
   BooksGamesRoute: BooksGamesRoute,
-  MemosMemoIdRoute: MemosMemoIdRoute,
-  MemosCreateRoute: MemosCreateRoute,
-  MemosIndexRoute: MemosIndexRoute,
   ApiBookmarksBookmarkIdRoute: ApiBookmarksBookmarkIdRoute,
   ApiConferencesConferenceIdRoute: ApiConferencesConferenceIdRoute,
   ApiCountriesCountryIdRoute: ApiCountriesCountryIdRoute,
   ApiGamesGameIdRoute: ApiGamesGameIdRoute,
   ApiHabitsHabitIdRoute: ApiHabitsHabitIdRoute,
-  ApiMemosMemoIdRoute: ApiMemosMemoIdRoute,
   ApiRssFeedIdRoute: ApiRssFeedIdRoute,
   ApiRssCategoriesRoute: ApiRssCategoriesRoute,
   ApiRssFeedsRoute: ApiRssFeedsRoute,
@@ -1155,7 +1051,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGamesIndexRoute: ApiGamesIndexRoute,
   ApiGithubIndexRoute: ApiGithubIndexRoute,
   ApiHabitsIndexRoute: ApiHabitsIndexRoute,
-  ApiMemosIndexRoute: ApiMemosIndexRoute,
   ApiRssIndexRoute: ApiRssIndexRoute,
   ApiTodosIndexRoute: ApiTodosIndexRoute,
   ApiYoutubeIndexRoute: ApiYoutubeIndexRoute,

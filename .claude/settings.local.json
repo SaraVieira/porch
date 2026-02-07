@@ -32,7 +32,15 @@
       "Bash(git mv:*)",
       "Bash(pnpm test:*)",
       "Bash(pnpm run typecheck:*)",
-      "Bash(pnpm run lint:*)"
+      "Bash(pnpm run lint:*)",
+      "Bash(tr:*)",
+      "Bash(/Users/saravieira/.claude/statusline-command.sh)",
+      "WebFetch(domain:codelynx.dev)",
+      "WebFetch(domain:github.com)",
+      "Bash(security find-generic-password:*)",
+      "Bash(time echo:*)",
+      "WebFetch(domain:roms.iamsaravieira.com)",
+      "Bash(python3:*)"
     ]
   }
 }

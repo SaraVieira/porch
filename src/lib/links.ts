@@ -143,11 +143,6 @@ export const linkGroups = [
         Icon: BsServer,
       },
       {
-        title: 'Memos',
-        link: 'https://memos.iamsaravieira.com',
-        Icon: BsPencilFill,
-      },
-      {
         title: 'The Books',
         link: 'https://books.iamsaravieira.com',
         Icon: BsBookFill,

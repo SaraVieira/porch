@@ -38,27 +38,6 @@ export interface APIMatch {
   }>
 }
 
-export interface Memo {
-  id: number
-  title: string
-  content: string
-  mood: string
-  date: string
-  createdAt: Date | null
-  updatedAt: Date | null
-}
-
-export type MoodType =
-  | 'happy'
-  | 'sad'
-  | 'neutral'
-  | 'excited'
-  | 'anxious'
-  | 'calm'
-  | 'energetic'
-  | 'tired'
-  | 'grateful'
-
 export interface CoolifyAPI {
   services: Array<Service>
   applications: Array<Application>

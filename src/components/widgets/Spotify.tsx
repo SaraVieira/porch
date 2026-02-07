@@ -13,6 +13,7 @@ import { Button } from '../ui/button'
 import { Progress } from '../ui/progress'
 import { Skeleton } from '../ui/skeleton'
 import { useSpotifyPlayer } from '@/hooks/useSpotifyPlayer'
+import { useSpotifyConnected } from '@/lib/hooks/useAuthStatus'
 
 const formatTime = (ms: number) => {
   const totalSeconds = Math.floor(ms / 1000)
@@ -37,7 +38,11 @@ export function Spotify() {
     shuffleState,
     repeatState,
   } = useSpotifyPlayer()
+  const { connected, isLoading: isLoadingConnected } = useSpotifyConnected()
 
+  if (!isLoadingConnected && !connected) {
+    return null
+  }
   if (isLoading || !spotifyData) {
     return (
       <Card>
@@ -118,9 +123,7 @@ export function Spotify() {
             size="icon-sm"
             onClick={shuffle}
             className={
-              shuffleState
-                ? 'text-green-500'
-                : 'text-muted-foreground'
+              shuffleState ? 'text-green-500' : 'text-muted-foreground'
             }
           >
             <Shuffle className="w-4 h-4" />
@@ -164,9 +167,7 @@ export function Spotify() {
             size="icon-sm"
             onClick={repeat}
             className={
-              repeatState !== 'off'
-                ? 'text-green-500'
-                : 'text-muted-foreground'
+              repeatState !== 'off' ? 'text-green-500' : 'text-muted-foreground'
             }
           >
             {repeatState === 'track' ? (
