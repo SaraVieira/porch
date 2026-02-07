@@ -9,6 +9,7 @@ const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI!
 const SCOPES = [
   'https://www.googleapis.com/auth/calendar.readonly',
   'https://www.googleapis.com/auth/tasks',
+  'https://www.googleapis.com/auth/youtube.readonly',
 ].join(' ')
 
 export function getGoogleAuthUrl(): string {

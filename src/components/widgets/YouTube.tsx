@@ -1,8 +1,10 @@
 import { formatDistanceToNow } from 'date-fns'
+import { Bookmark } from 'lucide-react'
 import { ScrollArea } from '../ui/scroll-area'
 import { Skeleton } from '../ui/skeleton'
 import { WidgetShell } from '../WidgetShell'
 import { useYouTube } from '@/hooks/useYouTube'
+import { useBookmarks } from '@/hooks/useBookmarks'
 
 function VideoSkeleton() {
   return (
@@ -19,6 +21,7 @@ function VideoSkeleton() {
 
 export const YouTube = () => {
   const { videos, isLoading } = useYouTube()
+  const { bookmarks, createBookmark } = useBookmarks()
 
   return (
     <WidgetShell
@@ -35,35 +38,50 @@ export const YouTube = () => {
     >
       <ScrollArea className="h-[500px]">
         <div className="flex flex-col gap-2">
-          {videos?.slice(0, 12).map((video) => (
-            <a
-              key={video.id}
-              href={video.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex gap-3 p-2 rounded hover:bg-accent/50 transition-colors"
-            >
-              <img
-                src={video.thumbnail}
-                alt=""
-                className="w-30 h-17 rounded object-cover shrink-0"
-                loading="lazy"
-              />
-              <div className="flex flex-col gap-0.5 min-w-0">
-                <span className="text-sm font-medium line-clamp-2 leading-tight">
-                  {video.title}
-                </span>
-                <span className="text-xs text-muted-foreground truncate">
-                  {video.channelName}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(video.publishedAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              </div>
-            </a>
-          ))}
+          {videos?.slice(0, 12).map((video) => {
+            const isBookmarked = bookmarks?.some((b) => b.url === video.link)
+            return (
+              <a
+                key={video.id}
+                href={video.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-3 p-2 rounded hover:bg-accent/50 transition-colors"
+              >
+                <img
+                  src={video.thumbnail}
+                  alt=""
+                  className="w-30 h-17 rounded object-cover shrink-0"
+                  loading="lazy"
+                />
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                  <span className="text-sm font-medium line-clamp-2 leading-tight">
+                    {video.title}
+                  </span>
+                  <span className="text-xs text-muted-foreground truncate">
+                    {video.channelName}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(new Date(video.publishedAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    if (!isBookmarked) createBookmark(video.link)
+                  }}
+                  className="shrink-0 self-center p-1 rounded hover:bg-accent/50 transition-colors"
+                >
+                  <Bookmark
+                    className={`w-4 h-4 ${isBookmarked ? 'fill-current text-orange-accent' : 'text-muted-foreground'}`}
+                  />
+                </button>
+              </a>
+            )
+          })}
         </div>
       </ScrollArea>
     </WidgetShell>

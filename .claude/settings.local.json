@@ -30,7 +30,9 @@
       "Bash(wc:*)",
       "Bash(grep:*)",
       "Bash(git mv:*)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "Bash(pnpm run typecheck:*)",
+      "Bash(pnpm run lint:*)"
     ]
   }
 }

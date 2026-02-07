@@ -1,10 +1,11 @@
 import { XMLParser } from 'fast-xml-parser'
-import csvRaw from './subscriptions.csv?raw'
+import { googleFetch } from './google'
 import type { YouTubeChannel, YouTubeVideo } from './types'
 
 const BATCH_SIZE = 30
 const SHORTS_CHECK_BATCH = 50
 const CACHE_TTL = 30 * 60 * 1000 // 30 minutes
+const SUBS_CACHE_TTL = 60 * 60 * 1000 // 1 hour
 const FETCH_TIMEOUT = 5000 // 5 seconds
 const SHORTS_TIMEOUT = 3000 // 3 seconds
 
@@ -14,20 +15,52 @@ let cachedVideos: Array<YouTubeVideo> = []
 let cacheTimestamp = 0
 let fetchInProgress: Promise<Array<YouTubeVideo>> | null = null
 
-function parseChannelsFromCSV(): Array<YouTubeChannel> {
-  const lines = csvRaw.trim().split('\n')
-  // Skip header row
-  return lines.slice(1).map((line) => {
-    const [id, url, ...titleParts] = line.split(',')
-    return {
-      id: id.trim(),
-      url: url.trim(),
-      title: titleParts.join(',').trim(),
-    }
-  })
-}
+let cachedSubscriptions: Array<YouTubeChannel> = []
+let subsCacheTimestamp = 0
 
-const channels = parseChannelsFromCSV()
+async function fetchSubscriptions(): Promise<Array<YouTubeChannel>> {
+  const now = Date.now()
+  if (cachedSubscriptions.length > 0 && now - subsCacheTimestamp < SUBS_CACHE_TTL) {
+    return cachedSubscriptions
+  }
+
+  const channels: Array<YouTubeChannel> = []
+  let pageToken: string | undefined
+
+  do {
+    const params = new URLSearchParams({
+      part: 'snippet',
+      mine: 'true',
+      maxResults: '50',
+    })
+    if (pageToken) params.set('pageToken', pageToken)
+
+    const res = await googleFetch(
+      `https://www.googleapis.com/youtube/v3/subscriptions?${params}`,
+    )
+
+    if (!res.ok) {
+      console.error('Failed to fetch subscriptions:', await res.text())
+      return cachedSubscriptions.length > 0 ? cachedSubscriptions : []
+    }
+
+    const data = await res.json()
+
+    for (const item of data.items ?? []) {
+      channels.push({
+        id: item.snippet.resourceId.channelId,
+        title: item.snippet.title,
+        url: `https://www.youtube.com/channel/${item.snippet.resourceId.channelId}`,
+      })
+    }
+
+    pageToken = data.nextPageToken
+  } while (pageToken)
+
+  cachedSubscriptions = channels
+  subsCacheTimestamp = Date.now()
+  return channels
+}
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -118,6 +151,7 @@ async function filterOutShorts(
 }
 
 async function fetchAllVideos(): Promise<Array<YouTubeVideo>> {
+  const channels = await fetchSubscriptions()
   const allVideos: Array<YouTubeVideo> = []
 
   for (let i = 0; i < channels.length; i += BATCH_SIZE) {

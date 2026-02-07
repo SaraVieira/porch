@@ -27,24 +27,24 @@ export const GitHub = () => {
       skeleton={<HeatmapSkeleton />}
     >
       <div className="flex flex-col gap-3">
-        <GitHubHeatmap weeks={data!.weeks} />
-        <div className="flex gap-4 text-center flex-wrap">
+        <GitHubHeatmap weeks={data?.weeks || []} />
+        <div className="flex gap-4 text-center flex-wrap justify-center">
           <div>
             <div className="text-base font-medium">
-              {data!.totalContributions.toLocaleString()}
+              {data?.totalContributions.toLocaleString()}
             </div>
             <span className="text-muted-foreground text-xs">Year</span>
           </div>
           <div>
-            <div className="text-base font-medium">{data!.currentStreak}</div>
+            <div className="text-base font-medium">{data?.currentStreak}</div>
             <span className="text-muted-foreground text-xs">Streak</span>
           </div>
           <div>
-            <div className="text-base font-medium">{data!.thisWeekCount}</div>
+            <div className="text-base font-medium">{data?.thisWeekCount}</div>
             <span className="text-muted-foreground text-xs">Week</span>
           </div>
           <div>
-            <div className="text-base font-medium">{data!.todayCount}</div>
+            <div className="text-base font-medium">{data?.todayCount}</div>
             <span className="text-muted-foreground text-xs">Today</span>
           </div>
         </div>
