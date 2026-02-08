@@ -19,6 +19,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
 import { useAppSession } from '@/lib/hooks/useSession'
 import { borderAccentAtom, orangeAccentAtom } from '@/lib/atoms'
+import { db } from '@/db'
+import { user as userSchema } from '@/db/schema'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -28,11 +30,13 @@ const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
   const session = await useAppSession()
 
   if (!session.data.id) {
-    return null
+    const users = await db!.select().from(userSchema).limit(1)
+    return { id: null, hasUser: users.length > 0 }
   }
 
   return {
     id: session.data.id,
+    hasUser: true,
   }
 })
 
@@ -47,7 +51,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Homepage',
+        title: 'Porch',
       },
     ],
     links: [
@@ -59,18 +63,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
   beforeLoad: async ({ location }) => {
     const user = await fetchUser()
-    if (
-      !user &&
-      location.href !== '/login' &&
-      location.href !== '/signup' &&
-      location.href !== '/logout'
-    ) {
+    const isAuthPage =
+      location.href === '/login' ||
+      location.href === '/signup' ||
+      location.href === '/logout'
+
+    if (!user.id && !isAuthPage) {
       throw redirect({
-        to: '/login',
+        to: user.hasUser ? '/login' : '/signup',
       })
     }
     return {
-      user,
+      user: user.id ? user : null,
     }
   },
   shellComponent: RootDocument,

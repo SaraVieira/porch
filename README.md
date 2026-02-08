@@ -1,4 +1,4 @@
-# Homepage
+# Porch
 
 A personal, self-hosted dashboard built with TanStack Start. It's a single-user app designed to be your browser's start page — a central place for weather, calendars, todos, music, bookmarks, RSS feeds, and more.
 
@@ -45,7 +45,7 @@ pnpm db:push
 pnpm dev
 ```
 
-The app runs at `http://localhost:3000`. On first visit you'll be prompted to create a password.
+The app runs at `http://localhost:3000`. On first visit you'll be redirected to sign up and create a password.
 
 ## Setting up OAuth
 

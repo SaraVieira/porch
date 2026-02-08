@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Homepage Bookmarks",
+  "name": "Porch Bookmarks",
   "version": "1.0.0",
-  "description": "Save bookmarks to your Homepage dashboard with one click",
+  "description": "Save bookmarks to your Porch dashboard with one click",
   "permissions": ["activeTab", "storage"],
   "host_permissions": ["*://*/api/bookmarks/*"],
   "action": {
