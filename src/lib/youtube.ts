@@ -20,7 +20,10 @@ let subsCacheTimestamp = 0
 
 async function fetchSubscriptions(): Promise<Array<YouTubeChannel>> {
   const now = Date.now()
-  if (cachedSubscriptions.length > 0 && now - subsCacheTimestamp < SUBS_CACHE_TTL) {
+  if (
+    cachedSubscriptions.length > 0 &&
+    now - subsCacheTimestamp < SUBS_CACHE_TTL
+  ) {
     return cachedSubscriptions
   }
 
@@ -154,7 +157,10 @@ async function enrichVideosWithDetails(
   videos: Array<YouTubeVideo>,
 ): Promise<Array<YouTubeVideo>> {
   const ENRICH_BATCH = 50
-  const detailsMap = new Map<string, { duration?: string; viewCount?: string }>()
+  const detailsMap = new Map<
+    string,
+    { duration?: string; viewCount?: string }
+  >()
 
   for (let i = 0; i < videos.length; i += ENRICH_BATCH) {
     const batch = videos.slice(i, i + ENRICH_BATCH)
@@ -185,7 +191,11 @@ async function enrichVideosWithDetails(
   return videos.map((video) => {
     const details = detailsMap.get(video.id)
     if (!details) return video
-    return { ...video, duration: details.duration, viewCount: details.viewCount }
+    return {
+      ...video,
+      duration: details.duration,
+      viewCount: details.viewCount,
+    }
   })
 }
 

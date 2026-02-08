@@ -72,8 +72,7 @@ export function ArticleList({
               size="icon"
               className="h-7 w-7"
               onClick={(e) =>
-                !bookmarkedUrls.has(article.link) &&
-                onBookmark(e, article.link)
+                !bookmarkedUrls.has(article.link) && onBookmark(e, article.link)
               }
               title={
                 bookmarkedUrls.has(article.link)

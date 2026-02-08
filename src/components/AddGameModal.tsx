@@ -149,9 +149,7 @@ export const AddGameModal = () => {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  disabled={(d) =>
-                    d > new Date() || d < new Date('1900-01-01')
-                  }
+                  disabled={(d) => d > new Date() || d < new Date('1900-01-01')}
                 />
               </PopoverContent>
             </Popover>

@@ -49,8 +49,15 @@ function formatDueDate(dateStr: string) {
 }
 
 export function Todos() {
-  const { todos, isLoading, syncing, handleSync, handleCreate, handleToggle, handleRemove } =
-    useTodos()
+  const {
+    todos,
+    isLoading,
+    syncing,
+    handleSync,
+    handleCreate,
+    handleToggle,
+    handleRemove,
+  } = useTodos()
   const [formOpen, setFormOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [dueDate, setDueDate] = useState('')

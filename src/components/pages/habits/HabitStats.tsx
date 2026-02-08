@@ -34,18 +34,14 @@ export function HabitStats({ habits }: HabitStatsProps) {
                   <Flame className="w-4 h-4" />
                   Current streak
                 </div>
-                <Badge variant="secondary">
-                  {habit.currentStreak} days
-                </Badge>
+                <Badge variant="secondary">{habit.currentStreak} days</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Trophy className="w-4 h-4" />
                   Longest streak
                 </div>
-                <Badge variant="secondary">
-                  {habit.longestStreak} days
-                </Badge>
+                <Badge variant="secondary">{habit.longestStreak} days</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">

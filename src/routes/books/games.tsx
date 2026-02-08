@@ -70,9 +70,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Image
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -97,9 +95,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Name
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -109,9 +105,7 @@ function RouteComponent() {
       cell: ({ row }) => (
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="max-w-[220px] truncate">
-              {row.getValue('name')}
-            </div>
+            <div className="max-w-[220px] truncate">{row.getValue('name')}</div>
           </TooltipTrigger>
           <TooltipContent>{row.getValue('name')}</TooltipContent>
         </Tooltip>
@@ -123,9 +117,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Date Finished
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -141,9 +133,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Date Released
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -159,9 +149,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Score
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -176,9 +164,7 @@ function RouteComponent() {
         return (
           <Button
             variant="ghost"
-            onClick={() =>
-              column.toggleSorting(column.getIsSorted() === 'asc')
-            }
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             Duration
             <ArrowUpDown className="ml-2 h-4 w-4" />

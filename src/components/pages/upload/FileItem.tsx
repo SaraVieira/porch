@@ -25,9 +25,7 @@ export function FileItem({
     <div className="flex items-center gap-4 p-4 border rounded-lg">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
-          <p className="font-medium truncate">
-            {fileWithProgress.file.name}
-          </p>
+          <p className="font-medium truncate">{fileWithProgress.file.name}</p>
           <Badge
             variant={
               fileWithProgress.status === 'success'
@@ -54,10 +52,7 @@ export function FileItem({
         </p>
 
         {fileWithProgress.status === 'uploading' && (
-          <Progress
-            value={fileWithProgress.progress}
-            className="mt-2"
-          />
+          <Progress value={fileWithProgress.progress} className="mt-2" />
         )}
 
         {fileWithProgress.status === 'error' && (

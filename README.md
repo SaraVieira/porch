@@ -6,20 +6,20 @@ This is **not** a multi-user platform. It's designed for one person to self-host
 
 ## Widgets
 
-| Widget | Service needed | Required env vars |
-|---|---|---|
-| Calendar | Google Calendar | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` |
-| YouTube | Google/YouTube | Same as Calendar (shared Google OAuth) |
-| Todos | Google Tasks | Same as Calendar (shared Google OAuth) |
-| Spotify | Spotify | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI` |
-| GitHub | GitHub API | `GITHUB_TOKEN`, `GITHUB_USERNAME` |
-| Weather | Open-Meteo | None (defaults to London; set `VITE_WEATHER_*` to change) |
-| Coolify | Coolify instance | `COOLIFY_TOKEN`, `COOLIFY_URL` |
-| Romm | Romm instance | `ROMM_USERNAME`, `ROMM_PASSWORD`, `VITE_PUBLIC_ROMM_URL` |
-| Bookmarks | — | None |
-| Habits | — | None |
-| Links | — | None |
-| RSS | — | None |
+| Widget    | Service needed   | Required env vars                                                    |
+| --------- | ---------------- | -------------------------------------------------------------------- |
+| Calendar  | Google Calendar  | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`    |
+| YouTube   | Google/YouTube   | Same as Calendar (shared Google OAuth)                               |
+| Todos     | Google Tasks     | Same as Calendar (shared Google OAuth)                               |
+| Spotify   | Spotify          | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REDIRECT_URI` |
+| GitHub    | GitHub API       | `GITHUB_TOKEN`, `GITHUB_USERNAME`                                    |
+| Weather   | Open-Meteo       | None (defaults to London; set `VITE_WEATHER_*` to change)            |
+| Coolify   | Coolify instance | `COOLIFY_TOKEN`, `COOLIFY_URL`                                       |
+| Romm      | Romm instance    | `ROMM_USERNAME`, `ROMM_PASSWORD`, `VITE_PUBLIC_ROMM_URL`             |
+| Bookmarks | —                | None                                                                 |
+| Habits    | —                | None                                                                 |
+| Links     | —                | None                                                                 |
+| RSS       | —                | None                                                                 |
 
 Widgets are draggable into a 3-column grid. Layout is saved to localStorage. You can toggle which widgets are visible in the settings popover.
 

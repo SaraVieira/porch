@@ -1,10 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import type { UploadedFile } from '@/lib/upload'
-import {
-  uploadFileToZipline,
-  validateImageFile,
-} from '@/lib/upload'
+import { uploadFileToZipline, validateImageFile } from '@/lib/upload'
 
 export interface FileWithProgress {
   file: File

@@ -74,10 +74,7 @@ export function HabitTracker({
               </div>
 
               {habits.map((habit) => (
-                <div
-                  key={habit.id}
-                  className="flex items-center gap-0 py-1.5"
-                >
+                <div key={habit.id} className="flex items-center gap-0 py-1.5">
                   <div className="w-40 shrink-0 truncate text-sm font-medium pr-2">
                     {habit.emoji} {habit.name}
                   </div>
@@ -85,10 +82,7 @@ export function HabitTracker({
                     const dateStr = format(day, 'yyyy-MM-dd')
                     const completed = habit.completions.includes(dateStr)
                     return (
-                      <div
-                        key={dateStr}
-                        className="w-10 flex justify-center"
-                      >
+                      <div key={dateStr} className="w-10 flex justify-center">
                         <Checkbox
                           checked={completed}
                           onCheckedChange={() =>

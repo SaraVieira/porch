@@ -17,12 +17,7 @@ export function AddFeedCard({ categories, onAddFeed }: AddFeedCardProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={onAddFeed} className="flex flex-col gap-2">
-          <Input
-            type="url"
-            name="url"
-            placeholder="Feed URL..."
-            required
-          />
+          <Input type="url" name="url" placeholder="Feed URL..." required />
           <select
             name="categoryId"
             className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
