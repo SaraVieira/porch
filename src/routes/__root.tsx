@@ -109,7 +109,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-highlight dark min-h-screen">
+      <body className="bg-background text-highlight dark min-h-screen p-8 md:p-0">
         <Provider>
           <AccentApplicator />
           <Header user={user} />

@@ -17,7 +17,7 @@ export default function Header({ user }: { user: { id: number } | null }) {
   if (!user) return null
   return (
     <div className="mt-4 pt-4 text-highlight container mx-auto rounded border-widget-content-border">
-      <div className="header flex padding-inline-widget widget-content-frame justify-between">
+      <div className="header sm:flex padding-inline-widget widget-content-frame justify-between">
         <nav className="overflow-auto min-w-0 gap-8 h-full flex grow hide-scrollbars">
           <NavLink to="/">Home</NavLink>
           <NavLink to="/matches">Matches</NavLink>
