@@ -16,7 +16,7 @@ import type {
   ColumnFiltersState,
   SortingState,
 } from '@tanstack/react-table'
-import type { games } from '@/db/schema'
+import type { games as gamesTable } from '@/db/schema'
 import { formatDate, get } from '@/lib/utils'
 
 import {
@@ -63,7 +63,7 @@ function RouteComponent() {
     queryClient.invalidateQueries({ queryKey: ['games'] })
   }
 
-  const columns: Array<ColumnDef<typeof games.$inferSelect>> = [
+  const columns: Array<ColumnDef<typeof gamesTable.$inferSelect>> = [
     {
       accessorKey: 'image',
       header: ({ column }) => {
