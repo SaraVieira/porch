@@ -23,6 +23,7 @@ export const GitHub = () => {
     <WidgetShell
       title="GitHub"
       link={{ to: 'https://github.com/SaraVieira', external: true }}
+      hideWhileLoading
       loading={isLoading || !data}
       skeleton={<HeatmapSkeleton />}
     >

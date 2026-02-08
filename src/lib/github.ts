@@ -9,7 +9,7 @@ const GITHUB_GRAPHQL = 'https://api.github.com/graphql'
 
 let cachedData: GitHubContributionsData | null = null
 let cacheTimestamp = 0
-let fetchInProgress: Promise<GitHubContributionsData> | null = null
+let fetchInProgress: Promise<GitHubContributionsData | null> | null = null
 
 const CONTRIBUTION_COLORS: Record<string, string> = {
   NONE: '#161b22',
@@ -118,12 +118,12 @@ export function computeStats(weeks: Array<GitHubContributionWeek>): {
   return { todayCount, thisWeekCount, thisMonthCount }
 }
 
-async function fetchContributions(): Promise<GitHubContributionsData> {
+async function fetchContributions(): Promise<GitHubContributionsData | null> {
   const token = process.env.GITHUB_TOKEN
   const username = process.env.GITHUB_USERNAME
 
   if (!token || !username) {
-    throw new Error('GITHUB_TOKEN and GITHUB_USERNAME must be set')
+    return null
   }
 
   const response = await fetch(GITHUB_GRAPHQL, {
@@ -168,7 +168,7 @@ async function fetchContributions(): Promise<GitHubContributionsData> {
   }
 }
 
-export async function getGitHubContributions(): Promise<GitHubContributionsData> {
+export async function getGitHubContributions(): Promise<GitHubContributionsData | null> {
   const now = Date.now()
 
   if (cachedData && now - cacheTimestamp < CACHE_TTL) {

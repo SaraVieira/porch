@@ -2,27 +2,28 @@ import { useQuery } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
 import type { CoolifyAPI } from '@/lib/types'
 
+const empty: CoolifyAPI = { services: [], applications: [] }
+
 const getCoolifyData = createServerFn({ method: 'GET' }).handler(
   async (): Promise<CoolifyAPI> => {
-    const data = { services: [], applications: [] }
+    const baseUrl = process.env.COOLIFY_URL
+    const token = process.env.COOLIFY_TOKEN
+    if (!baseUrl || !token) return empty
+
     try {
-      const headers = {
-        Authorization: `Bearer ${process.env.COOLIFY_TOKEN}`,
-      }
+      const headers = { Authorization: `Bearer ${token}` }
       const [services, applications] = await Promise.all([
-        fetch('https://dashboard.iamsaravieira.com/api/v1/services', {
-          headers,
-        }).then((rsp) => rsp.json()),
-        fetch('https://dashboard.iamsaravieira.com/api/v1/applications', {
-          headers,
-        }).then((rsp) => rsp.json()),
+        fetch(`${baseUrl}/api/v1/services`, { headers }).then((rsp) =>
+          rsp.json(),
+        ),
+        fetch(`${baseUrl}/api/v1/applications`, { headers }).then((rsp) =>
+          rsp.json(),
+        ),
       ])
-      data.services = services
-      data.applications = applications
-      return data as CoolifyAPI
+      return { services, applications } as CoolifyAPI
     } catch (error) {
       console.error('Error fetching Coolify data:', error)
-      return data as CoolifyAPI
+      return empty
     }
   },
 )

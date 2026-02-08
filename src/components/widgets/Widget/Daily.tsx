@@ -10,12 +10,18 @@ import {
 import { cn } from '@/lib/utils'
 
 export const DailyWeather = () => {
+  const lat = import.meta.env.VITE_WEATHER_LATITUDE || '51.5074'
+  const lon = import.meta.env.VITE_WEATHER_LONGITUDE || '-0.1278'
+  const tz = import.meta.env.VITE_WEATHER_TIMEZONE || 'Europe/London'
+  const locationName =
+    import.meta.env.VITE_WEATHER_LOCATION || 'London, United Kingdom'
+
   // Daily forecast query
   const { data: dailyForecast, isLoading: isDailyLoading } = useQuery({
     queryKey: ['daily-weather'],
     queryFn: async () => {
       const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=5&timezone=Europe/London`,
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=5&timezone=${tz}`,
       )
       return response.json() as Promise<WeatherData>
     },
@@ -48,7 +54,7 @@ export const DailyWeather = () => {
       <div className="space-y-6">
         <div className="text-center">
           <div className="font-light text-highlight">4-Day Forecast</div>
-          <div className="text-base-muted text-sm">London, United Kingdom</div>
+          <div className="text-base-muted text-sm">{locationName}</div>
         </div>
 
         {isDailyLoading ? (

@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/react-start'
-import { eq } from 'drizzle-orm'
-import { hashPassword } from '@/lib/utils'
+import { generateSalt, hashPassword } from '@/lib/utils'
 import { useAppSession } from '@/lib/hooks/useSession'
 import { db } from '@/db'
 import { user as userSchema } from '@/db/schema'
@@ -11,12 +10,9 @@ import { useMutation } from '@/lib/hooks/useMutation'
 const signupFn = createServerFn({ method: 'POST' })
   .inputValidator((d: { password: string; redirectUrl?: string }) => d)
   .handler(async ({ data }) => {
-    // Encrypt the password using Sha256 into plaintext
-    const password = await hashPassword(data.password)
     const found = await db!
       .select()
       .from(userSchema)
-      .where(eq(userSchema.password, password))
       .then((res) => res[0])
 
     // Create a session
@@ -24,6 +20,10 @@ const signupFn = createServerFn({ method: 'POST' })
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (found?.id) {
+      // User already exists — verify password and log them in
+      const salt = found.salt ?? 'salt'
+      const password = await hashPassword(data.password, salt)
+
       if (found.password !== password) {
         return {
           error: true,
@@ -32,33 +32,32 @@ const signupFn = createServerFn({ method: 'POST' })
         }
       }
 
-      // Store the user's email in the session
       await session.update({
         id: found.id,
       })
 
-      // Redirect to the prev page stored in the "redirect" search param
       throw redirect({
         href: data.redirectUrl || '/',
       })
     }
 
-    // Create the user
+    // Create the user with a random salt
+    const salt = generateSalt()
+    const password = await hashPassword(data.password, salt)
 
     const user = await db!
       .insert(userSchema)
       .values({
         password,
+        salt,
       })
       .returning()
       .then((res) => res[0])
 
-    // Store the user's name in the session
     await session.update({
       id: user.id,
     })
 
-    // Redirect to the prev page stored in the "redirect" search param
     throw redirect({
       href: data.redirectUrl || '/',
     })

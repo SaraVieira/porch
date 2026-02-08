@@ -42,7 +42,8 @@
       "WebFetch(domain:roms.iamsaravieira.com)",
       "Bash(python3:*)",
       "Bash(pnpm knip:*)",
-      "Bash(pnpm ls:*)"
+      "Bash(pnpm ls:*)",
+      "Bash(pnpm typecheck:*)"
     ]
   }
 }

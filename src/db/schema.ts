@@ -70,6 +70,7 @@ export const conferences = pgTable('conferences', {
 export const user = pgTable('user', {
   id: serial('id').primaryKey(),
   password: text('password').notNull(),
+  salt: text('salt'),
 })
 
 export const habits = pgTable('habits', {

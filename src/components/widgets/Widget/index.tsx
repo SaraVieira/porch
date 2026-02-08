@@ -13,18 +13,21 @@ import {
 import { Skeleton } from '../../ui/skeleton'
 import { CurrentWeather } from './Current'
 import { DailyWeather } from './Daily'
-import LocationWeather from './Locatiion'
+import LocationWeather from './Location'
 import type { CarouselApi } from '../../ui/carousel'
 import type { WeatherData } from '@/lib/types'
 import { get } from '@/lib/utils'
 
 const getWeather = createServerFn({
   method: 'GET',
-}).handler(() =>
-  get(
-    'https://api.open-meteo.com/v1/forecast?latitude=51.5074&longitude=-0.1278&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&timezone=Europe/London',
-  ),
-)
+}).handler(() => {
+  const lat = process.env.VITE_WEATHER_LATITUDE || '51.5074'
+  const lon = process.env.VITE_WEATHER_LONGITUDE || '-0.1278'
+  const tz = process.env.VITE_WEATHER_TIMEZONE || 'Europe/London'
+  return get(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,precipitation_probability,weather_code&timezone=${tz}`,
+  )
+})
 
 export function Weather() {
   const { data: weatherData, isLoading } = useQuery<WeatherData>({

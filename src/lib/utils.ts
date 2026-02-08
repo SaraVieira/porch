@@ -72,9 +72,13 @@ export const formatDate = (date: string | Date | number, time?: boolean) => {
   })
 }
 
-export function hashPassword(password: string) {
+export function generateSalt() {
+  return crypto.randomBytes(32).toString('hex')
+}
+
+export function hashPassword(password: string, salt: string) {
   return new Promise<string>((resolve, reject) => {
-    crypto.pbkdf2(password, 'salt', 100000, 64, 'sha256', (err, derivedKey) => {
+    crypto.pbkdf2(password, salt, 100000, 64, 'sha256', (err, derivedKey) => {
       if (err) {
         reject(err)
       } else {

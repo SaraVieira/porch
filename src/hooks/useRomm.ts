@@ -3,14 +3,17 @@ import { createServerFn } from '@tanstack/react-start'
 import { get } from '@/lib/utils'
 
 const getPlatforms = createServerFn({ method: 'GET' }).handler(async () => {
-  const credentials = btoa(
-    `${process.env.ROMM_USERNAME}:${process.env.ROMM_PASSWORD}`,
-  )
-  const res = await fetch(`${process.env.VITE_PUBLIC_ROMM_URL}/api/platforms`, {
+  const rommUrl = process.env.VITE_PUBLIC_ROMM_URL
+  const username = process.env.ROMM_USERNAME
+  const password = process.env.ROMM_PASSWORD
+  if (!rommUrl || !username || !password) return []
+
+  const credentials = btoa(`${username}:${password}`)
+  const res = await fetch(`${rommUrl}/api/platforms`, {
     headers: { Authorization: `Basic ${credentials}` },
   })
   const platforms = await res.json()
-  const baseUrl = `${process.env.VITE_PUBLIC_ROMM_URL}/assets/platforms`
+  const baseUrl = `${rommUrl}/assets/platforms`
   const withIcons = await Promise.all(
     platforms.map(async (p: { slug: string }) => {
       const svgRes = await fetch(`${baseUrl}/${p.slug}.svg`, {
@@ -26,9 +29,11 @@ const getPlatforms = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 export function useRomm() {
+  const rommUrl = import.meta.env.VITE_PUBLIC_ROMM_URL
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['romm', 'stats'],
-    queryFn: () => get(`${import.meta.env.VITE_PUBLIC_ROMM_URL}/api/stats`),
+    queryFn: () => get(`${rommUrl}/api/stats`),
+    enabled: !!rommUrl,
   })
   const { data: platforms, isLoading: platformsLoading } = useQuery<
     {

@@ -10,7 +10,7 @@ export const Romm = () => {
   return (
     <WidgetShell
       title="Romm Stats"
-      link={{ to: 'https://roms.iamsaravieira.com', external: true }}
+      link={{ to: import.meta.env.VITE_PUBLIC_ROMM_URL || '#', external: true }}
       hideWhileLoading
       loading={isLoading || !stats}
       contentClassName="flex flex-col gap-4"
@@ -39,7 +39,7 @@ export const Romm = () => {
               .map((platform) => (
                 <a
                   key={platform.id}
-                  href={`https://roms.iamsaravieira.com/platform/${platform.id}`}
+                  href={`${import.meta.env.VITE_PUBLIC_ROMM_URL}/platform/${platform.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

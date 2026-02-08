@@ -35,10 +35,18 @@ const getStatusEl = (status: string) => {
 }
 
 export const Coolify = () => {
-  const { data: coolifyData } = useCoolify()
+  const { data: coolifyData, isLoading } = useCoolify()
+
+  const hasData =
+    coolifyData.applications.length > 0 || coolifyData.services.length > 0
 
   return (
-    <WidgetShell title="Coolify" contentClassName="flex flex-col gap-4">
+    <WidgetShell
+      title="Coolify"
+      contentClassName="flex flex-col gap-4"
+      hideWhileLoading
+      loading={isLoading || !hasData}
+    >
       <Accordion type="multiple" className="w-full">
         <AccordionItem value="applications">
           <AccordionTrigger>Applications</AccordionTrigger>

@@ -1,4 +1,3 @@
-import { eq } from 'drizzle-orm'
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { db } from '@/db'
@@ -10,11 +9,9 @@ import { Login } from '@/components/Login'
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator((d: { password: string }) => d)
   .handler(async ({ data }) => {
-    const hashedPassword = await hashPassword(data.password)
     const user = await db!
       .select()
       .from(userSchema)
-      .where(eq(userSchema.password, hashedPassword))
       .then((res) => res[0])
 
     // Check if the user exists
@@ -27,6 +24,9 @@ export const loginFn = createServerFn({ method: 'POST' })
       }
     }
 
+    const salt = user.salt ?? 'salt'
+    const hashedPassword = await hashPassword(data.password, salt)
+
     if (user.password !== hashedPassword) {
       return {
         error: true,
@@ -37,7 +37,6 @@ export const loginFn = createServerFn({ method: 'POST' })
     // Create a session
     const session = await useAppSession()
 
-    // Store the user's email in the session
     await session.update({
       id: user.id,
     })

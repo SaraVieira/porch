@@ -2,8 +2,8 @@ import { atomWithStorage } from 'jotai/utils'
 
 export const widgetLayoutAtom = atomWithStorage('widget-layout', {
   left: ['calendar'],
-  center: ['links', 'youtube', 'github', 'coolify', 'bookmarks', 'rss'],
-  right: ['weather', 'spotify', 'todos', 'habits', 'romm'],
+  center: ['links', 'youtube', 'github', 'bookmarks', 'rss'],
+  right: ['weather', 'spotify', 'todos', 'habits'],
 })
 
 export const borderAccentAtom = atomWithStorage('border-accent', '#4ade80')
