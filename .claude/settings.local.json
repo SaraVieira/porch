@@ -43,7 +43,8 @@
       "Bash(python3:*)",
       "Bash(pnpm knip:*)",
       "Bash(pnpm ls:*)",
-      "Bash(pnpm typecheck:*)"
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm why:*)"
     ]
   }
 }

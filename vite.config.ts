@@ -18,7 +18,7 @@ const config = defineConfig({
   ],
   ssr: {
     noExternal: ['@tanstack/react-start'],
-    external: ['pg'],
+    external: ['pg', 'node:sqlite'],
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(
