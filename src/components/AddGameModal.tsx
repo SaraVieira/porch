@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
-import { load } from 'cheerio'
+import { load } from 'cheerio/slim'
 import { cn } from '@/lib/utils'
 import {
   Dialog,
