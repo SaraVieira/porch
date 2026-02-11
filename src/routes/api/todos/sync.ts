@@ -5,8 +5,6 @@ import { db } from '@/db'
 import { googleFetch, isGoogleConnected } from '@/lib/google'
 import { json } from '@/lib/api'
 
-const TASK_LIST_ID = '@default'
-
 export const Route = createFileRoute('/api/todos/sync')({
   server: {
     handlers: {
@@ -22,25 +20,19 @@ async function POST() {
       return json({ synced: false, reason: 'not_connected' })
     }
 
-    // Fetch all tasks from Google (including completed)
-    const params = new URLSearchParams({
-      maxResults: '100',
-      showCompleted: 'true',
-      showHidden: 'true',
-    })
-
-    const res = await googleFetch(
-      `https://tasks.googleapis.com/tasks/v1/lists/${TASK_LIST_ID}/tasks?${params}`,
+    // Fetch all task lists
+    const listsRes = await googleFetch(
+      'https://tasks.googleapis.com/tasks/v1/users/@me/lists',
     )
 
-    if (!res.ok) {
-      const err = await res.text()
-      console.error('Failed to fetch Google Tasks:', err)
+    if (!listsRes.ok) {
+      const err = await listsRes.text()
+      console.error('Failed to fetch Google Task Lists:', err)
       return json({ synced: false, reason: 'api_error' }, { status: 500 })
     }
 
-    const data = await res.json()
-    const googleTasks = data.items || []
+    const listsData = await listsRes.json()
+    const taskLists = listsData.items || []
 
     // Get all local todos
     const localTodos = await db!.query.todos.findMany()
@@ -51,83 +43,111 @@ async function POST() {
     let created = 0
     let updated = 0
 
-    for (const gt of googleTasks) {
-      if (gt.deleted) continue
+    for (const list of taskLists) {
+      const listId = list.id
+      const listName = list.title
 
-      const isDone = gt.status === 'completed'
-      const title = gt.title || '(No title)'
-      const googleDateOnly = gt.due ? gt.due.split('T')[0] : null
+      // Fetch all tasks from this list (including completed)
+      const params = new URLSearchParams({
+        maxResults: '100',
+        showCompleted: 'true',
+        showHidden: 'true',
+      })
 
-      // Extract time from Google notes (we store it as "⏰ HH:MM")
-      let googleNotes = gt.notes || null
-      let timeFromNotes: string | null = null
-      if (googleNotes) {
-        const timeMatch = googleNotes.match(/⏰\s*(\d{2}:\d{2})/)
-        if (timeMatch) {
-          timeFromNotes = timeMatch[1]
-          // Strip the time line from notes to get the real notes
-          googleNotes =
-            googleNotes.replace(/\n?⏰\s*\d{2}:\d{2}/, '').trim() || null
-        }
+      const res = await googleFetch(
+        `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks?${params}`,
+      )
+
+      if (!res.ok) {
+        console.error(`Failed to fetch tasks from list "${listName}":`, await res.text())
+        continue
       }
 
-      // Reconstruct dueDate with time if available
-      let dueDate = googleDateOnly
-      if (googleDateOnly && timeFromNotes) {
-        dueDate = `${googleDateOnly}T${timeFromNotes}`
-      }
+      const data = await res.json()
+      const googleTasks = data.items || []
 
-      const existing = localByGoogleId.get(gt.id)
+      for (const gt of googleTasks) {
+        if (gt.deleted) continue
 
-      if (existing) {
-        // Update local if Google version is different
-        const googleUpdated = new Date(gt.updated).getTime()
-        const localUpdated = existing.updatedAt
-          ? existing.updatedAt.getTime()
-          : 0
+        const isDone = gt.status === 'completed'
+        const title = gt.title || '(No title)'
+        const googleDateOnly = gt.due ? gt.due.split('T')[0] : null
 
-        if (googleUpdated > localUpdated) {
-          // Preserve local time if Google doesn't have one and local does
-          let syncDueDate = dueDate
-          if (
-            existing.dueDate?.includes('T') &&
-            googleDateOnly &&
-            !timeFromNotes
-          ) {
-            const localDatePart = existing.dueDate.split('T')[0]
-            if (localDatePart === googleDateOnly) {
-              // Same date, keep local time
-              syncDueDate = existing.dueDate
-            }
+        // Extract time from Google notes (we store it as "⏰ HH:MM")
+        let googleNotes = gt.notes || null
+        let timeFromNotes: string | null = null
+        if (googleNotes) {
+          const timeMatch = googleNotes.match(/⏰\s*(\d{2}:\d{2})/)
+          if (timeMatch) {
+            timeFromNotes = timeMatch[1]
+            // Strip the time line from notes to get the real notes
+            googleNotes =
+              googleNotes.replace(/\n?⏰\s*\d{2}:\d{2}/, '').trim() || null
           }
-
-          await db!
-            .update(todosSchema)
-            .set({
-              title,
-              notes: googleNotes,
-              dueDate: syncDueDate,
-              done: isDone,
-              updatedAt: new Date(gt.updated),
-            })
-            .where(eq(todosSchema.id, existing.id))
-          updated++
         }
-      } else {
-        // Create locally
-        await db!.insert(todosSchema).values({
-          title,
-          notes: googleNotes,
-          dueDate,
-          done: isDone,
-          googleTaskId: gt.id,
-          updatedAt: gt.updated ? new Date(gt.updated) : new Date(),
-        })
-        created++
+
+        // Reconstruct dueDate with time if available
+        let dueDate = googleDateOnly
+        if (googleDateOnly && timeFromNotes) {
+          dueDate = `${googleDateOnly}T${timeFromNotes}`
+        }
+
+        const existing = localByGoogleId.get(gt.id)
+
+        if (existing) {
+          // Update local if Google version is different
+          const googleUpdated = new Date(gt.updated).getTime()
+          const localUpdated = existing.updatedAt
+            ? existing.updatedAt.getTime()
+            : 0
+
+          if (googleUpdated > localUpdated) {
+            // Preserve local time if Google doesn't have one and local does
+            let syncDueDate = dueDate
+            if (
+              existing.dueDate?.includes('T') &&
+              googleDateOnly &&
+              !timeFromNotes
+            ) {
+              const localDatePart = existing.dueDate.split('T')[0]
+              if (localDatePart === googleDateOnly) {
+                // Same date, keep local time
+                syncDueDate = existing.dueDate
+              }
+            }
+
+            await db!
+              .update(todosSchema)
+              .set({
+                title,
+                notes: googleNotes,
+                dueDate: syncDueDate,
+                done: isDone,
+                googleListId: listId,
+                googleListName: listName,
+                updatedAt: new Date(gt.updated),
+              })
+              .where(eq(todosSchema.id, existing.id))
+            updated++
+          }
+        } else {
+          // Create locally
+          await db!.insert(todosSchema).values({
+            title,
+            notes: googleNotes,
+            dueDate,
+            done: isDone,
+            googleTaskId: gt.id,
+            googleListId: listId,
+            googleListName: listName,
+            updatedAt: gt.updated ? new Date(gt.updated) : new Date(),
+          })
+          created++
+        }
       }
     }
 
-    // Push local todos that don't have a googleTaskId yet
+    // Push local todos that don't have a googleTaskId yet (push to default list)
     const unlinked = localTodos.filter((t) => !t.googleTaskId)
     let pushed = 0
 
@@ -156,8 +176,16 @@ async function POST() {
 
         if (parts.length > 0) body.notes = parts.join('\n')
 
+        // Find the default list ID
+        const defaultList = taskLists.find(
+          (l: any) => l.title === 'My Tasks' || l.id === todo.googleListId,
+        )
+        const pushListId = defaultList?.id || taskLists[0]?.id
+
+        if (!pushListId) continue
+
         const createRes = await googleFetch(
-          `https://tasks.googleapis.com/tasks/v1/lists/${TASK_LIST_ID}/tasks`,
+          `https://tasks.googleapis.com/tasks/v1/lists/${pushListId}/tasks`,
           { method: 'POST', body: JSON.stringify(body) },
         )
 
@@ -165,7 +193,12 @@ async function POST() {
           const newTask = await createRes.json()
           await db!
             .update(todosSchema)
-            .set({ googleTaskId: newTask.id, updatedAt: new Date() })
+            .set({
+              googleTaskId: newTask.id,
+              googleListId: pushListId,
+              googleListName: defaultList?.title || taskLists[0]?.title,
+              updatedAt: new Date(),
+            })
             .where(eq(todosSchema.id, todo.id))
           pushed++
         }

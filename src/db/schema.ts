@@ -15,6 +15,8 @@ export const todos = pgTable('todos', {
   notes: text('notes'),
   dueDate: text('due_date'),
   googleTaskId: text('google_task_id'),
+  googleListId: text('google_list_id'),
+  googleListName: text('google_list_name'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
   done: boolean().default(false).notNull(),

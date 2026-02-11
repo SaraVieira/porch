@@ -10,6 +10,8 @@ type Todo = {
   notes: string | null
   dueDate: string | null
   googleTaskId: string | null
+  googleListId: string | null
+  googleListName: string | null
   done: boolean
   createdAt: Date | null
   updatedAt: Date | null

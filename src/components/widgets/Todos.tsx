@@ -153,14 +153,22 @@ export function Todos() {
                         </div>
                       </div>
 
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="shrink-0 h-6 w-6"
-                        onClick={() => handleRemove(todo.id)}
-                      >
-                        <X className="w-3 h-3" />
-                      </Button>
+                      <div className="flex items-center gap-1 shrink-0">
+                        {todo.googleListName &&
+                          todo.googleListName !== 'My Tasks' && (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
+                              {todo.googleListName}
+                            </span>
+                          )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => handleRemove(todo.id)}
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
                     </div>
                   </ItemContent>
                 </Item>

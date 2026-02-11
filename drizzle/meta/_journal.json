@@ -113,6 +113,13 @@
       "when": 1770548376142,
       "tag": "0015_silky_red_wolf",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1770825732817,
+      "tag": "0016_orange_shinko_yamashiro",
+      "breakpoints": true
     }
   ]
 }

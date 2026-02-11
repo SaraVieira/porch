@@ -5,8 +5,6 @@ import { db } from '@/db'
 import { googleFetch, isGoogleConnected } from '@/lib/google'
 import { json } from '@/lib/api'
 
-const TASK_LIST_ID = '@default'
-
 export const Route = createFileRoute('/api/todos/$todoId')({
   server: {
     handlers: {
@@ -42,9 +40,9 @@ async function PUT({
       where: eq(todosSchema.id, id),
     })
 
-    if (todo?.googleTaskId) {
-      syncToggleToGoogle(todo.googleTaskId, done).catch((err) =>
-        console.error('Failed to sync toggle to Google:', err),
+    if (todo?.googleTaskId && todo?.googleListId) {
+      syncToggleToGoogle(todo.googleListId, todo.googleTaskId, done).catch(
+        (err) => console.error('Failed to sync toggle to Google:', err),
       )
     }
 
@@ -70,8 +68,8 @@ async function DELETE({ params }: { params: { todoId: string } }) {
     await db!.delete(todosSchema).where(eq(todosSchema.id, id))
 
     // Delete from Google Tasks
-    if (todo?.googleTaskId) {
-      deleteFromGoogle(todo.googleTaskId).catch((err) =>
+    if (todo?.googleTaskId && todo?.googleListId) {
+      deleteFromGoogle(todo.googleListId, todo.googleTaskId).catch((err) =>
         console.error('Failed to delete from Google:', err),
       )
     }
@@ -83,12 +81,16 @@ async function DELETE({ params }: { params: { todoId: string } }) {
   }
 }
 
-async function syncToggleToGoogle(googleTaskId: string, done: boolean) {
+async function syncToggleToGoogle(
+  listId: string,
+  googleTaskId: string,
+  done: boolean,
+) {
   const connected = await isGoogleConnected()
   if (!connected) return
 
   await googleFetch(
-    `https://tasks.googleapis.com/tasks/v1/lists/${TASK_LIST_ID}/tasks/${googleTaskId}`,
+    `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks/${googleTaskId}`,
     {
       method: 'PATCH',
       body: JSON.stringify({
@@ -99,12 +101,12 @@ async function syncToggleToGoogle(googleTaskId: string, done: boolean) {
   )
 }
 
-async function deleteFromGoogle(googleTaskId: string) {
+async function deleteFromGoogle(listId: string, googleTaskId: string) {
   const connected = await isGoogleConnected()
   if (!connected) return
 
   await googleFetch(
-    `https://tasks.googleapis.com/tasks/v1/lists/${TASK_LIST_ID}/tasks/${googleTaskId}`,
+    `https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks/${googleTaskId}`,
     { method: 'DELETE' },
   )
 }
