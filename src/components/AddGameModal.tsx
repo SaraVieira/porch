@@ -31,16 +31,25 @@ const fetchGameFromHLTB = createServerFn({ method: 'GET' })
         referer: 'https://howlongtobeat.com',
       },
     })
+    if (!result.ok) {
+      throw new Error(`HLTB returned ${result.status}`)
+    }
     const html = await result.text()
     const $ = load(html)
-    const data = JSON.parse($('#__NEXT_DATA__').text()).props.pageProps.game
-      .data.game[0]
+    const nextData = $('#__NEXT_DATA__').text()
+    if (!nextData) {
+      throw new Error('Could not find game data on HLTB page')
+    }
+    const data = JSON.parse(nextData).props.pageProps.game.data.game[0]
+    if (!data) {
+      throw new Error('Game not found on HLTB')
+    }
     return {
       image: `https://howlongtobeat.com/games/${data.game_image}`,
       name: data.game_name,
       dev: data.profile_dev,
-      genres: data.profile_genre.split(', '),
-      platforms: data.profile_platform.split(', '),
+      genres: data.profile_genre?.split(', ') ?? [],
+      platforms: data.profile_platform?.split(', ') ?? [],
       summary: data.profile_summary,
       steam: data.profile_steam,
       score: data.review_score,
