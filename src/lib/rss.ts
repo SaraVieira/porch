@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser'
-import { eq, and, notInArray } from 'drizzle-orm'
+import { eq, and, notInArray, desc } from 'drizzle-orm'
 import type { RssArticleWithFeed } from './types'
 import { db } from '@/db'
 import { rssArticles } from '@/db/schema'
@@ -185,15 +185,16 @@ async function fetchAllArticles(): Promise<Array<RssArticleWithFeed>> {
               })
             }
           }
-        } catch {
-          // Skip feeds that fail
+        } catch (error) {
+          console.error(`Failed to fetch feed "${feed.title}" (${feed.url}):`, error)
         }
       }),
     )
   }
 
-  // Now query all articles with feed info
+  // Now query all articles with feed info, newest first
   const articles = await db!.query.rssArticles.findMany({
+    orderBy: desc(rssArticles.createdAt),
     limit: 500,
   })
 
